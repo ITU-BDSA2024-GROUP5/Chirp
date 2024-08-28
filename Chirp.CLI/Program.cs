@@ -5,17 +5,14 @@ if (args[0] == "read")
 {
     try
     {
-        // Open the text file using a stream reader.
-        using StreamReader reader = new(path);
-
-        // Read the stream as a string.
-        reader.ReadLine();
-        string line;
-        // Read and display lines from the file until the end of
-        // the file is reached.
-        while ((line = reader.ReadLine()) != null)
+        using (StreamReader reader = File.OpenText(path))
         {
-            Console.WriteLine(line);
+            reader.ReadLine();
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                Console.WriteLine(line);
+            }
         }
     }
     catch (IOException e)
