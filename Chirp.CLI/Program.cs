@@ -44,7 +44,7 @@ public class Program { //
 
                     String[] csvData = regex.Split(reader.ReadToEnd());
 
-                    csvData = csvData.Skip(3).ToArray(); // remove 3 first elements
+                    csvData = csvData.Take(csvData.Length-1).Skip(3).ToArray(); // remove 3 first elements and last whitespace
                     
                     for(int i = 0; i < csvData.Length; i+=3) {
                         String date = getDateFormatted(csvData[i+2]); 
@@ -98,12 +98,18 @@ public class Program { //
                 return; 
             }
             
-            
-            using (StreamWriter sw = File.AppendText(path))
-            {
+            using (StreamWriter sw = File.AppendText(path)) {
                 DateTimeOffset utcTime = DateTimeOffset.UtcNow;
-                sw.WriteLine(Environment.UserName + "," + args[1] + "," + utcTime.ToUnixTimeSeconds());
-                Console.WriteLine("Sucessfully cheeped '"+args[1]+"'");
+
+                String message = "";
+                message += args[1];
+
+                for (int i = 2; i < args.Length; i++) { // add any other args
+                    message += " "+args[i];
+                }
+                
+                sw.WriteLine(Environment.UserName + ",\"" + message + "\"," + utcTime.ToUnixTimeSeconds());
+                Console.WriteLine("Successfully cheeped \""+message+"\".");
             }
         }
         
