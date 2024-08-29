@@ -61,8 +61,8 @@ public class Program { //
         public static String getDateFormatted(String inpt) {
             String format = "dd'/'MM'/'yyyy HH:mm:ss"; // https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
             String date = "date error";
-            try { 
-                date = DateTimeOffset.FromUnixTimeSeconds(int.Parse(inpt)).ToString(format);
+            try {
+                date = DateTimeOffset.FromUnixTimeSeconds(int.Parse(inpt)).ToLocalTime().ToString(format);
             } catch(Exception e) {
                 Console.Error.WriteLine(e);
             }
