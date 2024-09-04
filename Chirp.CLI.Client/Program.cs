@@ -37,8 +37,7 @@ public class Program { //
     class Read
     {
         public static void run() { 
-            // regex taken from https://stackoverflow.com/questions/3507498/reading-csv-files-using-c-sharp/34265869#34265869
-            // added |\n for newlines TODO: Later this will not work, people will want to chirp with linebreaks.
+            // https://joshclose.github.io/CsvHelper/getting-started/
             try {
                 using (var reader = new StreamReader(path))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
@@ -47,24 +46,9 @@ public class Program { //
                     
                     foreach (var record in records)
                     {
-                        Console.WriteLine(record);
+                        Console.WriteLine(record.Author + " @ " + getDateFormatted(record.Timestamp) + ": " + record.Message);
                     }
                 }
-                /**using (StreamReader reader = File.OpenText(path)) {
-                    
-                    Regex regex = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))|\n");
-                    
-                    String[] csvData = regex.Split(reader.ReadToEnd());
-
-                    csvData = csvData.Take(csvData.Length-1).Skip(3).ToArray(); // remove 3 first elements and last whitespace
-                    
-                    for(int i = 0; i < csvData.Length; i+=3) {
-                        String date = getDateFormatted(csvData[i+2]);
-                        Cheepe cheep = new Cheepe(csvData[i], csvData[i + 1], date);
-                        Console.WriteLine(cheep);
-                    }
-                    
-                }**/
             } catch (IOException e) {
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
@@ -113,9 +97,7 @@ public class Program { //
             
             using (StreamWriter sw = File.AppendText(path)) {
                 DateTimeOffset utcTime = DateTimeOffset.UtcNow;
-
-        
-              
+                
                 sw.WriteLine(Environment.UserName + ",\"" + args[1] + "\"," + utcTime.ToUnixTimeSeconds());
                 Console.WriteLine("Successfully cheeped \""+args[1]+"\".");
             }
