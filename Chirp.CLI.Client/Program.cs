@@ -1,9 +1,11 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using CsvHelper;
+
 
 public class Program { //
     static String path = "chirp_cli_db.csv";
-
+    
     public static void Main(string[] args)
     {
         if (args.Length <= 0)
@@ -31,26 +33,22 @@ public class Program { //
         }
     }
 
-
+    public record Cheepe(string Author, string Message, String Timestamp);
     class Read
     {
         public static void run() { 
             // regex taken from https://stackoverflow.com/questions/3507498/reading-csv-files-using-c-sharp/34265869#34265869
             // added |\n for newlines TODO: Later this will not work, people will want to chirp with linebreaks.
             try {
-                using (StreamReader reader = File.OpenText(path)) {
+                using (var reader = new StreamReader(path))
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    var records = csv.GetRecords<Cheepe>();
                     
-                    Regex regex = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))|\n");
-
-                    String[] csvData = regex.Split(reader.ReadToEnd());
-
-                    csvData = csvData.Take(csvData.Length-1).Skip(3).ToArray(); // remove 3 first elements and last whitespace
-                    
-                    for(int i = 0; i < csvData.Length; i+=3) {
-                        String date = getDateFormatted(csvData[i+2]); 
-                        Console.WriteLine(csvData[i]+" @ "+date+": "+csvData[i+1]);
+                    foreach (var record in records)
+                    {
+                        Console.WriteLine(record);
                     }
-                    
                 }
             } catch (IOException e) {
                 Console.WriteLine("The file could not be read:");
@@ -62,7 +60,7 @@ public class Program { //
             String format = "dd'/'MM'/'yyyy HH:mm:ss"; // https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
             String date = "date error";
             try {
-                date = DateTimeOffset.FromUnixTimeSeconds(int.Parse(inpt)).ToLocalTime().toString(format);
+                date = DateTimeOffset.FromUnixTimeSeconds(int.Parse(inpt)).ToLocalTime().ToString(format);
             } catch(Exception e) {
                 Console.Error.WriteLine(e);
             }
@@ -101,15 +99,10 @@ public class Program { //
             using (StreamWriter sw = File.AppendText(path)) {
                 DateTimeOffset utcTime = DateTimeOffset.UtcNow;
 
-                String message = "";
-                message += args[1];
-
-                for (int i = 2; i < args.Length; i++) { // add any other args
-                    message += " "+args[i];
-                }
-                
-                sw.WriteLine(Environment.UserName + ",\"" + message + "\"," + utcTime.ToUnixTimeSeconds());
-                Console.WriteLine("Successfully cheeped \""+message+"\".");
+        
+              
+                sw.WriteLine(Environment.UserName + ",\"" + args[1] + "\"," + utcTime.ToUnixTimeSeconds());
+                Console.WriteLine("Successfully cheeped \""+args[1]+"\".");
             }
         }
         
