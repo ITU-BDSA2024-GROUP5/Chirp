@@ -50,6 +50,21 @@ public class Program { //
                         Console.WriteLine(record);
                     }
                 }
+                /**using (StreamReader reader = File.OpenText(path)) {
+                    
+                    Regex regex = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))|\n");
+                    
+                    String[] csvData = regex.Split(reader.ReadToEnd());
+
+                    csvData = csvData.Take(csvData.Length-1).Skip(3).ToArray(); // remove 3 first elements and last whitespace
+                    
+                    for(int i = 0; i < csvData.Length; i+=3) {
+                        String date = getDateFormatted(csvData[i+2]);
+                        Cheepe cheep = new Cheepe(csvData[i], csvData[i + 1], date);
+                        Console.WriteLine(cheep);
+                    }
+                    
+                }**/
             } catch (IOException e) {
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
