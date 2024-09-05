@@ -10,8 +10,6 @@ public class Program { //
     static String path = "chirp_cli_db.csv";
     
     static async Task<int> Main(string[] args)
-    
-    public static void Main(string[] args)
     {
         // We are using System.CommandLine, info can be found here:
         // https://learn.microsoft.com/en-us/dotnet/standard/commandline/get-started-tutorial
@@ -78,7 +76,7 @@ public class Program { //
     } 
     
     class Cheep {
-        public static void run(String[] args) //https://learn.microsoft.com/en-us/dotnet/api/system.io.file.appendtext?view=net-7.0
+        public static void run(String args) //https://learn.microsoft.com/en-us/dotnet/api/system.io.file.appendtext?view=net-7.0
         {
             if (args.Length <= 1)
             {
@@ -94,7 +92,7 @@ public class Program { //
                     HasHeaderRecord = stream.Length == 0
                 };
                 var author = Environment.UserName;
-                var message = args[1];
+                var message = args;
                 var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
                 var cheep = new Cheepe(author, message, timestamp);
                 var records = new List<Cheepe>();
@@ -104,7 +102,7 @@ public class Program { //
                 {                                                            
                     csv.WriteRecords(records);                               
                 }               
-                Console.WriteLine("Successfully cheeped \"" + args[1] + "\".");
+                Console.WriteLine("Successfully cheeped \"" + message + "\".");
             }
         }
         
