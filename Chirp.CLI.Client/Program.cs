@@ -6,7 +6,8 @@ using System.CommandLine.Invocation;
 using System.IO;
 using CsvHelper;
 
-public class Program { //
+public class Program
+{
     static String path = "chirp_cli_db.csv";
     
     static async Task<int> Main(string[] args)
@@ -36,9 +37,10 @@ public class Program { //
     public record Cheepe(string Author, string Message, String Timestamp);
     class Read
     {
-        public static void run() { 
-            // https://joshclose.github.io/CsvHelper/getting-started/
+        public static void run()
+		{ 
             try {
+ 				// https://joshclose.github.io/CsvHelper/getting-started/#reading-a-csv-file
                 using (var reader = new StreamReader(path))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
@@ -58,7 +60,8 @@ public class Program { //
             }
         }
 
-        public static String getDateFormatted(String inpt) {
+        public static String getDateFormatted(String inpt)
+		{
             String format = "dd'/'MM'/'yyyy HH:mm:ss"; // https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
             String date = "date error";
             try {
@@ -76,14 +79,9 @@ public class Program { //
     } 
     
     class Cheep {
-        public static void run(String args) //https://learn.microsoft.com/en-us/dotnet/api/system.io.file.appendtext?view=net-7.0
-        {
-            if (args.Length <= 1)
-            {
-                Console.WriteLine("Not enough arguments provided to cheep.");
-                return; 
-            }
-            
+        public static void run(String args)
+		{
+            // https://joshclose.github.io/CsvHelper/getting-started/#writing-a-csv-file
             using (var stream = File.Open(path, FileMode.Append))
             using (var writer = new StreamWriter(stream))
             {
