@@ -1,36 +1,39 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using System;
+using System.CommandLine;
+using System.CommandLine.Invocation;
+using System.IO;
 using CsvHelper;
 
 public class Program { //
     static String path = "chirp_cli_db.csv";
     
+    static async Task<int> Main(string[] args)
+    
     public static void Main(string[] args)
     {
-        if (args.Length <= 0)
-        {
-            // test for no argument
-            Console.WriteLine("No arguments provided, try 'help' for a list of commands.");
-            return;
-        }
+        // We are using System.CommandLine, info can be found here:
+        // https://learn.microsoft.com/en-us/dotnet/standard/commandline/get-started-tutorial
+        // used command "dotnet add package System.CommandLine --version 2.0.0-beta4.22272.1" to add System.CommandLine to project
+        
+        // Read Command
+        var readCommand = new Command("read", "Reads Chirps from the database."); 
+        readCommand.SetHandler( () => Read.run());
+        
+        // Chirp command
+        var chirpOption = new Option<string>("--m", "The given string to chirp.");
+        var chirpCommand = new Command("chirp", "Cheeps the given arguments.") { chirpOption };
+        chirpCommand.SetHandler( (file) => Cheep.run(file!),chirpOption);
+        
+        // Root command
+        var rootCommand = new RootCommand("Chirp CLI Project");
+        rootCommand.AddCommand(readCommand);
+        rootCommand.AddCommand(chirpCommand);
 
-
-        switch (args[0]) // check first argument (command)
-        {
-            case "read":
-                Read.run();
-                break;
-            case "help":
-                Help.run();
-                break;
-            case "cheep":
-                Cheep.run(args);
-                break;
-            default:
-                Console.WriteLine(args[0] + " not recognized as a command, try 'help' for a list of commands.");
-                break;
-        }
+        return await rootCommand.InvokeAsync(args);
     }
+
 
     public record Cheepe(string Author, string Message, String Timestamp);
     class Read
