@@ -2,7 +2,6 @@
 using System.Text.RegularExpressions;
 using CsvHelper;
 
-
 public class Program { //
     static String path = "chirp_cli_db.csv";
     
@@ -43,10 +42,13 @@ public class Program { //
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
                     var records = csv.GetRecords<Cheepe>();
-                    
+                
                     foreach (var record in records)
                     {
-                        Console.WriteLine(record.Author + " @ " + getDateFormatted(record.Timestamp) + ": " + record.Message);
+						var author = record.Author;
+						var timestamp = getDateFormatted(record.Timestamp);
+						var message = record.Message;
+                        Console.WriteLine(author + " @ " + timestamp + ": " + message);
                     }
                 }
             } catch (IOException e) {
@@ -71,6 +73,44 @@ public class Program { //
         }
         
     } 
+    
+    class Cheep {
+        public static void run(String[] args) //https://learn.microsoft.com/en-us/dotnet/api/system.io.file.appendtext?view=net-7.0
+        {
+            if (args.Length <= 1)
+            {
+                Console.WriteLine("Not enough arguments provided to cheep.");
+                return; 
+            }
+            
+            using (var stream = File.Open(path, FileMode.Append))
+            using (var writer = new StreamWriter(stream))
+            {
+                var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    HasHeaderRecord = stream.Length == 0
+                };
+                var author = Environment.UserName;
+                var message = args[1];
+                var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+                var cheep = new Cheepe(author, message, timestamp);
+                var records = new List<Cheepe>();
+                records.Add(cheep);
+                
+                using (var csv = new CsvWriter(writer, config))              
+                {                                                            
+                    csv.WriteRecords(records);                               
+                }               
+                Console.WriteLine("Successfully cheeped \"" + args[1] + "\".");
+            }
+        }
+        
+        public static String info()
+        {
+            return "'cheep' - Cheeps your second argument.";
+        }
+      
+    }
 
     class Help {
         public static void run() {
@@ -86,27 +126,5 @@ public class Program { //
         }
     }
     
-    class Cheep {
-        public static void run(String[] args) //https://learn.microsoft.com/en-us/dotnet/api/system.io.file.appendtext?view=net-7.0
-        {
-            if (args.Length <= 1)
-            {
-                Console.WriteLine("Not enough arguments provided to cheep.");
-                return; 
-            }
-            
-            using (StreamWriter sw = File.AppendText(path)) {
-                DateTimeOffset utcTime = DateTimeOffset.UtcNow;
-                
-                sw.WriteLine(Environment.UserName + ",\"" + args[1] + "\"," + utcTime.ToUnixTimeSeconds());
-                Console.WriteLine("Successfully cheeped \""+args[1]+"\".");
-            }
-        }
-        
-        public static String info()
-        {
-            return "'cheep' - Cheeps your second argument.";
-        }
-      
-    }
+    
 }
