@@ -5,11 +5,12 @@ using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
 using CsvHelper;
+using SimpleDB;
 
 public class Program
 {
     static String path = "chirp_cli_db.csv";
-    
+	
     static async Task<int> Main(string[] args)
     {
         // We are using System.CommandLine, info can be found here:
@@ -34,30 +35,22 @@ public class Program
     }
 
 
-    public record Cheepe(string Author, string Message, String Timestamp);
+    public record Cheepe(string Author, string Message, string Timestamp);
     class Read
     {
         public static void run()
 		{ 
-            try {
- 				// https://joshclose.github.io/CsvHelper/getting-started/#reading-a-csv-file
-                using (var reader = new StreamReader(path))
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                {
-                    var records = csv.GetRecords<Cheepe>();
-                
-                    foreach (var record in records)
-                    {
-						var author = record.Author;
-						var timestamp = getDateFormatted(record.Timestamp);
-						var message = record.Message;
-                        Console.WriteLine(author + " @ " + timestamp + ": " + message);
-                    }
-                }
-            } catch (IOException e) {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
-            }
+			IDatabaseRepository<Cheepe> db = new CSVDatabase<Cheepe>();
+			var records = db.Read();
+
+			foreach(var record in records)
+			{
+				var author = record.Author;
+				var timestamp = getDateFormatted(record.Timestamp);
+				var message = record.Message;
+
+                Console.WriteLine(author + " @ " + timestamp + ": " + message);
+			}
         }
 
         public static String getDateFormatted(String inpt)
@@ -81,27 +74,14 @@ public class Program
     class Cheep {
         public static void run(String args)
 		{
-            // https://joshclose.github.io/CsvHelper/getting-started/#writing-a-csv-file
-            using (var stream = File.Open(path, FileMode.Append))
-            using (var writer = new StreamWriter(stream))
-            {
-                var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    HasHeaderRecord = stream.Length == 0
-                };
-                var author = Environment.UserName;
-                var message = args;
-                var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-                var cheep = new Cheepe(author, message, timestamp);
-                var records = new List<Cheepe>();
-                records.Add(cheep);
-                
-                using (var csv = new CsvWriter(writer, config))              
-                {                                                            
-                    csv.WriteRecords(records);                               
-                }               
-                Console.WriteLine("Successfully cheeped \"" + message + "\".");
-            }
+          	IDatabaseRepository<Cheepe> db = new CSVDatabase<Cheepe>();
+
+			var author = Environment.UserName;
+            var message = args;
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+            var cheep = new Cheepe(author, message, timestamp);
+
+			db.Store(cheep);
         }
         
         public static String info()
