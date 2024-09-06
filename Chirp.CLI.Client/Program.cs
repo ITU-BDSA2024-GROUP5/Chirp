@@ -1,10 +1,8 @@
 ﻿using System.Globalization;
-using System.Text.RegularExpressions;
 using System;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
-using CsvHelper;
 using SimpleDB;
 
 public class Program
