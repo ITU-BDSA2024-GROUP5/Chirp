@@ -16,11 +16,12 @@ public class Program
         // https://learn.microsoft.com/en-us/dotnet/standard/commandline/get-started-tutorial
 
         // Read Command
-        var readCommand = new Command("read", "Reads Chirps from the database."); 
-        readCommand.SetHandler( () => ReadCheeps());
+        var readOption = new Option<int>("-lim", "Limits the number of cheeps to read.");
+        var readCommand = new Command("read", "Reads Chirps from the database.") { readOption }; 
+        readCommand.SetHandler( (file) => ReadCheeps(file),readOption);
         
         // Chirp command
-        var chirpOption = new Option<string>("--m", "The given string to chirp.");
+        var chirpOption = new Option<string>("-m", "The given string to chirp.");
         var chirpCommand = new Command("chirp", "Cheeps the given arguments.") { chirpOption };
         chirpCommand.SetHandler( (file) => DoCheep(file!),chirpOption);
         
@@ -35,14 +36,18 @@ public class Program
 
     public record Cheepe(string Author, string Message, string Timestamp);
 
-    private static void ReadCheeps()
+    private static void ReadCheeps(int count)
     {
+        Console.WriteLine("Reading "+count+" cheeps.");
+        
         IDatabaseRepository<Cheepe> db = new CSVDatabase<Cheepe>();
         var records = db.Read();
 
         foreach (var record in records)
             UserInterface.PrintCheep(record);
     }
+    
+    private static void ReadCheeps() { ReadCheeps(0); }
 
     private static void DoCheep(string args)
     {
