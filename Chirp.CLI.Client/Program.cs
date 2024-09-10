@@ -42,21 +42,27 @@ public class Program
             Console.WriteLine("Please insert a positive integer.");
             return;
         }
+
         IDatabaseRepository<Cheepe> db = new CSVDatabase<Cheepe>();
-        var records = db.Read();
-    
+		IEnumerable<Cheepe> records; 
+
         if (count != 0)
         {
-            Console.WriteLine("Reading " + count + " cheeps."); // prints out how many cheeps is read
-            for (int i = 0; i < count; i++)
-                UserInterface.PrintCheep(records.ElementAt(i)); //prints the cheeps
+			records = db.Read(count);
         }
         else
         {
-            Console.WriteLine("Reading " + records.Count() + " cheeps.");
-            foreach (var record in records)
-                UserInterface.PrintCheep(record);
+            records = db.Read();
         }
+
+ 		var noCheeps = records.Count();
+		Console.WriteLine("Reading " + noCheeps + " cheeps.");
+
+		foreach (var record in records)
+		{
+			 UserInterface.PrintCheep(record);
+		}
+               
     }
     
     private static void ReadCheeps() { ReadCheeps(0); }
