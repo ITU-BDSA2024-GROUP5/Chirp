@@ -2,10 +2,10 @@ namespace Chirp.CLI;
 
 public static class UserInterface
 {
-    public static void PrintCheep(Program.Cheepe cheepe) {
-        var author = cheepe.Author;
-        var timestamp = GetDateFormatted(cheepe.Timestamp);
-        var message = cheepe.Message;
+    public static void PrintCheep(Program.Cheep cheep) {
+        var author = cheep.Author;
+        var timestamp = GetDateFormatted(cheep.Timestamp);
+        var message = cheep.Message;
 
         Console.WriteLine(author + " @ " + timestamp + ": " + message);
     }

@@ -34,7 +34,7 @@ public class Program
     }
 
 
-    public record Cheepe(string Author, string Message, string Timestamp);
+    public record Cheep(string Author, string Message, string Timestamp);
 
     private static void ReadCheeps(int count)
     {
@@ -43,8 +43,8 @@ public class Program
             return;
         }
 
-        IDatabaseRepository<Cheepe> db = new CSVDatabase<Cheepe>();
-		IEnumerable<Cheepe> records; 
+        IDatabaseRepository<Cheep> db = new CSVDatabase<Cheep>();
+		IEnumerable<Cheep> records; 
 
         if (count != 0)
         {
@@ -69,11 +69,11 @@ public class Program
 
     private static void DoCheep(string args)
     {
-        IDatabaseRepository<Cheepe> db = new CSVDatabase<Cheepe>();
+        IDatabaseRepository<Cheep> db = new CSVDatabase<Cheep>();
 
         var author = Environment.UserName;
         var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-        var cheep = new Cheepe(author, args, timestamp);
+        var cheep = new Cheep(author, args, timestamp);
 
         db.Store(cheep);
     }
