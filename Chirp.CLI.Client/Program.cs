@@ -38,7 +38,7 @@ public class Program
 
     private static void ReadCheeps(int count)
     {
-        if (count <= 0) {
+        if (count < 0) {
             Console.WriteLine("Please insert a positive integer.");
             return;
         }
