@@ -16,7 +16,7 @@ public class Program
         // https://learn.microsoft.com/en-us/dotnet/standard/commandline/get-started-tutorial
 
         // Read Command
-        var readOption = new Option<int>("-lim", "Limits the number of cheeps to read.");
+        var readOption = new Option<int>("-lim", "Limits the number of cheeps to read."); //mangler stadig at limit? den læser alle cheeps
         var readCommand = new Command("read", "Reads Chirps from the database.") { readOption }; 
         readCommand.SetHandler( (file) => ReadCheeps(file),readOption);
         
@@ -38,13 +38,21 @@ public class Program
 
     private static void ReadCheeps(int count)
     {
-        Console.WriteLine("Reading "+count+" cheeps.");
-        
         IDatabaseRepository<Cheepe> db = new CSVDatabase<Cheepe>();
         var records = db.Read();
 
-        foreach (var record in records)
-            UserInterface.PrintCheep(record);
+        if (count != 0)
+        {
+            Console.WriteLine("Reading " + count + " cheeps."); //prints out how many cheeps is read
+            for (int i = 0; i < count; i++)
+                UserInterface.PrintCheep(records.ElementAt(i)); //prints the cheeps
+        }
+        else
+        {
+            Console.WriteLine("Reading " + records.Count() + " cheeps.");
+            foreach (var record in records)
+                UserInterface.PrintCheep(record);
+        }
     }
     
     private static void ReadCheeps() { ReadCheeps(0); }
