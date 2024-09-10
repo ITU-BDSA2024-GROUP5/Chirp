@@ -38,12 +38,16 @@ public class Program
 
     private static void ReadCheeps(int count)
     {
+        if (count <= 0) {
+            Console.WriteLine("Please insert a positive integer.");
+            return;
+        }
         IDatabaseRepository<Cheepe> db = new CSVDatabase<Cheepe>();
         var records = db.Read();
-
+    
         if (count != 0)
         {
-            Console.WriteLine("Reading " + count + " cheeps."); //prints out how many cheeps is read
+            Console.WriteLine("Reading " + count + " cheeps."); // prints out how many cheeps is read
             for (int i = 0; i < count; i++)
                 UserInterface.PrintCheep(records.ElementAt(i)); //prints the cheeps
         }
