@@ -8,7 +8,7 @@ namespace SimpleDB
     
         public IEnumerable<T> Read(int? limit = null)
         {
-            List<T> cheepes = new List<T>();
+            List<T> cheeps = new List<T>();
             try {
                 // https://joshclose.github.io/CsvHelper/getting-started/#reading-a-csv-file
                 using (var reader = new StreamReader(path))
@@ -23,7 +23,7 @@ namespace SimpleDB
 
                     foreach (var record in records)
                     {
-                        cheepes.Add(record);
+                        cheeps.Add(record);
                     }
                 }
             } catch (IOException e) {
@@ -31,7 +31,7 @@ namespace SimpleDB
                 Console.WriteLine(e.Message);
             }
 
-            return cheepes;
+            return cheeps;
         }
         
         public void Store(T record)
