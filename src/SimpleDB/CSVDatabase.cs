@@ -4,8 +4,13 @@ using System.Globalization;
 namespace SimpleDB
 {
     public sealed class CSVDatabase<T> : IDatabaseRepository<T>{
-        static String path = "../../data/chirp_cli_db.csv";
-    
+        String path = "../../data/chirp_cli_db.csv";
+
+        public void SetPath(string path)
+        {
+            this.path = path;
+        }
+        
         public IEnumerable<T> Read(int? limit = null)
         {
             List<T> cheeps = new List<T>();
