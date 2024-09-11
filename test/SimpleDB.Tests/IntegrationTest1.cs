@@ -15,7 +15,6 @@ public class IntegrationTest1
             csv.WriteHeader<Cheep>();
             csv.NextRecord();
         }
-        
 
     }
     
