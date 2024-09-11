@@ -10,6 +10,6 @@ public class UnitTest1
         //Act
         var actual = UserInterface.GetDateFormatted(unixTimestamp);
         //Assert
-        Assert.Equal(actual, expectedFormattedDate);
+        Assert.Equal(expectedFormattedDate, actual);
     }
 }
