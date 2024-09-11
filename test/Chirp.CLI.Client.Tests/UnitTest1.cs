@@ -7,7 +7,7 @@ public class UnitTest1
     [InlineData("1725527352", "05/09/2024 11.09.12")]
     [InlineData("1725527376", "05/09/2024 11.09.36")]
     [InlineData("1725792808", "08/09/2024 12.53.28")]
-    public void TestGetDateFormatted(string unixTimestamp, string expectedFormattedDate)
+    public void TestUserInterfaceGetDateFormatted(string unixTimestamp, string expectedFormattedDate)
     {
         //Arrange
         //Act
