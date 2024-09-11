@@ -13,7 +13,7 @@ public static class UserInterface
     public static string GetDateFormatted(string unixTimeSeconds)
     {
         // https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
-        string format = "dd'/'MM'/'yyyy HH.mm.ss"; 
+        string format = "dd'/'MM'/'yyyy HH:mm:ss"; 
         string date = "date error";
         
         try {
