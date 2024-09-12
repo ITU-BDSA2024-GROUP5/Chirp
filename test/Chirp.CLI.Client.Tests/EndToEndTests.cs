@@ -19,7 +19,7 @@ public class EndToEndTests
             process.StartInfo.FileName = "dotnet";
             process.StartInfo.Arguments = "bin/Debug/net7.0/Chirp.CLI.dll read 10";
             process.StartInfo.UseShellExecute = false;
-            process.StartInfo.WorkingDirectory = "Chirp.CLI.Client/";
+            process.StartInfo.WorkingDirectory = "src/Chirp.CLI.Client/";
             process.StartInfo.RedirectStandardOutput = true;
             process.Start();
             // Synchronously read the standard output of the spawned process.
