@@ -6,7 +6,7 @@ using SimpleDB;
 public class IntegrationTest1
 {
     public record Cheep(string Author, string Message, string Timestamp);
-    public void ArrangeTestDatabase()
+    private void ArrangeTestDatabase()
     {
         var path = "../../../../../data/TestDatabase.csv";
         using (var writer = new StreamWriter(path))
