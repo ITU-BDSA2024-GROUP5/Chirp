@@ -3,6 +3,7 @@ namespace Chirp.Cli.Client.Test;
 using System.Diagnostics;
 using CsvHelper;
 using System.Globalization;
+using SimpleDB;
 
 public class EndToEndTests
 {
@@ -45,8 +46,8 @@ public class EndToEndTests
             csv.NextRecord();
         }
 
-        var db = new CsvDatabase<Cheep>();
+        var db = CSVDatabase<Cheep>.Instance;
         db.SetPath(path);
-        db.store(new Cheep("hej", "hej2", "hej3"));
+        db.Store(new Cheep("hej", "hej2", "hej3"));
     }
 }

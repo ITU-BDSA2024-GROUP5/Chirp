@@ -5,16 +5,26 @@ namespace SimpleDB
 {
     public sealed class CSVDatabase<T> : IDatabaseRepository<T>{
         String path = "../../data/chirp_cli_db.csv";
+        private static readonly CSVDatabase<T> instance = new CSVDatabase<T>();
         
-        public void SetPath(string path)
+		public static CSVDatabase<T> Instance
+		{
+			get
+			{
+				return instance;
+			}
+        }
+
+		public void SetPath(string path)
         {
             this.path = path;
         }
-    
+
         public IEnumerable<T> Read(int? limit = null)
         {
             List<T> cheeps = new List<T>();
-            try {
+            try
+            {
                 // https://joshclose.github.io/CsvHelper/getting-started/#reading-a-csv-file
                 using (var reader = new StreamReader(path))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
@@ -31,7 +41,7 @@ namespace SimpleDB
                         cheeps.Add(record);
                     }
                 }
-            } catch (IOException e) {
+            } catch (IOException e){
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
             }
@@ -50,12 +60,10 @@ namespace SimpleDB
                     HasHeaderRecord = stream.Length == 0
                 };
                 
-                var records = new List<T>();
-                records.Add(record);
                 
                 using (var csv = new CsvWriter(writer, config))              
                 {                                                            
-                    csv.WriteRecords(records);                               
+                    csv.WriteRecord(record);                               
                 }               
                 Console.WriteLine("Successfully cheeped");
             }

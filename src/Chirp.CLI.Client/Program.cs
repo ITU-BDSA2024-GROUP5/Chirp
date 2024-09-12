@@ -43,7 +43,7 @@ public class Program
             return;
         }
 
-        IDatabaseRepository<Cheep> db = new CSVDatabase<Cheep>();
+        IDatabaseRepository<Cheep> db = CSVDatabase<Cheep>.Instance;
 		IEnumerable<Cheep> records; 
 
         if (count != 0)
@@ -69,7 +69,7 @@ public class Program
 
     private static void DoCheep(string args)
     {
-        IDatabaseRepository<Cheep> db = new CSVDatabase<Cheep>();
+        IDatabaseRepository<Cheep> db = CSVDatabase<Cheep>.Instance;
 
         var author = Environment.UserName;
         var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();

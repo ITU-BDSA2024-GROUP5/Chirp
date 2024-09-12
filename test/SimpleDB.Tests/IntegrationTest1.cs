@@ -3,6 +3,7 @@
 using CsvHelper;
 using System.Globalization;
 using SimpleDB;
+
 public class IntegrationTest1
 {
     public record Cheep(string Author, string Message, string Timestamp);
@@ -23,7 +24,7 @@ public class IntegrationTest1
     {
         //arrange
         ArrangeTestDatabase();
-        var db = new CSVDatabase<Cheep>();
+        var db = CSVDatabase<Cheep>.Instance;
         db.SetPath("../../../../../data/TestDatabase.csv");
         
         //act
