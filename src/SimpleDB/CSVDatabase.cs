@@ -7,6 +7,11 @@ namespace SimpleDB
         String path = "../../data/chirp_cli_db.csv";
         private static readonly CSVDatabase<T> instance = new CSVDatabase<T>();
         
+	private CSVDatabase() 
+    {
+       
+    }
+
 		public static CSVDatabase<T> Instance
 		{
 			get

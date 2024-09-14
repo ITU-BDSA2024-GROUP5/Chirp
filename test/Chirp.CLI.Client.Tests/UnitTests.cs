@@ -1,5 +1,7 @@
 namespace Chirp.CLI.CLient.Test;
 
+using SimpleDB;
+
 public class UnitTests
 {
     [Theory]
@@ -12,4 +14,15 @@ public class UnitTests
         //Assert
         Assert.Equal(expectedFormattedDate, actual);
     }
+    
+    [Fact]
+    public void TestCsvDBSingletonPattern()
+    {
+        var db1 = CSVDatabase<Cheep>.Instance;
+        var db2 = CSVDatabase<Cheep>.Instance;
+        
+        Assert.Equal(db1, db2);
+    }
+
+    public record Cheep(string author, string message, string timestamp);
 }
