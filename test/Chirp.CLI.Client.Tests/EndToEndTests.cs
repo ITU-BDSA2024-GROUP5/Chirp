@@ -4,27 +4,23 @@ using System.Diagnostics;
 using CsvHelper;
 using System.Globalization;
 using SimpleDB;
+using System.IO;
 
 public class EndToEndTests
 {
     public record Cheep(string Author, string Message, string Timestamp);
-    //[Fact] 
-
-/// does not run because [Fact is commented out]
-
-
+    [Fact] 
     public void EndToEnd()
     {
         // Arrange
-        ArrangeTestDatabase();
         // Act
         string output = "";
         using (var process = new Process())
         {
             process.StartInfo.FileName = "dotnet";
-            process.StartInfo.Arguments = "bin/Debug/net7.0/Chirp.CLI.dll read -lim 10";
+            process.StartInfo.Arguments = "./src/Chirp.CLI.Client/bin/Debug/net7.0/Chirp.CLI.dll read";
             process.StartInfo.UseShellExecute = false;
-            process.StartInfo.WorkingDirectory = "src/Chirp.CLI.Client/";
+            process.StartInfo.WorkingDirectory = "../../../../../";
             process.StartInfo.RedirectStandardOutput = true;
             process.Start();
             // Synchronously read the standard output of the spawned process.
@@ -32,26 +28,9 @@ public class EndToEndTests
             output = reader.ReadToEnd();
             process.WaitForExit();
         }
-        string fstCheep = output.Split("\n")[0];
+        string fstCheep = output.Split("\n")[1];
         // Assert
-        Assert.StartsWith("hej", fstCheep);
-        Assert.EndsWith("hej3", fstCheep);
-        
-        File.Delete("../../../../../data/TestDatabase.csv");
-    }
-    
-    private void ArrangeTestDatabase()
-    {
-        var path = "../../../../../data/TestDatabase.csv";
-        using (var writer = new StreamWriter(path))
-        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-        {
-            csv.WriteHeader<Cheep>();
-            csv.NextRecord();
-        }
-
-        var db = CSVDatabase<Cheep>.Instance;
-        db.SetPath(path);
-        db.Store(new Cheep("hej", "hej2", "hej3"));
+        Assert.StartsWith("nickyye", fstCheep);
+        Assert.EndsWith("test with csv append to file", fstCheep);
     }
 }
