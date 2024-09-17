@@ -17,15 +17,16 @@ public class EndToEndTests
         string output = "";
         using (var process = new Process())
         {
-            process.StartInfo.FileName = "dotnet";
-            process.StartInfo.Arguments = "./src/Chirp.CLI.Client/bin/Debug/net7.0/Chirp.CLI.dll read";
+            process.StartInfo.FileName = "../../../../../src/Chirp.CLI.Client/bin/Debug/net7.0/Chirp.CLI";
+            process.StartInfo.Arguments = "read";
             process.StartInfo.UseShellExecute = false;
-            process.StartInfo.WorkingDirectory = "../../../../../";
+            // process.StartInfo.WorkingDirectory = "";
             process.StartInfo.RedirectStandardOutput = true;
             process.Start();
             // Synchronously read the standard output of the spawned process.
             StreamReader reader = process.StandardOutput;
             output = reader.ReadToEnd();
+            // Console.WriteLine(output);
             process.WaitForExit();
         }
         string fstCheep = output.Split("\n")[1];

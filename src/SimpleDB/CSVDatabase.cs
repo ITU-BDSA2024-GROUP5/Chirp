@@ -31,6 +31,8 @@ namespace SimpleDB
             try
             {
                 // https://joshclose.github.io/CsvHelper/getting-started/#reading-a-csv-file
+				if (!File.Exists(path))
+					path = "../../../../../data/chirp_cli_db.csv";
                 using (var reader = new StreamReader(path))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
