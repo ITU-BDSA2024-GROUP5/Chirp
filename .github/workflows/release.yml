@@ -10,7 +10,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    1steps:
+    steps:
       - name: Checkout
         uses: actions/checkout@v4
 
