@@ -4,8 +4,8 @@ using SimpleDB;
 
 public class UnitTests
 {
-    //[Theory]
-    //[InlineData("1726065879", "11/09/2024 16.44.39")]
+    /*[Theory]
+    [InlineData("1726065879", "11/09/2024 16.44.39")]
     public void TestUserInterfaceGetDateFormatted(string unixTimestamp, string expectedFormattedDate)
     {
         //Arrange aa
@@ -25,4 +25,5 @@ public class UnitTests
     }
 
     public record Cheep(string author, string message, string timestamp);
+*/
 }
