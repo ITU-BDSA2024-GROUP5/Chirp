@@ -1,7 +1,7 @@
 name: Publish
 on:
-  push:
-    branches: [yamlexe]
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -85,7 +85,7 @@ jobs:
           rm -r "$release_name"
 
       - name: Publish
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v4
         with:
           files: "App*"
         env:
