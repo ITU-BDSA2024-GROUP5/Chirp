@@ -42,5 +42,5 @@ jobs:
             files: |
               Chirp.zip
               SimpleDB.zip
-            repo-token: ${{ secrets.GITHUB_TOKEN }}
+            token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
         
