@@ -3,6 +3,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -83,13 +86,13 @@ jobs:
           
           # Delete output directory
           rm -r "$release_name"
-
+        
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
           files: "App*"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
   
 
      
