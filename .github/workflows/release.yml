@@ -1,4 +1,4 @@
-name: executabeles.yml
+name: release.yml
 
 on:
   push:
@@ -19,20 +19,25 @@ jobs:
         
       - name: Restore dependencies
         run: dotnet restore
+        
       - name: Build
         run: dotnet build --no-restore
+        
       - name: Test
         run: dotnet test --no-build --verbosity normal
+        
       - name: Publish
         run : dotnet publish
         
       - name: Zip
         run : zip -r Chirp.zip "src/Chirp.CLI.Client/bin/Debug/net7.0/publish/"
+        run : zip -r SimpleDB.zip "src/SimpleDB/bin/Debug/net7.0/publish/"
   
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
             files: Chirp.zip
+            files : SimpleDB.zip
       
         
