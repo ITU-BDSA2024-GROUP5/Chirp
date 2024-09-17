@@ -61,7 +61,8 @@ jobs:
         run: zip -r Chirp_CLI_osx-arm64.zip publish/osx-arm64
         
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
               Chirp_CLI_linux-x64.zip
@@ -69,5 +70,4 @@ jobs:
               Chirp_CLI_osx-x64.zip
               Chirp_CLI_osx-arm64.zip
           env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            
+            GITHUB_TOKEN: ${{ secrets.TOKEN }}
