@@ -29,8 +29,10 @@ jobs:
       - name: Publish
         run : dotnet publish
         
-      - name: Zip
+      - name: Zip Chirp
         run : zip -r Chirp.zip "src/Chirp.CLI.Client/bin/Debug/net7.0/publish/"
+        
+      - name: Zip SimpleDB
         run : zip -r SimpleDB.zip "src/SimpleDB/bin/Debug/net7.0/publish/"
   
       - name: Release
