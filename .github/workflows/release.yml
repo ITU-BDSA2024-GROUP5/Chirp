@@ -10,7 +10,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
+    1steps:
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -69,5 +69,5 @@ jobs:
               Chirp_CLI_win-x64.zip
               Chirp_CLI_osx-x64.zip
               Chirp_CLI_osx-arm64.zip
-          env:
-            GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
