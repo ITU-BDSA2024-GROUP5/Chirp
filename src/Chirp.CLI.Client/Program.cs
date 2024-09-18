@@ -37,7 +37,7 @@ public class Program
     }
     
 
-    async private static void ReadCheeps(int count)
+    async private static Task ReadCheeps(int count)
     {
         // Create an HTTP client object
         var baseURL = "http://localhost:5249";
