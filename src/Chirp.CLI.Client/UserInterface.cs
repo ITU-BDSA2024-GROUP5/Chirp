@@ -2,7 +2,7 @@ namespace Chirp.CLI;
 
 public static class UserInterface
 {
-    public static void PrintCheep(Program.Cheep cheep) {
+    public static void PrintCheep(Cheep cheep) {
         var author = cheep.Author;
         var timestamp = GetDateFormatted(cheep.Timestamp);
         var message = cheep.Message;
