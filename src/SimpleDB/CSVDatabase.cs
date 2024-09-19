@@ -67,10 +67,10 @@ namespace SimpleDB
                     HasHeaderRecord = stream.Length == 0
                 };
                 
-                
                 using (var csv = new CsvWriter(writer, config))              
-                {                                                            
-                    csv.WriteRecord(record);                               
+                {                           
+                    csv.NextRecord();                                 
+                    csv.WriteRecord(record);                           
                 }               
                 Console.WriteLine("Successfully cheeped");
             }

@@ -14,26 +14,29 @@ public class Program
         
         // DataBase
         IDatabaseRepository<Cheep> db = CSVDatabase<Cheep>.Instance;
-        IEnumerable<Cheep> records = db.Read();
-        List<Cheep> cheeps = records.ToList();
+        IEnumerable<Cheep> records;
         
         
         // Stuff
         app.MapGet("/", () => "Mainpage. Nothing to find here.");
-        app.MapGet("/read", () => records);
-        app.MapPost("/cheep", (string arg) =>
+        app.MapGet("/read", (int? count) => 
         {
-            var author = Environment.UserName;
-            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-            var cheep = new Cheep(author, arg, timestamp);
+            if (count > 0)
+                records = db.Read(count);
+            else
+                records = db.Read();
+
+            return records;
+        });
+
+        app.MapPost("/cheep", (Cheep cheep) =>
+        {
             db.Store(cheep);
-        }
-            );
+        });
 
         app.Run();
     }
     public record Cheep(string Author, string Message, string Timestamp);
-    
 }
 
 
