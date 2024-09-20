@@ -29,7 +29,7 @@ public class EndToEndTests
             // Console.WriteLine(output);
             process.WaitForExit();
         }
-        string fstCheep = output.Split("\n")[1];
+        string fstCheep = output.Split("\n")[0];
         // Assert
         Assert.StartsWith("nickyye", fstCheep);
         Assert.EndsWith("test with csv append to file", fstCheep);
