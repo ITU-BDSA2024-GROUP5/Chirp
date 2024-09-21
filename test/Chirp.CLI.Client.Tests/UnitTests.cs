@@ -1,20 +1,11 @@
 namespace Chirp.CLI.CLient.Test;
 
+
 using SimpleDB;
+
 
 public class UnitTests
 {
-    /*[Theory]
-    [InlineData("1726065879", "11/09/2024 16.44.39")]
-    public void TestUserInterfaceGetDateFormatted(string unixTimestamp, string expectedFormattedDate)
-    {
-        //Arrange aa
-        //Act
-        var actual = UserInterface.GetDateFormatted(unixTimestamp);
-        //Assert
-        Assert.Equal(expectedFormattedDate, actual);
-    }
-    
     [Fact]
     public void TestCsvDBSingletonPattern()
     {
@@ -24,6 +15,14 @@ public class UnitTests
         Assert.Equal(db1, db2);
     }
 
-    public record Cheep(string author, string message, string timestamp);
-*/
+    [Theory]
+    [InlineData("1726065879", "11/09/2024 16:44:39")]
+    public void TestUserInterfaceGetDateFormatted(string unixTimestamp, string expectedFormattedDate)
+    {
+        //Arrange aa
+        //Act
+        var actual = UserInterface.GetDateFormatted(unixTimestamp).ToString();
+        //Assert
+        Assert.Equal(expectedFormattedDate, actual);
+    }
 }
