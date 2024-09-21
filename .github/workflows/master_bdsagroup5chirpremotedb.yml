@@ -22,10 +22,10 @@ jobs:
           dotnet-version: '7.x'
 
       - name: Build with dotnet
-        run: dotnet build src/Chirp.CSVDBService/ --no-restore
+        run: dotnet build --configuration release
 
       - name: dotnet publish
-        run: dotnet publish src/Chirp.CSVDBService/ -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
