@@ -19,6 +19,7 @@ public class Program
         
         // Stuff
         app.MapGet("/", () => "Mainpage. Nothing to find here.");
+        app.MapGet("/help", () => "Use /cheeps to get all cheeps. Use /cheeps?count=5 to get the last 5 cheeps. You can also post a cheep to /cheep.");
         app.MapGet("/cheeps", (int? count) => 
         {
             if (count > 0)
