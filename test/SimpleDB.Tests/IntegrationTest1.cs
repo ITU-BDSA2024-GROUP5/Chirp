@@ -6,6 +6,7 @@ using SimpleDB;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Xunit.Sdk;
 
 public class IntegrationTest1
 {
@@ -41,9 +42,9 @@ public class IntegrationTest1
         var cheepResponse = await client.PostAsJsonAsync("cheep", cheep);
         var cheepStatus = cheepResponse.StatusCode;
         
-        var readResponse = await client.GetAsync("read");
+        var readResponse = await client.GetAsync("cheeps");
         var readStatus = readResponse.StatusCode;
-        var cheeps = await client.GetFromJsonAsync<List<Cheep>>("read");
+        var cheeps = await client.GetFromJsonAsync<List<Cheep>>("cheeps");
             
         //assert
         Assert.Equal(HttpStatusCode.OK, cheepStatus);
@@ -56,4 +57,32 @@ public class IntegrationTest1
         File.Delete("../../../../../data/TestDatabase.csv");
 
     }
+
+    [Fact]
+    async public void StoreReadDBTest()
+    {
+        var db = CSVDatabase<Cheep>.Instance;
+        db.SetPath("../../../../../data/TestDatabase.csv");
+        db.Store(new Cheep("testuser", "testcheep", "1726835588"));
+        var cheeps = db.Read();
+        File.Delete("../../../../../data/TestDatabase.csv");
+        Assert.Equal("testuser", cheeps.Last().Author);
+    }
+
+    [Fact]
+    async public void ReadDBWithLimitTest()
+    {
+        var db = CSVDatabase<Cheep>.Instance;
+        db.SetPath("../../../../../data/TestDatabase.csv");
+
+        db.Store(new Cheep("testuser", "testcheep", "1726835588"));
+        db.Store(new Cheep("testuser", "testcheep", "1726835588"));
+        db.Store(new Cheep("testuser", "testcheep", "1726835588"));
+        File.Delete("../../../../../data/TestDatabase.csv");
+        var cheeps = db.Read(2);
+        Assert.Equal(2, cheeps.Count());
+    }
+
+    
+    
 }

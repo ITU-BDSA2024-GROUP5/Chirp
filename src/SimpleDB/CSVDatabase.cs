@@ -31,11 +31,11 @@ namespace SimpleDB
             try
             {
                 // https://joshclose.github.io/CsvHelper/getting-started/#reading-a-csv-file
-				if (!File.Exists(path))
-					path = "../../../../../data/chirp_cli_db.csv";
+				checkPath();
                 using (var reader = new StreamReader(path))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
+                    
                     var records = csv.GetRecords<T>();
                     
                     if(limit != null)
@@ -58,6 +58,7 @@ namespace SimpleDB
         
         public void Store(T record)
         {
+            checkPath();
             // https://joshclose.github.io/CsvHelper/getting-started/#writing-a-csv-file
             using (var stream = File.Open(path, FileMode.Append))
             using (var writer = new StreamWriter(stream))
@@ -75,5 +76,13 @@ namespace SimpleDB
                 Console.WriteLine("Successfully cheeped");
             }
         }
-    }
+
+        private void checkPath()
+        {
+            if (!File.Exists(path))
+            {
+                path = "../../../../../data/chirp_cli_db.csv";
+            }
+        }
+}
 }
