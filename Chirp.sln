@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.CLI", "src\Chirp.CLI.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDB", "src\SimpleDB\SimpleDB.csproj", "{584A8563-2FCA-4FE4-8BCA-03EAE11AEA30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVDBService", "src\Chirp.CSVDBService\Chirp.CSVDBService.csproj", "{D2A8F8E1-4F5D-4A6B-9A3B-1B2E4F5D6A7B}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9B6FFFF5-FC52-4EC4-BFDE-D5C3F9EA519C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Cli.Client.Tests", "test\Chirp.CLI.Client.Tests\Chirp.Cli.Client.Tests.csproj", "{7B0DF24C-2082-48A3-9568-826930DEA931}"
