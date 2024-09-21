@@ -21,7 +21,7 @@ public class UnitTests
     }
 
     [Theory]
-    [InlineData("1726065879", "11/09/2024 16.44.39")]
+    [InlineData("1726065879", "11/09/2024 16:44:39")]
     public void TestUserInterfaceGetDateFormatted(string unixTimestamp, string expectedFormattedDate)
     {
         //Arrange aa
@@ -41,14 +41,9 @@ public class UnitTests
         var timestamp = UserInterface.GetDateFormatted(cheep.Timestamp);
         var expectedOutput = author + " @ " + timestamp + ": " + message; // expected output
         
-        // Act
-        using var sw = new StringWriter();
-        Console.SetOut(sw);
         
-        UserInterface.PrintCheep(cheep);
-        var actualOutput = sw.ToString(); 
-        
-        Assert.Equal(expectedOutput+"\n", actualOutput); 
+        //Assert
+        Assert.Equal(expectedOutput, UserInterface.formatCheep(cheep)); 
         
     }
 }

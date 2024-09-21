@@ -3,11 +3,7 @@ namespace Chirp.CLI;
 public static class UserInterface
 {
     public static void PrintCheep(Cheep cheep) {
-        var author = cheep.Author;
-        var timestamp = GetDateFormatted(cheep.Timestamp);
-        var message = cheep.Message;
-
-        Console.WriteLine(author + " @ " + timestamp + ": " + message);
+        Console.WriteLine(formatCheep(cheep));
     }
     
     public static string GetDateFormatted(string unixTimeSeconds)
@@ -23,6 +19,10 @@ public static class UserInterface
         }
         
         return date;
+    }
+
+    public static String formatCheep(Cheep cheep) {
+        return cheep.Author + " @ " + GetDateFormatted(cheep.Timestamp) + ": " + cheep.Message;
     }
     
 }
