@@ -19,7 +19,7 @@ public class Program
         
         // Stuff
         app.MapGet("/", () => "Mainpage. Nothing to find here.");
-        app.MapGet("/read", (int? count) => 
+        app.MapGet("/cheeps", (int? count) => 
         {
             if (count > 0)
                 records = db.Read(count);

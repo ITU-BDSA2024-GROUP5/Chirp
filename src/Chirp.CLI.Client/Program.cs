@@ -38,7 +38,7 @@ public class Program
         var rootCommand = new RootCommand("Chirp CLI Project");
         rootCommand.AddCommand(readCommand);
         rootCommand.AddCommand(chirpCommand);
-
+        
         return await rootCommand.InvokeAsync(args);
     }
     
