@@ -10,4 +10,8 @@
     <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SoloX.CodeQuality.Test.Helpers" Version="2.1.0" />
+  </ItemGroup>
+
 </Project>
