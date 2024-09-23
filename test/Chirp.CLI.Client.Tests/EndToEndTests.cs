@@ -26,13 +26,7 @@ public class EndToEndTests
             // Synchronously read the standard output of the spawned process.
             StreamReader reader = process.StandardOutput;
             output = reader.ReadToEnd();
-            
-            
             process.WaitForExit();
-        }
-        foreach(String tmp in output.Split("\n"))
-        {
-            Console.WriteLine(tmp);
         }
         string fstCheep = output.Split("\n")[0];
         // Assert
