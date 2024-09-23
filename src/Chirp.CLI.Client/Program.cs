@@ -46,7 +46,7 @@ public class Program
     {
         // Send an asynchronous HTTP GET request and automatically construct a Cheep object from the
         // JSON object in the body of the response
-        var cheeps = await client.GetFromJsonAsync<List<Cheep>>($"read?count={count}");
+        var cheeps = await client.GetFromJsonAsync<List<Cheep>>($"cheeps?count={count}");
         foreach (var cheep in cheeps)
         {
             UserInterface.PrintCheep(cheep);
