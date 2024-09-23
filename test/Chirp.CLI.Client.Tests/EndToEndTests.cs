@@ -19,14 +19,14 @@ public class EndToEndTests
     public async Task EndToEnd()
     {
         
-        var mockCheep = new Cheep("nickyye", "hej", "11/09/2024 16.44.39");
+        var mockCheep = new Cheep("nickyye", "hej", "11/09/2024 16.44.39"); 
 
-        // Act
+        // Create mock http client
         var mockHttpClient = new HttpClientMockBuilder()
             .WithBaseAddress(new Uri("http://testwebsite"))
             .WithRequest("/cheeps")
             .RespondingJsonContent<List<Cheep>>(
-                request => new List<Cheep> { mockCheep }
+                request => new List<Cheep> { mockCheep } // Insert mockCheep into mock http client
             )
             .Build();
 
@@ -35,7 +35,7 @@ public class EndToEndTests
         Assert.NotNull(response); 
         Assert.NotEmpty(response);
 
-        string expectedAuthorName = response[0].Author; // Get the first author's name
+        string expectedAuthorName = response[0].Author; // Fetch the author's name of the cheep
         
         // Assert
         Assert.Equal("nickyye", expectedAuthorName);
