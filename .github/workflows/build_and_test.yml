@@ -24,7 +24,9 @@ jobs:
       run: dotnet build --no-restore
       
     - name: Run localhost
-      run: pwd
+      run: |
+        cd src/Chirp.CSVDBService
+        dotnet run
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
