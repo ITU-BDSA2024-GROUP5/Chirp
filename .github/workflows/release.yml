@@ -3,7 +3,7 @@ on:
   push:
     tags:
       - "v*.*.*"
-        
+
 permissions:
   contents: write
 
@@ -17,57 +17,57 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7.0.x
+          dotnet-version: 8.0.x
 
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Build
         run: dotnet build --no-restore
-
-      #- name: Test
-      #  run: dotnet test --no-build --verbosity normal
           
-  # Publish for Linux
+          #- name: Test
+          #  run: dotnet test --no-build --verbosity normal
+      
+      # Publish for Linux
       - name: Publish Linux
-        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.csproj -r linux-x64 -o publish/linux-x64 --no-self-contained 
-          
-# Zip Linux artifacts
+        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.csproj -r linux-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=true --output "publish/linux-x64"
+      
+      # Zip Linux artifacts
       - name: Zip Linux Artifacts
         run: zip -r Chirp_CLI_linux-x64.zip publish/linux-x64
-
-# Publish for Windows
+      
+      # Publish for Windows
       - name: Publish Windows
-        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.csproj -r win-x64 -o publish/win-x64 --no-self-contained
-
-# Zip Windows artifacts
+        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.csproj -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=true --output "publish/win-x64"
+      
+      # Zip Windows artifacts
       - name: Zip Windows Artifacts
         run: zip -r Chirp_CLI_win-x64.zip publish/win-x64
-
-# Publish for MacOS x64
+      
+      # Publish for MacOS x64
       - name: Publish MacOS x64
-        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.csproj -r osx-x64 -o publish/osx-x64 --no-self-contained
-
-# Zip MacOS x64 artifacts
+        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.csproj -r osx-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=true --output "publish/osx-x64"
+      
+      # Zip MacOS x64 artifacts
       - name: Zip MacOS x64 Artifacts
         run: zip -r Chirp_CLI_osx-x64.zip publish/osx-x64
-
-# Publish for MacOS ARM
+      
+      # Publish for MacOS ARM
       - name: Publish MacOS ARM
-        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.csproj -r osx-arm64 -o publish/osx-arm64
-
-# Zip MacOS ARM artifacts
+        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.csproj -r osx-arm64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=true --output "publish/osx-arm64"
+      
+      # Zip MacOS ARM artifacts
       - name: Zip MacOS ARM Artifacts
         run: zip -r Chirp_CLI_osx-arm64.zip publish/osx-arm64
-        
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-              Chirp_CLI_linux-x64.zip
-              Chirp_CLI_win-x64.zip
-              Chirp_CLI_osx-x64.zip
-              Chirp_CLI_osx-arm64.zip
+            Chirp_CLI_linux-x64.zip
+            Chirp_CLI_win-x64.zip
+            Chirp_CLI_osx-x64.zip
+            Chirp_CLI_osx-arm64.zip
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
