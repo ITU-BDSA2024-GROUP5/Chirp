@@ -35,7 +35,7 @@ public class UnitTests
     public void TestPrintCheep()
     {
         //Arrange
-        var cheep = new Cheep("salj", "hej med dig", "11/09/2024 16.44.39");
+        var cheep = new Cheep("salj", "hej med dig", "1727182902");
         string author = cheep.Author;
         var message = cheep.Message;
         var timestamp = UserInterface.GetDateFormatted(cheep.Timestamp);
