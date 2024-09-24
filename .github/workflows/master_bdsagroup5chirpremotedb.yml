@@ -3,6 +3,10 @@
 
 name: Build and deploy ASP.Net Core app to Azure Web App - bdsagroup5chirpremotedb
 
+defaults:
+  run:
+    working-directory: ./src/Chirp.CSVDBService
+
 on:
   push:
     branches:
@@ -22,10 +26,10 @@ jobs:
           dotnet-version: '7.x'
 
       - name: Build with dotnet
-        run: dotnet build src/Chirp.CSVDBService/
+        run: dotnet build src/Chirp.CSVDBService/Chirp.CSVDBService.csproj
 
       - name: dotnet publish
-        run: dotnet publish src/Chirp.CSVDBService/ -c release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish src/Chirp.CSVDBService/Chirp.CSVDBService.csproj 
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4

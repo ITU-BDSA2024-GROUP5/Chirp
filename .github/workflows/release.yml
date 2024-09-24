@@ -30,7 +30,7 @@ jobs:
           
   # Publish for Linux
       - name: Publish Linux
-        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.csproj -r linux-x64 -o publish/linux-x64 --no-self-contained
+        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.csproj -r linux-x64 -o publish/linux-x64 --no-self-contained 
           
 # Zip Linux artifacts
       - name: Zip Linux Artifacts
