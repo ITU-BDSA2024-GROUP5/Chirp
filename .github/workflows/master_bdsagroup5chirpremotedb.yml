@@ -3,39 +3,45 @@
 
 name: Build and deploy ASP.Net Core app to Azure Web App - bdsagroup5chirpremotedb
 
-defaults:
-  run:
-    working-directory: ./src/Chirp.CSVDBService
-
 on:
   push:
-    branches:
-      - master
-  workflow_dispatch:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: src/Chirp.CSVDBService
+      
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+      working-directory: src/Chirp.CSVDBService
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      working-directory: src/Chirp.CSVDBService
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '7.x'
+    - name: Publish
+      run: dotnet publish --no-build --configuration Release --output ./publish
+      working-directory: src/Chirp.CSVDBService
 
-      - name: Build with dotnet
-        run: dotnet build 
-
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v4
+      with:
+        name: .net-app
+        path: 'src/Chirp.CSVDBService/publish'
 
   deploy:
     runs-on: ubuntu-latest
@@ -44,7 +50,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write # This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -65,5 +71,4 @@ jobs:
         with:
           app-name: 'bdsagroup5chirpremotedb'
           slot-name: 'Production'
-          package: .
-          
+          package: 'src/Chirp.CSVDBService/publish'
