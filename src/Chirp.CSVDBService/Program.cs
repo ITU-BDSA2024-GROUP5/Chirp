@@ -10,13 +10,19 @@ public class Program
     {
         // WEB
         var builder = WebApplication.CreateBuilder(args);
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        
         var app = builder.Build();
         
         // DataBase
         IDatabaseRepository<Cheep> db = CSVDatabase<Cheep>.Instance;
         IEnumerable<Cheep> records;
         
-        
+        app.UseDeveloperExceptionPage();
+        app.UseStaticFiles();
+        app.UseRouting();
+
         // Stuff
         app.MapGet("/", () => "Mainpage. Nothing to find here.");
         app.MapGet("/help", () => "Use /cheeps to get all cheeps. Use /cheeps?count=5 to get the last 5 cheeps. You can also post a cheep to /cheep.");
