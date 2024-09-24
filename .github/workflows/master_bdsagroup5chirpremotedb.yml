@@ -37,6 +37,7 @@ jobs:
       run: dotnet publish --no-build --configuration Release --output ./publish
       working-directory: src/Chirp.CSVDBService
 
+
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v4
       with:
@@ -57,7 +58,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-          path: ./publish
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -72,4 +72,4 @@ jobs:
         with:
           app-name: 'bdsagroup5chirpremotedb'
           slot-name: 'Production'
-          package: ./publish
+          package: './.net-app'
