@@ -9,9 +9,18 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  DOTNET_VERSION: '7.0.x'
+
+  WORKING_DIRECTORY: 'src/Chirp.CSVDBService'
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
 
     steps:
     - uses: actions/checkout@v3
@@ -19,30 +28,17 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
-        
-    - name: Restore dependencies
-      run: dotnet restore
-      working-directory: src/Chirp.CSVDBService
-      
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
-      working-directory: src/Chirp.CSVDBService
-      
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-      working-directory: src/Chirp.CSVDBService
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Publish
-      run: dotnet publish --no-build --configuration Release --output ./publish
-      working-directory: src/Chirp.CSVDBService
+      run: dotnet publish -c Release -o ./publish
 
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v4
       with:
         name: .net-app
-        path: src/Chirp.CSVDBService/publish
+        path: ./publish
 
   deploy:
     runs-on: ubuntu-latest
@@ -72,4 +68,4 @@ jobs:
         with:
           app-name: 'bdsagroup5chirpremotedb'
           slot-name: 'Production'
-          package: './.net-app'
+          package: './publish'
