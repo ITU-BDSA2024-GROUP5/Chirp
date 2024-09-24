@@ -62,4 +62,4 @@ jobs:
           app-name: 'bdsa5'
           slot-name: 'Production'
           package: .
-          
+          startup-command: 'dotnet Chirp.CSVDBService.dll'
