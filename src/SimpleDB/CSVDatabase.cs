@@ -4,7 +4,7 @@ using System.Globalization;
 namespace SimpleDB
 {
     public sealed class CSVDatabase<T> : IDatabaseRepository<T>{
-        String path = "../../data/chirp_cli_db.csv";
+        String path = "../Chirp.Cli.Client/bin/Debug/net7.0/chirp_cli_db.csv";
         private static readonly CSVDatabase<T> instance = new CSVDatabase<T>();
         
 		private CSVDatabase() 
@@ -81,7 +81,7 @@ namespace SimpleDB
         {
             if (!File.Exists(path))
             {
-                path = "../../../../../data/chirp_cli_db.csv";
+                path = Path.Combine(AppContext.BaseDirectory, "chirp_cli_db.csv");
             }
         }
 }
