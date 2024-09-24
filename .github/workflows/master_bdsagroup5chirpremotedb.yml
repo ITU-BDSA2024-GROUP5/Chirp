@@ -33,10 +33,10 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
         
     - name: Publish
-      run: dotnet build src/Chirp.CSVDBService -c Release
+      run: dotnet build -c Release
 
     - name: Publish
-      run: dotnet publish src/Chirp.CSVDBService -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
 
     - name: Upload artifact for deployment job
