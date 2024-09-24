@@ -59,7 +59,7 @@ public class IntegrationTest1
     }
 
     [Fact]
-    async public void StoreReadDBTest()
+    public void StoreReadDBTest()
     {
         var db = CSVDatabase<Cheep>.Instance;
         db.SetPath("../../../../../data/TestDatabase.csv");
@@ -70,7 +70,7 @@ public class IntegrationTest1
     }
 
     [Fact]
-    async public void ReadDBWithLimitTest()
+    public void ReadDBWithLimitTest()
     {
         var db = CSVDatabase<Cheep>.Instance;
         db.SetPath("../../../../../data/TestDatabase.csv");
