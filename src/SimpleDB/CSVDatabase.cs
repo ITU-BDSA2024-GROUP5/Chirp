@@ -4,7 +4,7 @@ using System.Globalization;
 namespace SimpleDB
 {
     public sealed class CSVDatabase<T> : IDatabaseRepository<T>{
-        String path = "../Chirp.Cli.Client/bin/Debug/net7.0/chirp_cli_db.csv";
+        String path = "../SimpleDB/chirp_cli_db.csv";
         private static readonly CSVDatabase<T> instance = new CSVDatabase<T>();
         
 		private CSVDatabase() 
