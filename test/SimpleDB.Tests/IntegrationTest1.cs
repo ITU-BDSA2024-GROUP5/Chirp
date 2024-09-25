@@ -32,7 +32,7 @@ public class IntegrationTest1
         db.SetPath("../../../../../data/TestDatabase.csv");
         
         //act
-        var baseURL = "http://localhost:5249";
+        var baseURL = "http://localhost:8080";
         using HttpClient client = new();
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
