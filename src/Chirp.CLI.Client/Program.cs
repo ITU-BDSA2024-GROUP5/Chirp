@@ -64,4 +64,4 @@ public class Program
     }
     
 }
-public record Cheep(string Author, string Message, string Timestamp);
+public record Cheep(string Author, string Message, string Timestamp); //HAHAHAHAHAHA
