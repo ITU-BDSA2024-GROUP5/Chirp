@@ -35,14 +35,36 @@ public class DBFacade
             while (reader.Read())
             {
                 var message_id = reader.GetString(0);
-                var author_id = reader.GetString(1);
+                var author_id = reader.GetInt32(1);
                 var message = reader.GetString(2);
                 var date = reader.GetInt32(3);
                 
-                cheeps.Add(new CheepViewModel(author_id, message, UnixTimeStampToDateTimeString(date)));
+                cheeps.Add(new CheepViewModel(GetAuthorFromID(author_id), message, UnixTimeStampToDateTimeString(date)));
             }
         }
         return cheeps;
+    }
+
+    private static string GetAuthorFromID(int id)
+    {
+        string author = "";
+        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
+        {
+            var query = @"SELECT DISTINCT username FROM user u JOIN message m ON m.author_id = u.user_id WHERE user_id = @Id";
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                author = reader.GetString(0);
+                break;
+            }
+        }
+
+        return author;
     }
     
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
