@@ -39,7 +39,6 @@ public class DBFacade
                 break;
             }
         }
-
         return author;
     }
 
