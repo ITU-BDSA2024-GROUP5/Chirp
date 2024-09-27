@@ -1,3 +1,5 @@
+using Chirp.Razor.Pages;
+
 public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
@@ -9,15 +11,11 @@ public interface ICheepService
 public class CheepService : ICheepService
 {
     // These would normally be loaded from a database for example
-    private static readonly List<CheepViewModel> _cheeps = new()
-        {
-            new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
-            new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
-        };
+    private static readonly List<CheepViewModel> _cheeps = GetCheeps();
 
     public List<CheepViewModel> GetCheeps()
     {
-        return _cheeps;
+        return DBFacade.GetCheeps();
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
