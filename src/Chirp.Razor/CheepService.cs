@@ -11,11 +11,12 @@ public interface ICheepService
 public class CheepService : ICheepService
 {
     // These would normally be loaded from a database for example
-    private static readonly List<CheepViewModel> _cheeps = GetCheeps();
+    private static List<CheepViewModel> _cheeps;
 
     public List<CheepViewModel> GetCheeps()
     {
-        return DBFacade.GetCheeps();
+        _cheeps = DBFacade.ReadDB();
+        return _cheeps;
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)

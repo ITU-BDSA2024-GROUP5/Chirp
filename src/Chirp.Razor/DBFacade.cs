@@ -21,7 +21,12 @@ public class DBFacade
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
+                var message_id = reader.GetString(0);
+                var author_id = reader.GetString(1);
+                var message = reader.GetString(2);
+                var date = reader.GetString(3);
                 
+                cheeps.Add(new CheepViewModel(author_id, message, date));
             }
         }
 
