@@ -13,8 +13,8 @@ env:
   DOTNET_VERSION: '8.0.x'
   AZURE_BUILD_NAME: "chirp-azure"
   AZURE_WEBAPP_NAME: 'bdsagroup5chirpremotedb' # Set your Azure Web App name here
-  AZURE_WEBAPP_PACKAGE_PATH: 'src/Chirp.CSVDBService/publish' # Path to the published package
-  WORKING_DIRECTORY: 'src/Chirp.CSVDBService'
+  AZURE_WEBAPP_PACKAGE_PATH: 'src/Chirp.Razor/publish' # Path to the published package
+  WORKING_DIRECTORY: 'src/Chirp.'
 
 
 jobs:
@@ -74,4 +74,4 @@ jobs:
           app-name: 'bdsagroup5chirpremotedb'
           slot-name: 'Production'
           package: .
-          startup-command: 'dotnet Chirp.CSVDBService.dll'
+          startup-command: 'dotnet Chirp.razor.dll'
