@@ -10,19 +10,15 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
-    // These would normally be loaded from a database for example
-    private static List<CheepViewModel> _cheeps;
-
     public List<CheepViewModel> GetCheeps()
     {
-        _cheeps = DBFacade.ReadDB();
-        return _cheeps;
+        return DBFacade.ReadDB();
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
-        return _cheeps.Where(x => x.Author == author).ToList();
+        return DBFacade.ReadDBByAuthor(author);
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
