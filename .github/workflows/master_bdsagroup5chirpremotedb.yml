@@ -14,7 +14,7 @@ env:
   AZURE_BUILD_NAME: "chirp-azure"
   AZURE_WEBAPP_NAME: 'bdsagroup5chirpremotedb' # Set your Azure Web App name here
   AZURE_WEBAPP_PACKAGE_PATH: 'src/Chirp.Razor/publish' # Path to the published package
-  WORKING_DIRECTORY: 'src/Chirp.'
+  WORKING_DIRECTORY: 'src/Chirp.Razor'
 
 
 jobs:
