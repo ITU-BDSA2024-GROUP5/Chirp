@@ -16,9 +16,31 @@ public class DBFacade
 
     public static List<CheepViewModel> ReadDBByAuthor(string author)
     {
-        var sqlQuery = @"SELECT * FROM message m JOIN user u ON m.author_id = u.user_id WHERE u.username = @Author";
+        var sqlQuery = @$"SELECT * FROM message m JOIN user u ON m.author_id = u.user_id WHERE u.username = {author}";
 
         return ConnectAndExecute(sqlQuery);
+    }
+    
+    private static string GetAuthorFromID(int id)
+    {
+        string author = "";
+        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
+        {
+            var query = @$"SELECT username FROM User WHERE user_id = {id}";
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                author = reader.GetString(0);
+                break;
+            }
+        }
+
+        return author;
     }
 
     private static List<CheepViewModel> ConnectAndExecute(string query)
@@ -43,28 +65,6 @@ public class DBFacade
             }
         }
         return cheeps;
-    }
-
-    private static string GetAuthorFromID(int id)
-    {
-        string author = "";
-        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
-        {
-            var query = @"SELECT DISTINCT username FROM user u JOIN message m ON m.author_id = u.user_id WHERE user_id = @Id";
-            connection.Open();
-
-            var command = connection.CreateCommand();
-            command.CommandText = query;
-
-            using var reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                author = reader.GetString(0);
-                break;
-            }
-        }
-
-        return author;
     }
     
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
