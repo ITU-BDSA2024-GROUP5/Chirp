@@ -1,6 +1,7 @@
 namespace Chirp.Razor.Pages;
 
 using System.Data;
+using System.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 
 public class DBFacade
@@ -26,7 +27,7 @@ public class DBFacade
         string author = "";
         using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
         {
-            var query = @$"SELECT username FROM User WHERE user_id = {id}";
+            var query = @$"SELECT DISTINCT username FROM User WHERE user_id = {id}";
             connection.Open();
 
             var command = connection.CreateCommand();
