@@ -16,7 +16,7 @@ public class DBFacade
 
     public static List<CheepViewModel> ReadDBByAuthor(string author)
     {
-        var sqlQuery = @"SELECT * FROM message WHERE author = {author}";
+        var sqlQuery = @"SELECT * FROM message m JOIN user u ON m.author_id = u.user_id WHERE u.username = @Author";
 
         return ConnectAndExecute(sqlQuery);
     }
@@ -37,11 +37,19 @@ public class DBFacade
                 var message_id = reader.GetString(0);
                 var author_id = reader.GetString(1);
                 var message = reader.GetString(2);
-                var date = reader.GetString(3);
+                var date = reader.GetInt32(3);
                 
-                cheeps.Add(new CheepViewModel(author_id, message, date));
+                cheeps.Add(new CheepViewModel(author_id, message, UnixTimeStampToDateTimeString(date)));
             }
         }
         return cheeps;
+    }
+    
+    private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp);
+        return dateTime.ToString("dd'/'MM'/'yyyy HH:mm:ss");
     }
 }
