@@ -17,7 +17,7 @@ public class DBFacade
 
     public static List<CheepViewModel> ReadDBByAuthor(string author)
     {
-        var sqlQuery = @$"SELECT * FROM message m JOIN user u ON m.author_id = u.user_id WHERE u.username = {author}";
+        var sqlQuery = @$"SELECT m.message_id, m.author_id, m.text, m.pub_date FROM message m JOIN user u ON m.author_id = u.user_id WHERE u.username = {author} ORDER by message.pub_date desc";
 
         return ConnectAndExecute(sqlQuery);
     }
