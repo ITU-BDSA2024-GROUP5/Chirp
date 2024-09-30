@@ -1,6 +1,7 @@
 name: release.yml
 on:
   push:
+    branches: [chirp_cli]
     tags:
       - "v*.*.*"
         

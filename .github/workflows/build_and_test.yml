@@ -2,9 +2,9 @@ name: .NET Build and Test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ chirp_cli ]
   pull_request:
-    branches: [ master ]
+    branches: [ chirp_cli ]
 
 jobs:
   build:
