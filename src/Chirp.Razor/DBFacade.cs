@@ -11,34 +11,30 @@ using System.IO;
 public class DBFacade
 {
     static string sqlDBFilePath = "/tmp/chirp.db";
-    static bool hasInit = false;
     private static readonly SqliteConnection connection;
 
     static DBFacade()
-    { // initializer for this facade
+    {
         DbExists(sqlDBFilePath);
         connection = new SqliteConnection($"Data Source={sqlDBFilePath}");
-        initfile();
+        connection.Open();
+        createFile();
     }
 
-    public static void initfile()
+    public static void createFile() // Maybe only create file if there is no data in there anyways
     {
-        if (!hasInit)
-        {
-            var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+        var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
 
-            using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
-            using var srschema = new StreamReader(readerschema);
+        using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
+        using var srschema = new StreamReader(readerschema);
 
-            var query = srschema.ReadToEnd();
-            InitDBExecute(query);
+        var query = srschema.ReadToEnd();
+        InitDBExecute(query);
 
-            using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
-            using var srdump = new StreamReader(readerdump);
-            var querydb = srdump.ReadToEnd();
-            InitDBExecute(querydb);
-            hasInit = true;
-        }
+        using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
+        using var srdump = new StreamReader(readerdump);
+        var querydb = srdump.ReadToEnd();
+        InitDBExecute(querydb);
     }
     
     public static void DbExists(String path)
