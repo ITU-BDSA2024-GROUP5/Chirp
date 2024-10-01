@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -22,6 +22,12 @@ jobs:
       
     - name: Build
       run: dotnet build --no-restore
+      
+    - name: Initialise database
+      run: |
+        sqlite3 /tmp/chirp.db < data/schema.sql
+        sqlite3 /tmp/chirp.db < data/data.sql
+      working-directory: ./src/Chirp.Razor
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
