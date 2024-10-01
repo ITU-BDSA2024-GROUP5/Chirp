@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
+using System.IO;
 
 
 public class DBFacade
@@ -18,17 +19,21 @@ public class DBFacade
             Console.WriteLine("findes ikke chirp.db");
             sqlDBFilePath = Path.Combine(Path.GetTempPath(), "chirp.db");
             Console.WriteLine(sqlDBFilePath);
-        }
-        var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
-        using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
-        using var srschema = new StreamReader(readerschema);
-
-        var query = srschema.ReadToEnd();
             
-        using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
-        using var srdump = new StreamReader(readerdump);
+            var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+          
+            using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
+            using var srschema = new StreamReader(readerschema);
+                
+            var query = srschema.ReadToEnd();
+            InitDBExecute(query);
+            
+            using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
+            using var srdump = new StreamReader(readerdump);
 
-        var querydb = srdump.ReadToEnd();
+            var querydb = srdump.ReadToEnd();
+            InitDBExecute(querydb);
+        }
     }
 
     public static List<CheepViewModel> ReadDB()
@@ -68,6 +73,17 @@ public class DBFacade
         return author;
     }
 
+    private static void InitDBExecute(String query)
+    {
+        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
+        {
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = query;
+            using var reader = command.ExecuteReader();
+        }
+    }
     private static List<CheepViewModel> ConnectAndExecute(string query)
     {
         var cheeps = new List<CheepViewModel>();
