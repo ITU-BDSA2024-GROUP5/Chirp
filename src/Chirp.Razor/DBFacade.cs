@@ -17,7 +17,7 @@ public class DBFacade
     {
         if (!File.Exists(path))
         {
-            sqlDBFilePath = Path.Combine(Path.GetTempPath(), "chirp.db");¨
+            sqlDBFilePath = Path.Combine(Path.GetTempPath(), "chirp.db");
         }
 
         if (!hasInit)
