@@ -39,17 +39,20 @@ public class DBFacade
         }
     }
 
-    public static List<CheepViewModel> ReadDB()
+    public static List<CheepViewModel> ReadDB(int page)
     {
         DbExists(sqlDBFilePath);
-        var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date desc";
+        Console.WriteLine();
+		var skip = (page-1)*32;
+        var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date DESC LIMIT 32 OFFSET "+skip;
         
         return ConnectAndExecute(sqlQuery);
     }
-
-    public static List<CheepViewModel> ReadDBByAuthor(string author)
+		
+    public static List<CheepViewModel> ReadDBByAuthor(int page, string author)
     {
-        var sqlQuery = @"SELECT m.message_id, m.author_id, m.text, m.pub_date FROM message m JOIN user u ON m.author_id = u.user_id WHERE u.username = @Author ORDER by m.pub_date desc";
+		var skip = (page-1)*32;
+        var sqlQuery = @"SELECT m.message_id, m.author_id, m.text, m.pub_date FROM message m JOIN user u ON m.author_id = u.user_id WHERE u.username = @Author ORDER by m.pub_date DESC LIMIT 32 OFFSET "+skip;
 
         return ConnectAndExecute(sqlQuery, author);
     }

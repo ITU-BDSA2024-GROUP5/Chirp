@@ -15,6 +15,7 @@ public class UserTimelineModel : PageModel
 
     public ActionResult OnGet(string author)
     {
+		_service.setPage(Request.Query["page"].ToString());
         Cheeps = _service.GetCheepsFromAuthor(author);
         return Page();
     }
