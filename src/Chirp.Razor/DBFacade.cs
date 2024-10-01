@@ -25,13 +25,13 @@ public class DBFacade
             using var srschema = new StreamReader(readerschema);
                 
             var query = srschema.ReadToEnd();
-            ConnectAndExecute(query);
+            InitDBExecute(query);
             
             using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
             using var srdump = new StreamReader(readerdump);
 
             var querydb = srdump.ReadToEnd();
-            ConnectAndExecute(querydb);
+            InitDBExecute(querydb);
         }
         
 
@@ -74,6 +74,17 @@ public class DBFacade
         return author;
     }
 
+    private static void InitDBExecute(String query)
+    {
+        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
+        {
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = query;
+            using var reader = command.ExecuteReader();
+        }
+    }
     private static List<CheepViewModel> ConnectAndExecute(string query)
     {
         var cheeps = new List<CheepViewModel>();
