@@ -12,36 +12,45 @@ public class DBFacade
 {
     static string sqlDBFilePath = "/tmp/chirp.db";
     static bool hasInit = false;
+    private static readonly SqliteConnection connection;
 
+    static DBFacade()
+    { // initializer for this facade
+        DbExists(sqlDBFilePath);
+        connection = new SqliteConnection($"Data Source={sqlDBFilePath}");
+        initfile();
+    }
+
+    public static void initfile()
+    {
+        if (!hasInit)
+        {
+            var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+
+            using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
+            using var srschema = new StreamReader(readerschema);
+
+            var query = srschema.ReadToEnd();
+            InitDBExecute(query);
+
+            using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
+            using var srdump = new StreamReader(readerdump);
+            var querydb = srdump.ReadToEnd();
+            InitDBExecute(querydb);
+            hasInit = true;
+        }
+    }
+    
     public static void DbExists(String path)
     {
         if (!File.Exists(path))
         {
             sqlDBFilePath = Path.Combine(Path.GetTempPath(), "chirp.db");
         }
-
-        if (!hasInit)
-        {
-            var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
-          
-            using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
-            using var srschema = new StreamReader(readerschema);
-                
-            var query = srschema.ReadToEnd();
-            InitDBExecute(query);
-            
-            using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
-            using var srdump = new StreamReader(readerdump);
-
-            var querydb = srdump.ReadToEnd();
-            InitDBExecute(querydb);
-            hasInit = true;
-        }
     }
 
     public static List<CheepViewModel> ReadDB()
     {
-        DbExists(sqlDBFilePath);
         var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date desc";
         
         return ConnectAndExecute(sqlQuery);
@@ -57,8 +66,6 @@ public class DBFacade
     private static string GetAuthorFromID(int id)
     {
         string author = "";
-        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
-        {
             var query = @$"SELECT DISTINCT username FROM User WHERE user_id = {id}";
             connection.Open();
 
@@ -71,26 +78,23 @@ public class DBFacade
                 author = reader.GetString(0);
                 break;
             }
-        }
-        return author;
+            //connection.Close();
+            return author;
     }
 
     private static void InitDBExecute(String query)
     {
-        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
-        {
             connection.Open();
 
             var command = connection.CreateCommand();
             command.CommandText = query;
             using var reader = command.ExecuteReader();
-        }
+        
+            //connection.Close();
     }
     private static List<CheepViewModel> ConnectAndExecute(string query)
     {
         var cheeps = new List<CheepViewModel>();
-        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
-        {
             connection.Open();
 
             var command = connection.CreateCommand();
@@ -106,15 +110,14 @@ public class DBFacade
                 
                 cheeps.Add(new CheepViewModel(GetAuthorFromID(author_id), message, UnixTimeStampToDateTimeString(date)));
             }
-        }
+            //connection.Close();
+        
         return cheeps;
     }
     
     private static List<CheepViewModel> ConnectAndExecute(string query, string author)
     {
         var cheeps = new List<CheepViewModel>();
-        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
-        {
             connection.Open();
 
             var command = connection.CreateCommand();
@@ -132,7 +135,7 @@ public class DBFacade
                 
                 cheeps.Add(new CheepViewModel(GetAuthorFromID(author_id), message, UnixTimeStampToDateTimeString(date)));
             }
-        }
+            //connection.Close();
         return cheeps;
     }
     
