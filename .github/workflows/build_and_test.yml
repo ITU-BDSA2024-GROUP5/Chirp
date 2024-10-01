@@ -2,14 +2,14 @@ name: .NET Build and Test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ pages ]
   pull_request:
-    branches: [ master ]
+    branches: [ pages ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -23,10 +23,11 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       
-    - name: Run localhost
+    - name: Initialise database
       run: |
-        cd src/Chirp.Razor
-        dotnet run &
+        sqlite3 /tmp/chirp.db < data/schema.sql
+        sqlite3 /tmp/chirp.db < data/dump.sql
+      working-directory: ./src/Chirp.Razor
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
