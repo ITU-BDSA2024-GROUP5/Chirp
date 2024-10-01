@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
+using System.IO;
 
 
 public class DBFacade
@@ -22,15 +23,18 @@ public class DBFacade
             var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
             using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
             using var srschema = new StreamReader(readerschema);
-
+                
             var query = srschema.ReadToEnd();
+            ConnectAndExecute(query);
             
             using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
             using var srdump = new StreamReader(readerdump);
 
             var querydb = srdump.ReadToEnd();
-            
+            ConnectAndExecute(querydb);
         }
+        
+
     }
 
     public static List<CheepViewModel> ReadDB()
