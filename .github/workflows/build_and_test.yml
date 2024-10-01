@@ -23,11 +23,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       
-    - name: Run localhost
-      run: |
-        cd src/Chirp.Razor
-        dotnet run &
-      
     - name: Test
       run: dotnet test --no-build --verbosity normal
       
