@@ -11,6 +11,7 @@ using System.IO;
 public class DBFacade
 {
     static string sqlDBFilePath = "/tmp/chirp.db";
+    static bool hasInit = false;
 
     public static void DbExists(String path)
     {
@@ -19,7 +20,10 @@ public class DBFacade
             Console.WriteLine("findes ikke chirp.db");
             sqlDBFilePath = Path.Combine(Path.GetTempPath(), "chirp.db");
             Console.WriteLine(sqlDBFilePath);
-            
+        }
+
+        if (!hasInit)
+        {
             var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
           
             using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
