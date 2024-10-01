@@ -29,12 +29,12 @@ public class DBFacade
         using var srschema = new StreamReader(readerschema);
 
         var query = srschema.ReadToEnd();
-        InitDBExecute(query);
+        ExecuteQuery(query);
 
         using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
         using var srdump = new StreamReader(readerdump);
         var querydb = srdump.ReadToEnd();
-        InitDBExecute(querydb);
+        ExecuteQuery(querydb);
     }
     
     public static void DbExists(String path)
@@ -63,7 +63,6 @@ public class DBFacade
     {
         string author = "";
             var query = @$"SELECT DISTINCT username FROM User WHERE user_id = {id}";
-            connection.Open();
 
             var command = connection.CreateCommand();
             command.CommandText = query;
@@ -74,65 +73,44 @@ public class DBFacade
                 author = reader.GetString(0);
                 break;
             }
-            //connection.Close();
             return author;
     }
-
-    private static void InitDBExecute(String query)
-    {
-            connection.Open();
-
-            var command = connection.CreateCommand();
-            command.CommandText = query;
-            using var reader = command.ExecuteReader();
-        
-            //connection.Close();
-    }
+    
     private static List<CheepViewModel> ConnectAndExecute(string query)
     {
-        var cheeps = new List<CheepViewModel>();
-            connection.Open();
-
-            var command = connection.CreateCommand();
-            command.CommandText = query;
-
-            using var reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                var message_id = reader.GetString(0);
-                var author_id = reader.GetInt32(1);
-                var message = reader.GetString(2);
-                var date = reader.GetInt32(3);
-                
-                cheeps.Add(new CheepViewModel(GetAuthorFromID(author_id), message, UnixTimeStampToDateTimeString(date)));
-            }
-            //connection.Close();
-        
-        return cheeps;
+       return ConnectAndExecute(query, null);
     }
     
-    private static List<CheepViewModel> ConnectAndExecute(string query, string author)
+    private static List<CheepViewModel> ConnectAndExecute(string query, string? author)
     {
         var cheeps = new List<CheepViewModel>();
-            connection.Open();
+        var command = connection.CreateCommand();
+        command.CommandText = query;
 
-            var command = connection.CreateCommand();
-            command.CommandText = query;
+        if (author is not null)
+        {
             command.Parameters.Add("@Author", SqliteType.Text);
             command.Parameters["@Author"].Value = author;
+        }
 
-            using var reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                var message_id = reader.GetString(0);
-                var author_id = reader.GetInt32(1);
-                var message = reader.GetString(2);
-                var date = reader.GetInt32(3);
-                
-                cheeps.Add(new CheepViewModel(GetAuthorFromID(author_id), message, UnixTimeStampToDateTimeString(date)));
-            }
-            //connection.Close();
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            var message_id = reader.GetString(0);
+            var author_id = reader.GetInt32(1);
+            var message = reader.GetString(2);
+            var date = reader.GetInt32(3);
+            
+            cheeps.Add(new CheepViewModel(GetAuthorFromID(author_id), message, UnixTimeStampToDateTimeString(date)));
+        }
         return cheeps;
+    }
+
+    public static void ExecuteQuery(string query)
+    {
+        var command = connection.CreateCommand();
+        command.CommandText = query;
+        using var reader = command.ExecuteReader();
     }
     
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
