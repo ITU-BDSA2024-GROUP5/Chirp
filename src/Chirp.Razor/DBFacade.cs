@@ -3,13 +3,40 @@ namespace Chirp.Razor.Pages;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.FileProviders;
+using System.Reflection;
+
 
 public class DBFacade
 {
     static string sqlDBFilePath = "/tmp/chirp.db";
-    
+
+    public static void DbExists(String path)
+    {
+        if (!File.Exists(path))
+        {
+            Console.WriteLine("findes ikke chirp.db");
+            sqlDBFilePath = Path.Combine(Path.GetTempPath(), "chirp.db");
+            Console.WriteLine(sqlDBFilePath);
+            
+            var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+            using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
+            using var srschema = new StreamReader(readerschema);
+
+            var query = srschema.ReadToEnd();
+            
+            using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
+            using var srdump = new StreamReader(readerdump);
+
+            var querydb = srdump.ReadToEnd();
+            
+        }
+    }
+
     public static List<CheepViewModel> ReadDB()
     {
+        DbExists(sqlDBFilePath);
+        Console.WriteLine();
         var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date desc";
         
         return ConnectAndExecute(sqlQuery);
