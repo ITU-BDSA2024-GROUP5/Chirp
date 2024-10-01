@@ -5,23 +5,28 @@ public record CheepViewModel(string Author, string Message, string Timestamp);
 public interface ICheepService
 {
     public List<CheepViewModel> GetCheeps();
-    
-    public List<CheepViewModel> GetCertainCheeps(int page);
+    public void setPage(String page);
     public List<CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
-    public List<CheepViewModel> GetCheeps()
+    private int page = 1;
+
+    public void setPage(String page)
     {
-        return DBFacade.ReadDB();
+		if(page != ""){
+		this.page=int.Parse(page);
+		} else {
+		this.page = 1;
+		}
     }
     
-    public List<CheepViewModel> GetCertainCheeps(int page)
+    public List<CheepViewModel> GetCheeps()
     {
         int cheepsPerPage = 10;
         List<CheepViewModel> cheepsForGivenPage = new List<CheepViewModel>();
-        List<CheepViewModel> cheeps = GetCheeps();
+        List<CheepViewModel> cheeps = DBFacade.ReadDB();
         if (cheeps.Count > page * cheepsPerPage)
         {
             for (int i = cheepsPerPage * page; i < cheepsPerPage * (page + 1); i++)
