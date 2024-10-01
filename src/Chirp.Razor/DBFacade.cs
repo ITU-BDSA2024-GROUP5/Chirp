@@ -6,7 +6,7 @@ using Microsoft.Data.Sqlite;
 
 public class DBFacade
 {
-    static string sqlDBFilePath = "/tmp/chirp.db";
+    static string sqlDBFilePath = "test.db";
     
     public static List<CheepViewModel> ReadDB()
     {
