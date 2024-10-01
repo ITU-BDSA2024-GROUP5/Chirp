@@ -1,7 +1,5 @@
 ﻿namespace Chirp.Razor.Pages;
-
-public class SqliteDB<T>
-{
+public sealed class SqliteDB<T> : IDatabaseRepository<T>{
  
     
     
