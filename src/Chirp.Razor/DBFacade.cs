@@ -21,6 +21,7 @@ public class DBFacade
             Console.WriteLine(sqlDBFilePath);
             
             var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+          
             using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
             using var srschema = new StreamReader(readerschema);
                 
@@ -33,8 +34,6 @@ public class DBFacade
             var querydb = srdump.ReadToEnd();
             InitDBExecute(querydb);
         }
-        
-
     }
 
     public static List<CheepViewModel> ReadDB()
