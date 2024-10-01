@@ -24,21 +24,7 @@ public class CheepService : ICheepService
     
     public List<CheepViewModel> GetCheeps()
     {
-        int cheepsPerPage = 10;
-        List<CheepViewModel> cheepsForGivenPage = new List<CheepViewModel>();
-        List<CheepViewModel> cheeps = DBFacade.ReadDB();
-        if (cheeps.Count > page * cheepsPerPage)
-        {
-            for (int i = cheepsPerPage * page; i < cheepsPerPage * (page + 1); i++)
-            {
-                cheepsForGivenPage.Add(cheeps[i]);
-            }
-            return cheepsForGivenPage;
-        }
-        else
-        {
-            return null;
-        }
+        return DBFacade.ReadDB(this.page);
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)

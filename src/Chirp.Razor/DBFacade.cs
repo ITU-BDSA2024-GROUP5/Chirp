@@ -31,11 +31,12 @@ public class DBFacade
         var querydb = srdump.ReadToEnd();
     }
 
-    public static List<CheepViewModel> ReadDB()
+    public static List<CheepViewModel> ReadDB(int page)
     {
         DbExists(sqlDBFilePath);
         Console.WriteLine();
-        var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date desc";
+		var skip = (page-1)*32;
+        var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date DESC LIMIT 32 OFFSET "+skip;
         
         return ConnectAndExecute(sqlQuery);
     }
