@@ -17,7 +17,7 @@ public class Program
     {
         // We are using System.CommandLine, info can be found here:
         // https://learn.microsoft.com/en-us/dotnet/standard/commandline/get-started-tutorial
-
+ 
         var baseURL = "https://bdsagroup5chirpremotedb.azurewebsites.net/";
         using HttpClient client = new();
         client.DefaultRequestHeaders.Accept.Clear();
