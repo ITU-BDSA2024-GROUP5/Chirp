@@ -37,6 +37,7 @@ public class DBFacade
 
             var querydb = srdump.ReadToEnd();
             InitDBExecute(querydb);
+            hasInit = true;
         }
     }
 
