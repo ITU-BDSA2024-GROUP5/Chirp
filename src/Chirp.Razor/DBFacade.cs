@@ -17,9 +17,7 @@ public class DBFacade
     {
         if (!File.Exists(path))
         {
-            Console.WriteLine("findes ikke chirp.db");
-            sqlDBFilePath = Path.Combine(Path.GetTempPath(), "chirp.db");
-            Console.WriteLine(sqlDBFilePath);
+            sqlDBFilePath = Path.Combine(Path.GetTempPath(), "chirp.db");¨
         }
 
         if (!hasInit)
@@ -44,7 +42,6 @@ public class DBFacade
     public static List<CheepViewModel> ReadDB()
     {
         DbExists(sqlDBFilePath);
-        Console.WriteLine();
         var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date desc";
         
         return ConnectAndExecute(sqlQuery);
