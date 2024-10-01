@@ -30,6 +30,6 @@ public class CheepService : ICheepService
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
-        return DBFacade.ReadDBByAuthor(author);
+        return DBFacade.ReadDBByAuthor(this.page,author);
     }
 }
