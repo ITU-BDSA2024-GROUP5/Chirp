@@ -21,7 +21,7 @@ public class DBFacade
         createFile();
     }
 
-    public static void createFile() // Maybe only create file if there is no data in there anyways
+    private static void createFile() // Maybe only create file if there is no data in there anyways
     {
         var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
 
@@ -37,7 +37,7 @@ public class DBFacade
         ExecuteQuery(querydb);
     }
     
-    public static void DbExists(String path)
+    private static void DbExists(String path)
     {
         if (!File.Exists(path))
         {
@@ -106,7 +106,7 @@ public class DBFacade
         return cheeps;
     }
 
-    public static void ExecuteQuery(string query)
+    private static void ExecuteQuery(string query)
     {
         var command = connection.CreateCommand();
         command.CommandText = query;
