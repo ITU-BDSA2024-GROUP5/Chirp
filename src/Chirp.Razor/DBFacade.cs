@@ -18,19 +18,17 @@ public class DBFacade
             Console.WriteLine("findes ikke chirp.db");
             sqlDBFilePath = Path.Combine(Path.GetTempPath(), "chirp.db");
             Console.WriteLine(sqlDBFilePath);
-            
-            var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
-            using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
-            using var srschema = new StreamReader(readerschema);
-
-            var query = srschema.ReadToEnd();
-            
-            using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
-            using var srdump = new StreamReader(readerdump);
-
-            var querydb = srdump.ReadToEnd();
-            
         }
+        var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+        using var readerschema = embeddedProvider.GetFileInfo("/data/schema.sql").CreateReadStream();
+        using var srschema = new StreamReader(readerschema);
+
+        var query = srschema.ReadToEnd();
+            
+        using var readerdump = embeddedProvider.GetFileInfo("/data/dump.sql").CreateReadStream();
+        using var srdump = new StreamReader(readerdump);
+
+        var querydb = srdump.ReadToEnd();
     }
 
     public static List<CheepViewModel> ReadDB()
