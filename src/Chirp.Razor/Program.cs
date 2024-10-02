@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace Chirp.Razor;
 
 public class Program
@@ -10,6 +12,9 @@ public class Program
         builder.Services.AddRazorPages();
         builder.Services.AddSingleton<ICheepService, CheepService>();
 
+        // Load database connection via configuration
+        string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        builder.Services.AddDbContext<ChatDBContext>(options => options.UseSqlite(connectionString));
 
         var app = builder.Build();
 
