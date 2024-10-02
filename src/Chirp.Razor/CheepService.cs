@@ -22,6 +22,8 @@ public class CheepService : ICheepService
 		}
     }
     
+    public int getPageNumber() { return this.page; } // is implemented for test purposes only
+    
     public List<CheepViewModel> GetCheeps()
     {
         return DBFacade.ReadDB(this.page);
