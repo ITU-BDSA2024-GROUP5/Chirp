@@ -14,7 +14,7 @@ public class Program
 
         // Load database connection via configuration
         string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-        builder.Services.AddDbContext<ChatDBContext>(options => options.UseSqlite(connectionString));
+        builder.Services.AddDbContext<CheepDBContext>(options => options.UseSqlite(connectionString));
 
         var app = builder.Build();
 
