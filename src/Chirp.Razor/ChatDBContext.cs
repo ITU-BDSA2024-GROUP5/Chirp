@@ -9,7 +9,7 @@ public class ChatDBContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlite("Data Source=Chat.db");
+            optionsBuilder.UseSqlite("Data Source=Chat.db"); // If not overrided, we get error message: Table __EFMigrationsHistory doesn't exist
         }
     }
 }
