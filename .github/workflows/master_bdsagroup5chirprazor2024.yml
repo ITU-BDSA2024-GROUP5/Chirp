@@ -26,6 +26,7 @@ jobs:
         
       - name: Initialize database
         run: |
+          dotnet tool install --global dotnet-ef --version 7
           dotnet ef migrations add InitialDBSchema
           dotnet ef database update
         working-directory: ./src/Chirp.Razor
