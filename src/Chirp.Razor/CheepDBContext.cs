@@ -7,6 +7,6 @@ public class CheepDBContext : DbContext
 
     public CheepDBContext(DbContextOptions<CheepDBContext> options) : base(options)
     {
-        
+        DbInitializer.SeedDatabase(this);
     }
 }
