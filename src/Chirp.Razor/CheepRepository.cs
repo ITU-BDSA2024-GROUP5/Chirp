@@ -17,10 +17,17 @@ class CheepRepository : ICheepRepository
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
-            .Select(cheep => cheep).Skip((page - 1) * 32).Take(32);
+            .Include(c => c.Author)
+            .Select(cheep => cheep)
+            .OrderBy(cheep => cheep.TimeStamp)
+            .Skip((page - 1) * 32)
+            .Take(32);
 
         // Execute the query and store the results
         var result = await query.ToListAsync();
+        
+            //dto stuff
+            //return dto stuff
         return result;
     }
 
@@ -28,8 +35,12 @@ class CheepRepository : ICheepRepository
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
+            .Include(c => c.Author)
             .Where(cheep => cheep.Author.Name == author)
-            .Select(cheep => cheep).Skip((page - 1) * 32).Take(32);
+            .Select(cheep => cheep)
+            .OrderBy(cheep => cheep.TimeStamp)
+            .Skip((page - 1) * 32)
+            .Take(32);
         // Execute the query and store the results
         var result = await query.ToListAsync();
         return result;
