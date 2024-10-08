@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - bdsagroup5chirprazor2
 on:
   push:
     branches:
-      - master
+      - deletedb
   workflow_dispatch:
 
 jobs:
