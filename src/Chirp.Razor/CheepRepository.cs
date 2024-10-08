@@ -37,7 +37,7 @@ class CheepRepository : ICheepRepository
 
     public async void Write(Cheep cheep)
     {
-        Cheep newCheep = new() { Text = cheep.Text, Author = cheep.Author, Timestamp = cheep.Timestamp };
+        Cheep newCheep = new() { Text = cheep.Text, Author = cheep.Author, TimeStamp = cheep.TimeStamp };
         var queryResult = await _context.Cheeps.AddAsync(newCheep);
 
         await _context.SaveChangesAsync();
