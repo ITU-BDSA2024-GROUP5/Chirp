@@ -11,6 +11,7 @@ class CheepRepository : ICheepRepository
     public CheepRepository(CheepDBContext context)
     {
         _context = context;
+        DbInitializer.SeedDatabase(context);
     }
 
     public async Task<List<CheepDTO>> Read(int page)
