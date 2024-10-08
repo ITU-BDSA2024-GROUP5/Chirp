@@ -13,7 +13,7 @@ class CheepRepository : ICheepRepository
         _context = context;
     }
 
-    public async Task<List<Cheep>> Read(int page)
+    public async Task<List<CheepDTO>> Read(int page)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
@@ -25,13 +25,11 @@ class CheepRepository : ICheepRepository
 
         // Execute the query and store the results
         var result = await query.ToListAsync();
-        
-            //dto stuff
-            //return dto stuff
-        return result;
+        var cheeps = WrapInDTO(result);
+        return cheeps;
     }
 
-    public async Task<List<Cheep>> ReadByAuthor(int page, string author)
+    public async Task<List<CheepDTO>> ReadByAuthor(int page, string author)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
@@ -43,7 +41,8 @@ class CheepRepository : ICheepRepository
             .Take(32);
         // Execute the query and store the results
         var result = await query.ToListAsync();
-        return result;
+        var cheeps = WrapInDTO(result);
+        return cheeps;
     }
 
     public async void Write(Cheep cheep)
@@ -52,5 +51,21 @@ class CheepRepository : ICheepRepository
         var queryResult = await _context.Cheeps.AddAsync(newCheep);
 
         await _context.SaveChangesAsync();
+    }
+
+    private static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
+    {
+        var list = new List<CheepDTO>();
+        foreach (var cheep in cheeps)
+        {
+            list.Add(new CheepDTO
+            {
+                Text = cheep.Text,
+                Author = cheep.Author.Name,
+                TimeStamp = cheep.TimeStamp.ToString()
+            });
+        }
+        //return dto stuff
+        return list;
     }
 }
