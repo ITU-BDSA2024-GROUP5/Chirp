@@ -1,22 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Chirp.Razor.Pages;
 
 public class PublicModel : PageModel
 {
-    private readonly ICheepService _service;
-    public List<CheepViewModel> Cheeps { get; set; }
+    public List<Cheep> Cheeps { get; set; }
+    
+    private readonly ICheepRepository _cheepRepository;
 
-    public PublicModel(ICheepService service)
+    public PublicModel(ICheepRepository cheepRepository)
     {
-        _service = service;
+        _cheepRepository = cheepRepository;
     }
 
-    public ActionResult OnGet()
+    public async Task<ActionResult> OnGet()
     {
-		_service.setPage(Request.Query["page"].ToString());
-        Cheeps = _service.GetCheeps();
+        Cheeps = await _cheepRepository.Read(parsePage(Request.Query["page"].ToString()));
         return Page();
+    }
+
+    public int parsePage(String pagenr)
+    {
+        try
+        {
+            return int.Parse(pagenr);
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
     }
 }
