@@ -23,12 +23,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       
-    - name: Initialise database
-      run: |
-        sqlite3 /tmp/chirp.db < data/schema.sql
-        sqlite3 /tmp/chirp.db < data/dump.sql
-      working-directory: ./src/Chirp.Razor
-      
     - name: Test
       run: dotnet test --no-build --verbosity normal
       
