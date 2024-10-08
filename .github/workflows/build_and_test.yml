@@ -23,12 +23,12 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       
-  # - name: Initialize database
-  #   run: |
-  #     dotnet tool install --global dotnet-ef --version 8
-  #     dotnet ef migrations add InitialDBSchema
-  #     dotnet ef database update
-  #   working-directory: ./src/Chirp.Razor
+    - name: Initialize database
+      run: |
+        dotnet tool install --global dotnet-ef --version 8
+        dotnet ef migrations add InitialDBSchema
+        dotnet ef database update
+      working-directory: ./src/Chirp.Razor
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
