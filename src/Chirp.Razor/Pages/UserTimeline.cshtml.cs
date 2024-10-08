@@ -3,20 +3,32 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Razor.Pages;
 
-public class UserTimelineModel : PageModel
+public class UserTimelineModel : PageModel 
 {
-    private readonly ICheepService _service;
-    public List<CheepViewModel> Cheeps { get; set; }
+    public List<Cheep> Cheeps { get; set; }
+    
+    private readonly ICheepRepository _cheepRepository;
 
-    public UserTimelineModel(ICheepService service)
+    public UserTimelineModel(ICheepRepository cheepRepository)
     {
-        _service = service;
+        _cheepRepository = cheepRepository;
     }
-
-    public ActionResult OnGet(string author)
+    
+    public async Task<ActionResult> OnGet(string author)
     {
-		_service.setPage(Request.Query["page"].ToString());
-        Cheeps = _service.GetCheepsFromAuthor(author);
+        Cheeps = await _cheepRepository.ReadByAuthor(getPage(),author);
         return Page();
+    }
+    
+    public int getPage()
+    {
+        try
+        {
+            return int.Parse(Request.Query["page"].ToString());
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
     }
 }
