@@ -24,12 +24,13 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Reset database
-      run: dotnet ef database drop --force
+      run: |
+        dotnet tool install --global dotnet-ef --version 8
+        dotnet ef database drop --force
       working-directory: ./src/Chirp.Razor
     
     - name: Initialize database
       run: |
-        dotnet tool install --global dotnet-ef --version 8
         dotnet ef migrations add InitialDBSchema
         dotnet ef database update
       working-directory: ./src/Chirp.Razor
