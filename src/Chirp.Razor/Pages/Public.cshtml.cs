@@ -6,7 +6,7 @@ namespace Chirp.Razor.Pages;
 
 public class PublicModel : PageModel
 {
-    public List<Cheep> Cheeps { get; set; }
+    public List<CheepDTO> Cheeps { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
 
@@ -27,7 +27,7 @@ public class PublicModel : PageModel
         {
             return int.Parse(pagenr);
         }
-        catch (Exception e)
+        catch (Exception _)
         {
             return 0;
         }

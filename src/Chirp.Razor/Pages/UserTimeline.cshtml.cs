@@ -5,7 +5,7 @@ namespace Chirp.Razor.Pages;
 
 public class UserTimelineModel : PageModel 
 {
-    public List<Cheep> Cheeps { get; set; }
+    public List<CheepDTO> Cheeps { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
 
@@ -26,7 +26,7 @@ public class UserTimelineModel : PageModel
         {
             return int.Parse(Request.Query["page"].ToString());
         }
-        catch (Exception e)
+        catch (Exception _)
         {
             return 0;
         }

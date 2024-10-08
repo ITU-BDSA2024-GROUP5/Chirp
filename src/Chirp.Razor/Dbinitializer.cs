@@ -1,5 +1,3 @@
-using System;
-
 public static class DbInitializer
 {
     public static void SeedDatabase(CheepDBContext chirpContext)
