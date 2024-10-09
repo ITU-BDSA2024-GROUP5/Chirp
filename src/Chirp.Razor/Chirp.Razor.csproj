@@ -15,6 +15,11 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SQLite" Version="8.0.8" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.8" />
+    <ItemGroup>
+      <None Update="chirp_cli_db.csv">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
   </ItemGroup>
 
   <ItemGroup>
