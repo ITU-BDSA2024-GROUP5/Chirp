@@ -24,12 +24,12 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
         
-      - name: Initialize database
-        run: |
-          dotnet tool install --global dotnet-ef --version 8
-          dotnet ef migrations add InitialDBSchema
-          dotnet ef database update
-        working-directory: ./src/Chirp.Razor
+    #  - name: Initialize database
+    #    run: |
+    #      dotnet tool install --global dotnet-ef --version 8
+    #      dotnet ef migrations add InitialDBSchema
+    #      dotnet ef database update
+    #    working-directory: ./src/Chirp.Razor
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
