@@ -8,6 +8,8 @@ class CheepRepository : ICheepRepository
 {
     private readonly CheepDBContext _context;
 
+    private static CheepServiceDB CheepServiceDB = new CheepServiceDB();
+
     public CheepRepository(CheepDBContext context)
     {
         _context = context;
@@ -47,12 +49,30 @@ class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public async void Write(Cheep cheep)
+    public async Task Write(Cheep cheep)
     {
-        Cheep newCheep = new() { Text = cheep.Text, Author = cheep.Author, TimeStamp = cheep.TimeStamp };
+        
+        Cheep newCheep = CheepServiceDB.cheepCreator(cheep);
+        
         var queryResult = await _context.Cheeps.AddAsync(newCheep);
-
+        
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<AuthorDTO> GetAuthorByName(string author){
+        var query = _context.Authors
+            .Select(a => a)
+            .Where(a => a.Name == author);
+        var result = await query.FirstOrDefaultAsync();
+        return result != null ? WrapAuthorInDTO(result) : null;
+    }
+
+    private static AuthorDTO WrapAuthorInDTO(Author author){
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.Name = author.Name;
+        authorDTO.Email = author.Email;
+        authorDTO.AuthorId = author.AuthorId;
+        return authorDTO;
     }
 
     private static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
@@ -70,4 +90,6 @@ class CheepRepository : ICheepRepository
         //return dto stuff
         return list;
     }
+
+    
 }

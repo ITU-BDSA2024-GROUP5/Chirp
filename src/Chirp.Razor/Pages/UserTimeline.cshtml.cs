@@ -16,9 +16,17 @@ public class UserTimelineModel : PageModel
     
     public async Task<ActionResult> OnGet(string author)
     {
-        Cheeps = await _cheepRepository.ReadByAuthor(getPage(),author);
+        taskHandlerAsync(author);
         return Page();
     }
+
+    public async Task taskHandlerAsync(string author){
+        if(Request.Query["cheep"].ToString() != null){
+            await _cheepRepository.Write(new Cheep() { Text = Request.Query["cheep"].ToString(), Author = await _cheepRepository.GetAuthorByName(author) });
+        } 
+        Cheeps = await _cheepRepository.ReadByAuthor(getPage(), author);
+    }
+
     
     public int getPage()
     {
