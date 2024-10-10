@@ -47,12 +47,41 @@ class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public async void Write(Cheep cheep)
+    public async Task<int> GetHighestAuthorId()
     {
-        Cheep newCheep = new() { Text = cheep.Text, Author = cheep.Author, TimeStamp = cheep.TimeStamp };
-        var queryResult = await _context.Cheeps.AddAsync(newCheep);
+        var query = _context.Authors
+            .Select(a => a)
+            .OrderByDescending(a => a.AuthorId);
+        var result = await query.FirstOrDefaultAsync();
+        return result?.AuthorId ?? 0;
+    }
 
+    public async Task<int> GetHighestCheepId(){
+        var query = _context.Cheeps
+            .Select(c => c)
+            .OrderByDescending(c => c.CheepId);
+        var result = await query.FirstOrDefaultAsync();
+        return result?.CheepId ?? 0;
+    }
+
+
+    public async Task WriteCheep(Cheep cheep)
+    {
+        var queryResult = await _context.Cheeps.AddAsync(cheep);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task WriteAuthor(Author author){
+        var queryResult = await _context.Authors.AddAsync(author);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<Author> GetAuthorByName(string author){
+        var query = _context.Authors
+            .Select(a => a)
+            .Where(a => a.Name == author);
+        var result = await query.FirstOrDefaultAsync();
+        return result; 
     }
 
     private static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
@@ -70,4 +99,6 @@ class CheepRepository : ICheepRepository
         //return dto stuff
         return list;
     }
+
+    
 }
