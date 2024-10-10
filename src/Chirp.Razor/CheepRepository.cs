@@ -64,7 +64,6 @@ class CheepRepository : ICheepRepository
         return result?.CheepId ?? 0;
     }
 
-
     public async Task WriteCheep(Cheep cheep)
     {
         var queryResult = await _context.Cheeps.AddAsync(cheep);
@@ -83,6 +82,7 @@ class CheepRepository : ICheepRepository
         var result = await query.FirstOrDefaultAsync();
         return result; 
     }
+
 
     private static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
     {
