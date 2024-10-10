@@ -23,7 +23,7 @@ public class UserTimelineModel : PageModel
 
     public async Task taskHandlerAsync(string author)
     {
-        
+        _cheepServiceDB.CheckIfAuthorExists(author);
         if(Request.Query.ContainsKey("cheep")){
             _cheepServiceDB.Write(new Cheep() { Text = Request.Query["cheep"].ToString(), Author = new Author() { Name = author } });
         } 

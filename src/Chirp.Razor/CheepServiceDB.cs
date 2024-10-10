@@ -12,8 +12,7 @@ class CheepServiceDB : ICheepServiceDB
         _cheepRepository = cheepRepository;
     }
     
-    public void Write(Cheep cheep){
-        CheckIfAuthorExists(cheep.Author.Name);
+    public void Write(Cheep cheep) {
         CreateCheep(cheep);
     }
 
@@ -39,8 +38,7 @@ class CheepServiceDB : ICheepServiceDB
         
     }
 
-
-    private async void CheckIfAuthorExists(string author){
+    public async void CheckIfAuthorExists(string author){
         _author = await _cheepRepository.GetAuthorByName(author);
     
         if(_author == null){ 
