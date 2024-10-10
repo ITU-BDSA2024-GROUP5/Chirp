@@ -21,7 +21,7 @@ class CheepRepository : ICheepRepository
         var query = _context.Cheeps
             .Select(cheep => cheep)
             .Include(c => c.Author)
-            .OrderBy(cheep => cheep.TimeStamp)
+            .OrderByDescending(cheep => cheep.TimeStamp)
             .Skip((page - 1) * 32)
             .Take(32);
 
@@ -38,7 +38,7 @@ class CheepRepository : ICheepRepository
             .Select(cheep => cheep)
             .Include(c => c.Author)
             .Where(cheep => cheep.Author.Name == author)
-            .OrderBy(cheep => cheep.TimeStamp)
+            .OrderByDescending(cheep => cheep.TimeStamp)
             .Skip((page - 1) * 32)
             .Take(32);
         // Execute the query and store the results
