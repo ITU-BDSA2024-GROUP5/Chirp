@@ -8,21 +8,23 @@ public class UserTimelineModel : PageModel
     public List<CheepDTO> Cheeps { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
-
+    private readonly ICheepServiceDB _cheepServiceDB;
     public UserTimelineModel(ICheepRepository cheepRepository)
     {
         _cheepRepository = cheepRepository;
+        _cheepServiceDB = new CheepServiceDB(cheepRepository);
     }
     
     public async Task<ActionResult> OnGet(string author)
     {
-        taskHandlerAsync(author);
+        await taskHandlerAsync(author);
         return Page();
     }
 
-    public async Task taskHandlerAsync(string author){
+    public async Task taskHandlerAsync(string author)
+    {
         if(Request.Query["cheep"].ToString() != null){
-            await _cheepRepository.Write(new Cheep() { Text = Request.Query["cheep"].ToString(), Author = await _cheepRepository.GetAuthorByName(author) });
+            _cheepServiceDB.Write(new Cheep() { Text = Request.Query["cheep"].ToString(), Author = new Author() { Name = author } });
         } 
         Cheeps = await _cheepRepository.ReadByAuthor(getPage(), author);
     }
