@@ -23,7 +23,8 @@ public class UserTimelineModel : PageModel
 
     public async Task taskHandlerAsync(string author)
     {
-        if(Request.Query["cheep"].ToString() != null){
+        
+        if(Request.Query.ContainsKey("cheep")){
             _cheepServiceDB.Write(new Cheep() { Text = Request.Query["cheep"].ToString(), Author = new Author() { Name = author } });
         } 
         Cheeps = await _cheepRepository.ReadByAuthor(getPage(), author);

@@ -1,17 +1,13 @@
 using Chirp.Razor.Pages;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+
 
 namespace Chirp.Razor;
-
-using System.Runtime.CompilerServices;
-using Microsoft.EntityFrameworkCore;
 
 class CheepServiceDB : ICheepServiceDB
 {
     private readonly ICheepRepository _cheepRepository;
 
-    private Author _author;
+    private Author? _author;
     public CheepServiceDB(ICheepRepository cheepRepository) {
         _cheepRepository = cheepRepository;
     }
@@ -43,10 +39,12 @@ class CheepServiceDB : ICheepServiceDB
     }
 
 
-    private void CheckIfAuthorExists(string author){
+    private async void CheckIfAuthorExists(string author){
         if(_cheepRepository.GetAuthorByName(author) == null) {
             CreateAuthor(author);
-        } 
+        } else {
+            _author = await _cheepRepository.GetAuthorByName(author);
+        }
     }
 
     
