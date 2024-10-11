@@ -128,14 +128,14 @@ public class CheepRepositoryTests
         var newAuthor = new Author()
         {
             Name = "Test Author",
-            AuthorId = 1,
+            AuthorId = await repository.GetHighestAuthorId() + 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
         };
         
         var newCheep = new Cheep()
         {
-            CheepId = 1,
+            CheepId = await repository.GetHighestCheepId() + 1,
             Text = "Test Cheep",
             TimeStamp = DateTime.Now,
             Author = newAuthor,
@@ -168,7 +168,7 @@ public class CheepRepositoryTests
         var newAuthor = new Author()
         {
             Name = "Test Author",
-            AuthorId = 1,
+            AuthorId = await repository.GetHighestAuthorId() + 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
         };
@@ -199,7 +199,7 @@ public class CheepRepositoryTests
         var newAuthor = new Author()
         {
             Name = "Test Author",
-            AuthorId = 1,
+            AuthorId = await repository.GetHighestAuthorId() + 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
         };
