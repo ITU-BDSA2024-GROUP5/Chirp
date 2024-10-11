@@ -81,7 +81,7 @@ public class CheepRepository : ICheepRepository
             .Select(a => a)
             .Where(a => a.Name == author);
         var result = await query.FirstOrDefaultAsync();
-        return result; 
+        return result;
     }
 
 

@@ -14,7 +14,7 @@ public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Fact]
-    public async void CanSeePublicTimeline()
+    public async Task CanSeePublicTimeline()
     {
         var response = await _client.GetAsync("/");
         response.EnsureSuccessStatusCode();
@@ -27,7 +27,7 @@ public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
     [Theory]
     [InlineData("Helge")]
     [InlineData("Adrian")]
-    public async void CanSeePrivateTimeline(string author)
+    public async Task CanSeePrivateTimeline(string author)
     {
         var response = await _client.GetAsync($"/{author}");
         response.EnsureSuccessStatusCode();
