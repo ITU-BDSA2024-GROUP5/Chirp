@@ -17,21 +17,25 @@ public class CheepServiceDB : ICheepServiceDB
     }
 
     private async void CreateCheep(Cheep cheep){
-        Cheep newCheep = new Cheep();
-        newCheep.CheepId = await _cheepRepository.GetHighestCheepId() + 1;
-        newCheep.Text = cheep.Text;
-        newCheep.TimeStamp = DateTime.Now;
-        newCheep.Author = _author;
-        newCheep.AuthorId = _author.AuthorId;
+        Cheep newCheep = new Cheep()
+        {
+            CheepId = await _cheepRepository.GetHighestCheepId() + 1,
+            Text = cheep.Text,
+            TimeStamp = DateTime.Now,
+            Author = _author,
+            AuthorId = _author.AuthorId,
+        };
         await _cheepRepository.WriteCheep(newCheep);
     }
     
     public async void CreateAuthor(string author){
-        Author newAuthor = new Author();
-        newAuthor.Name = author;
-        newAuthor.AuthorId = await _cheepRepository.GetHighestAuthorId() + 1;
-        newAuthor.Email = author + "@chirp.com";
-        newAuthor.Cheeps = new List<Cheep>();
+        Author newAuthor = new Author()
+        {
+            Name = author,
+            AuthorId = await _cheepRepository.GetHighestAuthorId() + 1,
+            Email = author + "@chirp.com",
+            Cheeps = new List<Cheep>()
+        };
         _author = newAuthor;
         await _cheepRepository.WriteAuthor(newAuthor);
         
