@@ -39,8 +39,7 @@ public class UserTimelineModel : PageModel
         {
             var text = Request.Query["cheep"].ToString();
             var cheep = await _cheepServiceDB.CreateCheep(createdAuthor, text);
-            await _cheepServiceDB.WriteCheep(cheep);
-            createdAuthor.Cheeps.Add(cheep);
+            await _cheepServiceDB.WriteCheep(cheep);;
         } 
         Cheeps = await _cheepRepository.ReadByAuthor(getPage(), author);
     }
