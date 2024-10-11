@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SQLitePCL;
 
 namespace Chirp.Razor.Pages;
 
@@ -23,9 +24,23 @@ public class UserTimelineModel : PageModel
 
     public async Task taskHandlerAsync(string author)
     {
-        _cheepServiceDB.CheckIfAuthorExists(author);
-        if(Request.Query.ContainsKey("cheep")){
-            _cheepServiceDB.Write(new Cheep() { Text = Request.Query["cheep"].ToString(), Author = new Author() { Name = author } });
+        Author createdAuthor;
+        var authorExists = await _cheepServiceDB.CheckIfAuthorExists(author);
+        if (!authorExists)
+        {
+            createdAuthor = await _cheepServiceDB.CreateAuthor(author);
+            await _cheepServiceDB.WriteAuthor(createdAuthor);
+        }
+        else
+        {
+            createdAuthor = await _cheepRepository.GetAuthorByName(author);
+        }
+        if(Request.Query.ContainsKey("cheep"))
+        {
+            var text = Request.Query["cheep"].ToString();
+            var cheep = await _cheepServiceDB.CreateCheep(createdAuthor, text);
+            await _cheepServiceDB.WriteCheep(cheep);
+            createdAuthor.Cheeps.Add(cheep);
         } 
         Cheeps = await _cheepRepository.ReadByAuthor(getPage(), author);
     }

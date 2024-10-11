@@ -2,6 +2,9 @@ namespace Chirp.Razor.Pages;
 
 public interface ICheepServiceDB
 {
-    public void Write(Cheep cheep);
-    public void CheckIfAuthorExists(String author);
+    public Task WriteCheep(Cheep cheep);
+    public Task WriteAuthor(Author author);
+    public Task<bool> CheckIfAuthorExists(String author);
+    public Task<Author> CreateAuthor(string author);
+    public Task<Cheep> CreateCheep(Author author, string text);
 }

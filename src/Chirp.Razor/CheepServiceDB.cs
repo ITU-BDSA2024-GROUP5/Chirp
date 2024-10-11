@@ -6,29 +6,22 @@ namespace Chirp.Razor;
 public class CheepServiceDB : ICheepServiceDB
 {
     private readonly ICheepRepository _cheepRepository;
-
-    private Author? _author;
+    
     public CheepServiceDB(ICheepRepository cheepRepository) {
         _cheepRepository = cheepRepository;
     }
     
-    public void Write(Cheep cheep) {
-        CreateCheep(cheep);
-    }
-
-    private async void CreateCheep(Cheep cheep){
-        Cheep newCheep = new Cheep()
-        {
-            CheepId = await _cheepRepository.GetHighestCheepId() + 1,
-            Text = cheep.Text,
-            TimeStamp = DateTime.Now,
-            Author = _author,
-            AuthorId = _author.AuthorId,
-        };
-        await _cheepRepository.WriteCheep(newCheep);
+    public async Task WriteAuthor(Author author)
+    {
+        await _cheepRepository.WriteAuthor(author);
     }
     
-    public async void CreateAuthor(string author){
+    public async Task WriteCheep(Cheep cheep)
+    {
+        await _cheepRepository.WriteCheep(cheep);
+    }
+
+    public async Task<Author> CreateAuthor(string author){
         Author newAuthor = new Author()
         {
             Name = author,
@@ -36,17 +29,30 @@ public class CheepServiceDB : ICheepServiceDB
             Email = author + "@chirp.com",
             Cheeps = new List<Cheep>()
         };
-        _author = newAuthor;
-        await _cheepRepository.WriteAuthor(newAuthor);
-        
+        return newAuthor;
     }
 
-    public async void CheckIfAuthorExists(string author){
-        _author = await _cheepRepository.GetAuthorByName(author);
+    public async Task<Cheep> CreateCheep(Author author, string text)
+    {
+        var cheep = new Cheep()
+        {
+            CheepId = await _cheepRepository.GetHighestCheepId() + 1,
+            Text = text,
+            TimeStamp = DateTime.Now,
+            Author = author,
+            AuthorId = author.AuthorId
+        };
+        return cheep;
+    }
+
+    public async Task<bool> CheckIfAuthorExists(string author){
+        var checkauthor = await _cheepRepository.GetAuthorByName(author);
     
-        if(_author == null){ 
-            CreateAuthor(author);
-        } 
-        _author = await _cheepRepository.GetAuthorByName(author);
+        if(checkauthor == null)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

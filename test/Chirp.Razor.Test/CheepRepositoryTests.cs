@@ -125,18 +125,22 @@ public class CheepRepositoryTests
 
         var repository = new CheepRepository(context);
 
-        var newAuthor = new Author();
-        newAuthor.Name = "Test Author";
-        newAuthor.AuthorId = await repository.GetHighestAuthorId() + 1;
-        newAuthor.Email = "TestAuthor@gmail.com";
-        newAuthor.Cheeps = new List<Cheep>();
+        var newAuthor = new Author()
+        {
+            Name = "Test Author",
+            AuthorId = 1,
+            Email = "TestAuthor@gmail.com",
+            Cheeps = new List<Cheep>(),
+        };
         
-        var newCheep = new Cheep();
-        newCheep.CheepId = await repository.GetHighestCheepId() + 1;
-        newCheep.Text = "Test Cheep";
-        newCheep.TimeStamp = DateTime.Now;
-        newCheep.Author = newAuthor;
-        newCheep.AuthorId = newAuthor.AuthorId;
+        var newCheep = new Cheep()
+        {
+            CheepId = 1,
+            Text = "Test Cheep",
+            TimeStamp = DateTime.Now,
+            Author = newAuthor,
+            AuthorId = newAuthor.AuthorId,
+        };
         
         //Act
         await repository.WriteCheep(newCheep);
@@ -161,11 +165,13 @@ public class CheepRepositoryTests
 
         var repository = new CheepRepository(context);
 
-        var newAuthor = new Author();
-        newAuthor.Name = "Test Author";
-        newAuthor.AuthorId = await repository.GetHighestAuthorId() + 1;
-        newAuthor.Email = "TestAuthor@gmail.com";
-        newAuthor.Cheeps = new List<Cheep>();
+        var newAuthor = new Author()
+        {
+            Name = "Test Author",
+            AuthorId = 1,
+            Email = "TestAuthor@gmail.com",
+            Cheeps = new List<Cheep>(),
+        };
         
         //Act
         await repository.WriteAuthor(newAuthor);
@@ -190,11 +196,13 @@ public class CheepRepositoryTests
 
         var repository = new CheepRepository(context);
 
-        var newAuthor = new Author();
-        newAuthor.Name = "Test Author";
-        newAuthor.AuthorId = await repository.GetHighestAuthorId() + 1;
-        newAuthor.Email = "TestAuthor@gmail.com";
-        newAuthor.Cheeps = new List<Cheep>();
+        var newAuthor = new Author()
+        {
+            Name = "Test Author",
+            AuthorId = 1,
+            Email = "TestAuthor@gmail.com",
+            Cheeps = new List<Cheep>(),
+        };
         
         //Act
         await repository.WriteAuthor(newAuthor);
@@ -209,19 +217,23 @@ public class CheepRepositoryTests
     [Fact]
     public void TestWrapInDTO()
     {
-        //Arrage
-        var newAuthor = new Author();
-        newAuthor.Name = "Test Author";
-        newAuthor.AuthorId = 1;
-        newAuthor.Email = "TestAuthor@gmail.com";
-        newAuthor.Cheeps = new List<Cheep>();
+        //Arrange
+        var newAuthor = new Author()
+        {
+            Name = "Test Author",
+            AuthorId = 1,
+            Email = "TestAuthor@gmail.com",
+            Cheeps = new List<Cheep>(),
+        };
         
-        var newCheep = new Cheep();
-        newCheep.CheepId = 1;
-        newCheep.Text = "Test Cheep";
-        newCheep.TimeStamp = DateTime.Now;
-        newCheep.Author = newAuthor;
-        newCheep.AuthorId = newAuthor.AuthorId;
+        var newCheep = new Cheep()
+        {
+            CheepId = 1,
+            Text = "Test Cheep",
+            TimeStamp = DateTime.Now,
+            Author = newAuthor,
+            AuthorId = newAuthor.AuthorId,
+        };
         
         var list = new List<Cheep>();
         list.Add(newCheep);
