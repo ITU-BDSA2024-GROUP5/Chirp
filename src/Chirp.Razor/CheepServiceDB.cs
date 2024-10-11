@@ -1,9 +1,9 @@
+using System.Runtime.CompilerServices;
 using Chirp.Razor.Pages;
-
 
 namespace Chirp.Razor;
 
-class CheepServiceDB : ICheepServiceDB
+public class CheepServiceDB : ICheepServiceDB
 {
     private readonly ICheepRepository _cheepRepository;
 
@@ -25,9 +25,8 @@ class CheepServiceDB : ICheepServiceDB
         newCheep.AuthorId = _author.AuthorId;
         await _cheepRepository.WriteCheep(newCheep);
     }
-
-
-    private async void CreateAuthor(string author){
+    
+    public async void CreateAuthor(string author){
         Author newAuthor = new Author();
         newAuthor.Name = author;
         newAuthor.AuthorId = await _cheepRepository.GetHighestAuthorId() + 1;

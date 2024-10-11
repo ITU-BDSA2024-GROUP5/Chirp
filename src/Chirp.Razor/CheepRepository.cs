@@ -4,7 +4,7 @@ namespace Chirp.Razor;
 
 using Microsoft.EntityFrameworkCore;
 
-class CheepRepository : ICheepRepository
+public class CheepRepository : ICheepRepository
 {
     private readonly CheepDBContext _context;
 
@@ -84,7 +84,7 @@ class CheepRepository : ICheepRepository
     }
 
 
-    private static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
+    public static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
     {
         var list = new List<CheepDTO>();
         foreach (var cheep in cheeps)
