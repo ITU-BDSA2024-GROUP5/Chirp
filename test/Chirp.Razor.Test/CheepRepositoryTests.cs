@@ -29,9 +29,16 @@ public class CheepRepositoryTests
         Assert.Contains("Jacqualine Gilcoine", cheepAuthors);
         Assert.Contains("Starbuck now is what we hear the worst.", cheepTexts);
     }
-    
-    [Fact]
-    public async Task TestReadByAuthor()
+
+    [Theory]
+    [InlineData("Jacqualine Gilcoine")]
+    [InlineData("Roger Histand")]
+    [InlineData("Luanna Muro")]
+    [InlineData("Wendell Ballan")]
+    [InlineData("Nathan Sirmon")]
+    [InlineData("Adrian")]
+    [InlineData("Helge")]
+    public async Task TestReadByAuthor(string author)
     {
         //Arrange
         await using var connection = new SqliteConnection("Filename=:memory:");
@@ -44,12 +51,12 @@ public class CheepRepositoryTests
         var repository = new CheepRepository(context);
         
         //Act
-        var cheepDTOS = await repository.ReadByAuthor(0, "Jacqualine Gilcoine");
+        var cheepDTOS = await repository.ReadByAuthor(0, author);
         
         //Assert
         foreach (var dto in cheepDTOS)
         {
-            Assert.Equal("Jacqualine Gilcoine", dto.Author);
+            Assert.Equal(author, dto.Author);
         }
     }
     
