@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SQLitePCL;
 
 namespace Chirp.Razor.Pages;
 
 public class PublicModel : PageModel
 {
     public required List<CheepDTO> Cheeps { get; set; }
+    
     
     private readonly ICheepRepository _cheepRepository;
 
@@ -32,4 +35,5 @@ public class PublicModel : PageModel
             return 0;
         }
     }
+    
 }

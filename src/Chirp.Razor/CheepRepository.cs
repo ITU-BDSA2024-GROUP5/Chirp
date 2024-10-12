@@ -46,6 +46,31 @@ public class CheepRepository : ICheepRepository
         var cheeps = WrapInDTO(result);
         return cheeps;
     }
+    
+    public async Task<List<CheepDTO>> ReadByEmail(int page, string email)
+    {
+        // Define the query - with our setup, EF Core translates this to an SQLite query in the background
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)
+            .Where(cheep => cheep.Author.Email == email)
+            .OrderBy(cheep => cheep.TimeStamp)
+            .Skip((page - 1) * 32)
+            .Take(32);
+        // Execute the query and store the results
+        var result = await query.ToListAsync();
+        var cheeps = WrapInDTO(result);
+        return cheeps;
+    }
+
+    public async Task<List<Author>> Authors()
+    {
+        var query = _context.Authors
+            .Select(author => author);
+        // Execute the query and store the results
+        var authors = await query.ToListAsync();
+        return authors;
+    }
 
     public async Task<int> GetHighestAuthorId()
     {
