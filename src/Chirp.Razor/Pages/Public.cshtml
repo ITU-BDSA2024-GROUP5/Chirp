@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.Formats.Asn1
 @model Chirp.Razor.Pages.PublicModel
 @{
     ViewData["Title"] = "Chirp!";
@@ -10,7 +11,7 @@
 
     @if (Model.Cheeps.Any())
     {
-        <ul id="messagelist" class="cheeps">
+        <ul id="messagelistByAuthor" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
                 <li>

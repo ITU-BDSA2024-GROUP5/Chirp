@@ -16,7 +16,14 @@ public class UserTimelineModel : PageModel
     
     public async Task<ActionResult> OnGet(string author)
     {
-        Cheeps = await _cheepRepository.ReadByAuthor(getPage(),author);
+        if (author.Contains('@'))
+        {
+            Cheeps = await _cheepRepository.ReadByEmail(getPage(), author);
+        }
+        else
+        {
+            Cheeps = await _cheepRepository.ReadByAuthor(getPage(),author);
+        }
         return Page();
     }
     

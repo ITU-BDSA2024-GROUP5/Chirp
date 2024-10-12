@@ -10,6 +10,7 @@ public class PublicModel : PageModel
 {
     public List<CheepDTO> Cheeps { get; set; }
     
+    
     private readonly ICheepRepository _cheepRepository;
 
     public PublicModel(ICheepRepository cheepRepository)
@@ -19,7 +20,6 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnGet()
     {
-        //var authors = from a in _cheepRepository.ReadByAuthor();
         Cheeps = await _cheepRepository.Read(parsePage(Request.Query["page"].ToString()));
         return Page();
     }
@@ -35,15 +35,5 @@ public class PublicModel : PageModel
             return 0;
         }
     }
-
-    public IList<Author> Authors { get; set; } = default!;
-    
-    [BindProperty(SupportsGet = true)]
-    public string? SearchString { get; set; }
-    
-    public SelectList? Name { get; set; }
-    
-    [BindProperty(SupportsGet = true)]
-    public string? Email { get; set; }
     
 }
