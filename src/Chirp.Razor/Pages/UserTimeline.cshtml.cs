@@ -25,6 +25,8 @@ public class UserTimelineModel : PageModel
     public async Task taskHandlerAsync(string author)
     {
         Author createdAuthor;
+        var isEmail = false;
+        
         var authorExists = await _cheepServiceDB.CheckIfAuthorExists(author);
         if (!authorExists)
         {
@@ -33,15 +35,37 @@ public class UserTimelineModel : PageModel
         }
         else
         {
-            createdAuthor = await _cheepRepository.GetAuthorByName(author);
+            if (author.Contains('@'))
+            {
+                isEmail = true;
+                createdAuthor = await _cheepRepository.GetAuthorByEmail(author);
+                
+            }
+            else
+            {
+                createdAuthor = await _cheepRepository.GetAuthorByName(author);
+            }
         }
         if(Request.Query.ContainsKey("cheep"))
         {
             var text = Request.Query["cheep"].ToString();
             var cheep = await _cheepServiceDB.CreateCheep(createdAuthor, text);
             await _cheepServiceDB.WriteCheep(cheep);;
-        } 
-        Cheeps = await _cheepRepository.ReadByAuthor(getPage(), author);
+        }
+
+        await fetchCheeps(author, isEmail);
+    }
+
+    public async Task fetchCheeps(string author, bool isEmail)
+    {
+        if (isEmail)
+        {
+            Cheeps = await _cheepRepository.ReadByEmail(getPage(), author);
+        }
+        else
+        {
+            Cheeps = await _cheepRepository.ReadByAuthor(getPage(), author);
+        }
     }
 
     

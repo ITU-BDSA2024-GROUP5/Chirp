@@ -63,15 +63,6 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public async Task<List<Author>> Authors()
-    {
-        var query = _context.Authors
-            .Select(author => author);
-        // Execute the query and store the results
-        var authors = await query.ToListAsync();
-        return authors;
-    }
-
     public async Task<int> GetHighestAuthorId()
     {
         var query = _context.Authors
@@ -105,6 +96,14 @@ public class CheepRepository : ICheepRepository
         var query = _context.Authors
             .Select(a => a)
             .Where(a => a.Name == author);
+        var result = await query.FirstOrDefaultAsync();
+        return result;
+    }
+    
+    public async Task<Author> GetAuthorByEmail(string email){
+        var query = _context.Authors
+            .Select(a => a)
+            .Where(a => a.Email == email);
         var result = await query.FirstOrDefaultAsync();
         return result;
     }
