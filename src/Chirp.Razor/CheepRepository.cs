@@ -54,7 +54,7 @@ public class CheepRepository : ICheepRepository
             .Select(cheep => cheep)
             .Include(c => c.Author)
             .Where(cheep => cheep.Author.Email == email)
-            .OrderBy(cheep => cheep.TimeStamp)
+            .OrderByDescending(cheep => cheep.TimeStamp)
             .Skip((page - 1) * 32)
             .Take(32);
         // Execute the query and store the results
