@@ -27,25 +27,22 @@ public class UserTimelineModel : PageModel
         Author createdAuthor;
         var isEmail = false;
         
-        var authorExists = await _cheepServiceDB.CheckIfAuthorExists(author);
-        if (!authorExists)
+        if (author.Contains('@'))
+        {
+            isEmail = true;
+            createdAuthor = await _cheepRepository.GetAuthorByEmail(author);
+        }
+        else
+        {
+            createdAuthor = await _cheepRepository.GetAuthorByName(author);
+        }
+        
+        if (createdAuthor == null)
         {
             createdAuthor = await _cheepServiceDB.CreateAuthor(author);
             await _cheepServiceDB.WriteAuthor(createdAuthor);
         }
-        else
-        {
-            if (author.Contains('@'))
-            {
-                isEmail = true;
-                createdAuthor = await _cheepRepository.GetAuthorByEmail(author);
-                
-            }
-            else
-            {
-                createdAuthor = await _cheepRepository.GetAuthorByName(author);
-            }
-        }
+        
         if(Request.Query.ContainsKey("cheep"))
         {
             var text = Request.Query["cheep"].ToString();
