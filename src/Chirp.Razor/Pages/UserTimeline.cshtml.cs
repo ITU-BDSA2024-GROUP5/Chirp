@@ -42,12 +42,11 @@ public class UserTimelineModel : PageModel
             createdAuthor = await _cheepServiceDB.CreateAuthor(author);
             await _cheepServiceDB.WriteAuthor(createdAuthor);
         }
-        
-        if(Request.Query.ContainsKey("cheep"))
+        var text = Request.Query["cheep"].ToString();
+        if (text.Length <= 160)
         {
-            var text = Request.Query["cheep"].ToString();
             var cheep = await _cheepServiceDB.CreateCheep(createdAuthor, text);
-            await _cheepServiceDB.WriteCheep(cheep);;
+            await _cheepServiceDB.WriteCheep(cheep);
         }
 
         await fetchCheeps(author, isEmail);
