@@ -43,7 +43,7 @@ public class UserTimelineModel : PageModel
             await _cheepServiceDB.WriteAuthor(createdAuthor);
         }
         var text = Request.Query["cheep"].ToString();
-        if (text.Length <= 160)
+        if (text.Length <= 160 && text.Length > 0)
         {
             var cheep = await _cheepServiceDB.CreateCheep(createdAuthor, text);
             await _cheepServiceDB.WriteCheep(cheep);
