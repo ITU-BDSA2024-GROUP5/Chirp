@@ -32,6 +32,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<CheepDBContext>();
 builder.Services.AddRazorPages();
 
+builder.Services.AddSession();
+builder.Services.AddDistributedMemoryCache();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
