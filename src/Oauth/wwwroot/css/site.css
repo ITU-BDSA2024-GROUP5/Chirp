@@ -4,42 +4,39 @@ html {
 
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 14px;
   }
 }
 
+
+
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem rgb(229, 0, 0), 0 0 0 0.25rem #e65508;
+  margin: 10px 0;
+  padding: 5px;
+  background: #f37f58d6;
+  border: 1px solid #e29494;
+  border-radius: 2px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}
-
-body {
-  background: #eccaca;
-  font-family: 'Trebuchet MS', sans-serif;
-  font-size: 14px;
-}
 
 a {
-  color: #26776F;
+  color: #1410ed;
 }
 
 a:hover {
-  color: #333;
+  color: #000000;
 }
 
 input[type="email"],
 input[type="text"],
 input[type="tel"],
 input[type="password"] {
-    background: white;
+    background: rgb(222, 223, 220);
     border: 1px solid #e6c0bf;
     padding: 2px;
     font-family: 'Trebuchet MS', sans-serif;
@@ -60,11 +57,11 @@ input[type="submit"] {
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
-  color: white;
+  color: rgb(99, 105, 131);
 }
 
 div.page {
-  background: white;
+  background: rgb(225, 0, 0);
   border: 1px solid #cc6e6e;
   width: 700px;
   margin: 30px auto;
@@ -74,21 +71,17 @@ div.page > h1 {
   background: #cc6e6e;
   margin: 0;
   padding: 10px 14px;
-  color: white;
+  color: #f00fbf;
   letter-spacing: 1px;
   text-shadow: 0 0 3px #772424;
   font-weight: normal;
   font-size: 80px;
 }
 
-div.page h1 img {
-  height: 1em;
-}
-
 div.page div.navigation {
-  background: #DEE9E8;
+  background: #3a345a;
   padding: 4px 10px;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #841de4;
   border-bottom: 1px solid #eee;
   color: #888;
   font-size: 12px;
@@ -128,7 +121,7 @@ div.page div.body {
 }
 
 div.page div.footer {
-  background: #eee;
+  background: #6d0a0a;
   color: #888;
   padding: 5px 10px;
   font-size: 12px;
@@ -153,7 +146,7 @@ div.page ul.cheeps {
 div.page ul.cheeps li {
   margin: 10px 0;
   padding: 5px;
-  background: #F0FAF9;
+  background: #b7b898;
   border: 1px solid #DBF3F1;
   border-radius: 2px;
   -moz-border-radius: 5px;
@@ -166,6 +159,7 @@ div.page ul.cheeps p {
 }
 
 div.page ul.cheeps li img {
+  height: 1em;
   float: left;
   padding: 0 10px 0 0;
 }
@@ -178,7 +172,7 @@ div.page ul.cheeps li small {
 div.page div.cheepbox {
   margin: 10px 0;
   padding: 5px;
-  background: #F0FAF9;
+  background: #5d53e9;
   border: 1px solid #e29494;
   border-radius: 2px;
   -moz-border-radius: 5px;
@@ -309,4 +303,27 @@ ul.nav li a {
 
 ul.nav li a:hover {
     background-color: #8b4949;
+}
+
+
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+header {
+  background-color: #cc6e6e;
+  color: white;
+  padding: 0.5rem 0;
+}
+
+body {
+  background: #eccaca;
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 14px;
 }
