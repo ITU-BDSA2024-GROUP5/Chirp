@@ -1,7 +1,5 @@
 using System.Runtime.CompilerServices;
-using Chirp.Razor.Pages;
-
-namespace Chirp.Razor;
+using Oauth.Pages;
 
 public class CheepServiceDB : ICheepServiceDB
 {

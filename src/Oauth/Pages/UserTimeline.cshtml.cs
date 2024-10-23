@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SQLitePCL;
 
-namespace Chirp.Razor.Pages;
+namespace Oauth.Pages;
 
 public class UserTimelineModel : PageModel 
 {
