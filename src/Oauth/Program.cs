@@ -4,6 +4,11 @@ using Oauth.Data;
 using AspNet.Security.OAuth.GitHub;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -60,3 +65,5 @@ app.UseAuthorization();
 app.UseSession();
 
 app.Run();
+  }
+}

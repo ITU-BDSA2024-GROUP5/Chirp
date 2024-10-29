@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0D6E2185-13E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9B6FFFF5-FC52-4EC4-BFDE-D5C3F9EA519C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Razor", "src\Chirp.Razor\Chirp.Razor.csproj", "{6B9D3A29-52C3-420E-BA0E-BDE23FACF6B5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Razor.Test", "test\Chirp.Razor.Test\Chirp.Razor.Test.csproj", "{D65B8E0A-55B9-4E07-8D34-C9CDBC6A9C39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oauth", "src\Oauth\Oauth.csproj", "{7EB182A2-0268-4875-89BC-3776DAF4F6AC}"
@@ -22,10 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6B9D3A29-52C3-420E-BA0E-BDE23FACF6B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B9D3A29-52C3-420E-BA0E-BDE23FACF6B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B9D3A29-52C3-420E-BA0E-BDE23FACF6B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B9D3A29-52C3-420E-BA0E-BDE23FACF6B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D65B8E0A-55B9-4E07-8D34-C9CDBC6A9C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D65B8E0A-55B9-4E07-8D34-C9CDBC6A9C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D65B8E0A-55B9-4E07-8D34-C9CDBC6A9C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -36,7 +30,6 @@ Global
 		{7EB182A2-0268-4875-89BC-3776DAF4F6AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6B9D3A29-52C3-420E-BA0E-BDE23FACF6B5} = {0D6E2185-13EE-4FA3-BF3F-CFCB0BC5393A}
 		{D65B8E0A-55B9-4E07-8D34-C9CDBC6A9C39} = {9B6FFFF5-FC52-4EC4-BFDE-D5C3F9EA519C}
 		{7EB182A2-0268-4875-89BC-3776DAF4F6AC} = {0D6E2185-13EE-4FA3-BF3F-CFCB0BC5393A}
 	EndGlobalSection
