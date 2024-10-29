@@ -1,5 +1,3 @@
-namespace Chirp.Razor;
-
 public class CheepDTO
 {
     public required string Text { get; set; }
