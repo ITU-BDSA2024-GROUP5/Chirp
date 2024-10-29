@@ -1,5 +1,3 @@
-namespace Chirp.Razor.Pages;
-
 public interface ICheepRepository
 {
     public Task<List<CheepDTO>> Read(int page);

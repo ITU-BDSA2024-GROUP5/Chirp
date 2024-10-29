@@ -1,6 +1,4 @@
-﻿using Chirp.Razor.Pages;
-
-namespace Chirp.Razor;
+﻿using Oauth.Pages;
 
 using Microsoft.EntityFrameworkCore;
 

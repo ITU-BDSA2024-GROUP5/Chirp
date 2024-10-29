@@ -1,4 +1,4 @@
-namespace Chirp.Razor.Pages;
+
 
 public interface ICheepServiceDB
 {
