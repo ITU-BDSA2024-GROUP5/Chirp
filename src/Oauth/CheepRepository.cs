@@ -1,16 +1,21 @@
 ﻿using Oauth.Pages;
 
 using Microsoft.EntityFrameworkCore;
+using Oauth.Data;
 
 public class CheepRepository : ICheepRepository
 {
     private readonly CheepDBContext _context;
+    private readonly ApplicationDbContext _context2;
 
-    public CheepRepository(CheepDBContext context)
+    public CheepRepository(CheepDBContext context, ApplicationDbContext context2)
     {
         _context = context;
         context.Database.EnsureCreated();
         DbInitializer.SeedDatabase(_context);
+        
+        _context2 = context2;
+        context2.Database.EnsureCreated();
     }
 
     public async Task<List<CheepDTO>> Read(int page)
