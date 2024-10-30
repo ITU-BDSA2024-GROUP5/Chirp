@@ -12,16 +12,13 @@ public class CheepRepositoryTests
         //Arrange
         await using var connection = new SqliteConnection("Filename=:memory:");
         await connection.OpenAsync();
-        var builder = new DbContextOptionsBuilder<CheepDBContext>().UseSqlite(connection);
-        var builder2 = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
+        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
         
         
-        await using var context = new CheepDBContext(builder.Options);
-        await using var context2 = new ApplicationDbContext(builder2.Options);
+        await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
-        await context2.Database.EnsureCreatedAsync();
 
-        var repository = new CheepRepository(context, context2);
+        var repository = new CheepRepository(context);
         
         //Act
         var cheepDTOS = await repository.Read(1);
@@ -48,16 +45,13 @@ public class CheepRepositoryTests
         //Arrange
         await using var connection = new SqliteConnection("Filename=:memory:");
         await connection.OpenAsync();
-        var builder = new DbContextOptionsBuilder<CheepDBContext>().UseSqlite(connection);
-        var builder2 = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
+        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
         
         
-        await using var context = new CheepDBContext(builder.Options);
-        await using var context2 = new ApplicationDbContext(builder2.Options);
+        await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
-        await context2.Database.EnsureCreatedAsync();
 
-        var repository = new CheepRepository(context, context2);
+        var repository = new CheepRepository(context);
         
         //Act
         var cheepDTOS = await repository.ReadByAuthor(0, author);
@@ -75,17 +69,14 @@ public class CheepRepositoryTests
         //Arrange
         await using var connection = new SqliteConnection("Filename=:memory:");
         await connection.OpenAsync();
-        var builder = new DbContextOptionsBuilder<CheepDBContext>().UseSqlite(connection);
-        var builder2 = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
+        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
         
         
-        await using var context = new CheepDBContext(builder.Options);
-        await using var context2 = new ApplicationDbContext(builder2.Options);
+        await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
-        await context2.Database.EnsureCreatedAsync();
 
-        var repository = new CheepRepository(context, context2);
-        
+        var repository = new CheepRepository(context);
+
         var query = context.Authors
             .Select(a => a);
         
@@ -105,16 +96,13 @@ public class CheepRepositoryTests
         //Arrange
         await using var connection = new SqliteConnection("Filename=:memory:");
         await connection.OpenAsync();
-        var builder = new DbContextOptionsBuilder<CheepDBContext>().UseSqlite(connection);
-        var builder2 = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
+        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
         
         
-        await using var context = new CheepDBContext(builder.Options);
-        await using var context2 = new ApplicationDbContext(builder2.Options);
+        await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
-        await context2.Database.EnsureCreatedAsync();
 
-        var repository = new CheepRepository(context, context2);
+        var repository = new CheepRepository(context);
         
         var query = context.Cheeps
             .Select(a => a);
@@ -135,16 +123,13 @@ public class CheepRepositoryTests
         //Arrange
         await using var connection = new SqliteConnection("Filename=:memory:");
         await connection.OpenAsync();
-        var builder = new DbContextOptionsBuilder<CheepDBContext>().UseSqlite(connection);
-        var builder2 = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
+        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
         
         
-        await using var context = new CheepDBContext(builder.Options);
-        await using var context2 = new ApplicationDbContext(builder2.Options);
+        await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
-        await context2.Database.EnsureCreatedAsync();
 
-        var repository = new CheepRepository(context, context2);
+        var repository = new CheepRepository(context);
 
         var newAuthor = new Author()
         {
@@ -179,16 +164,13 @@ public class CheepRepositoryTests
         //Arrange
         await using var connection = new SqliteConnection("Filename=:memory:");
         await connection.OpenAsync();
-        var builder = new DbContextOptionsBuilder<CheepDBContext>().UseSqlite(connection);
-        var builder2 = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
+        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
         
         
-        await using var context = new CheepDBContext(builder.Options);
-        await using var context2 = new ApplicationDbContext(builder2.Options);
+        await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
-        await context2.Database.EnsureCreatedAsync();
 
-        var repository = new CheepRepository(context, context2);
+        var repository = new CheepRepository(context);
 
         var newAuthor = new Author()
         {
@@ -214,16 +196,13 @@ public class CheepRepositoryTests
         //Arrange
         await using var connection = new SqliteConnection("Filename=:memory:");
         await connection.OpenAsync();
-        var builder = new DbContextOptionsBuilder<CheepDBContext>().UseSqlite(connection);
-        var builder2 = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
+        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
         
         
-        await using var context = new CheepDBContext(builder.Options);
-        await using var context2 = new ApplicationDbContext(builder2.Options);
+        await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
-        await context2.Database.EnsureCreatedAsync();
 
-        var repository = new CheepRepository(context, context2);
+        var repository = new CheepRepository(context);
 
         var newAuthor = new Author()
         {

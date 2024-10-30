@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Data\" />
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
     <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="8.2.0" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
@@ -22,6 +23,5 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.10" />
-    <Folder Include="Data\" />
   </ItemGroup>
 </Project>
