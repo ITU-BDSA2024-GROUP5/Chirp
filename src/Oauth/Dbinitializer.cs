@@ -1,8 +1,10 @@
+using Oauth.Data;
+
 public static class DbInitializer
 {
-    public static void SeedDatabase(CheepDBContext chirpContext)
+    public static void SeedDatabase(ApplicationDbContext applicationContext)
     {
-        if (!(chirpContext.Authors.Any() && chirpContext.Cheeps.Any()))
+        if (!(applicationContext.Authors.Any() && applicationContext.Cheeps.Any()))
         {
             var a1 = new Author() { AuthorId = 1, Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>() };
             var a2 = new Author() { AuthorId = 2, Name = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = new List<Cheep>() };
@@ -691,9 +693,9 @@ public static class DbInitializer
             a11.Cheeps = new List<Cheep>() { c656 };
             a12.Cheeps = new List<Cheep>() { c657 };
 
-            chirpContext.Authors.AddRange(authors);
-            chirpContext.Cheeps.AddRange(cheeps);
-            chirpContext.SaveChanges();
+            applicationContext.Authors.AddRange(authors);
+            applicationContext.Cheeps.AddRange(cheeps);
+            applicationContext.SaveChanges();
         }
     }
 }
