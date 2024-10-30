@@ -9,8 +9,8 @@ public class CheepRepository : ICheepRepository
 
     public CheepRepository(ApplicationDbContext context)
     {
-        context.Database.EnsureCreated();
         _context = context;
+        context.Database.EnsureCreated();
         DbInitializer.SeedDatabase(_context);
     
     }
