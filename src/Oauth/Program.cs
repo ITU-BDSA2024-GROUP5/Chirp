@@ -15,6 +15,19 @@ public class Program
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
 
+         builder.Services.AddAuthentication(options =>
+            {
+                //options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = "GitHub";
+            })
+            .AddCookie()
+            .AddGitHub(o =>
+            {
+                o.ClientId = builder.Configuration["authentication_github_clientId"];
+                o.ClientSecret = builder.Configuration["authentication_github_clientSecret"];
+                o.CallbackPath = "/signin-github";
+            });
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
         builder.Services.AddScoped<ICheepRepository, CheepRepository>();
@@ -27,19 +40,30 @@ public class Program
 
         var app = builder.Build();
 
-
-        
-       
-
+        app.MapRazorPages();
         //app.UseHttpsRedirection();
         app.UseStaticFiles();
 
         app.UseRouting();
 
-        app.MapRazorPages();
+        
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseSession();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseMigrationsEndPoint();
+        }
+        else
+        {
+            app.UseExceptionHandler("/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
+       
+        
 
         app.Run();
   }
