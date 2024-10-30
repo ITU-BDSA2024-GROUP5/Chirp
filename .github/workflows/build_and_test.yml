@@ -24,8 +24,10 @@ jobs:
       run: dotnet build --no-restore
       
     - name: Test
-      run: |
-        export ClientId="${{ secrets.GITHUBCLIENTID }}"
-        export ClientSecret="${{ secrets.GITHUBCLIENTSECRET }}"
-        dotnet test --no-build --verbosity normal
+      env:
+        authentication_github_clientId: ${{ secrets.GITHUBCLIENTID }}
+        authentication_github_clientSecret: ${{ secrets.GITHUBCLIENTSECRET }} 
+      run: dotnet test --no-build --verbosity normal
+
+
       
