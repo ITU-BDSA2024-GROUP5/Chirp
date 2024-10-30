@@ -15,7 +15,7 @@ public class Program
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
         
-         builder.Services.AddAuthentication(options =>
+        builder.Services.AddAuthentication(options =>
             {
                 //options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -40,6 +40,13 @@ public class Program
 
         var app = builder.Build();
         
+        // Apply database migrations at startup
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            context.Database.Migrate();
+        }
 
 
         app.MapRazorPages();
@@ -63,13 +70,6 @@ public class Program
             app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
-        }
-
-        
-        using (var scope = app.Services.CreateScope())
-        {
-        using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        context.Database.Migrate();
         }
        
         
