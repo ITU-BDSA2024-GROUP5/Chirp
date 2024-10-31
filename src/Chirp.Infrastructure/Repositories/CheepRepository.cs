@@ -1,7 +1,5 @@
-﻿using Oauth.Pages;
-
+﻿using Chirp.Infrastructure.DataModels;
 using Microsoft.EntityFrameworkCore;
-using Oauth.Data;
 
 public class CheepRepository : ICheepRepository
 {

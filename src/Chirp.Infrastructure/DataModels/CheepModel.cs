@@ -1,3 +1,5 @@
+namespace Chirp.Infrastructure.DataModels;
+
 public class Cheep
 {
     public required int CheepId{ get; set; }

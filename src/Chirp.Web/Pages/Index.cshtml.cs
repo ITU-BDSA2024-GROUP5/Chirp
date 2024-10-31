@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Oauth.Pages;
+namespace Chirp.Web.Pages;
 
 public class IndexModel : PageModel
 {

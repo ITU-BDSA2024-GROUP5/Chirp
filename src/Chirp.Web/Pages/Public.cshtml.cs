@@ -4,7 +4,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SQLitePCL;
 
-namespace Oauth.Pages;
+namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {

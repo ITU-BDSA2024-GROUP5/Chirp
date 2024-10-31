@@ -1,3 +1,7 @@
+
+
+using Chirp.Infrastructure.DataModels;
+
 public interface ICheepRepository
 {
     public Task<List<CheepDTO>> Read(int page);

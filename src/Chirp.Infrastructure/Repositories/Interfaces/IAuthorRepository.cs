@@ -1,3 +1,8 @@
+
+
+using Chirp.Infrastructure.DataModels;
+using Chirp.Core.DTO;
+
 public interface IAuthorRepository
 {
     public Task<AuthorDTO> GetAuthorByName(string author);

@@ -1,3 +1,5 @@
+namespace Chirp.Infrastructure.DataModels;
+
 public class Author
 {
     public required int AuthorId { get; set; }

@@ -1,4 +1,5 @@
-using Oauth.Data;
+
+using Chirp.Infrastructure.DataModels;
 
 public static class DbInitializer
 {

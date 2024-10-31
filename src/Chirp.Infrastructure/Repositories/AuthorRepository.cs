@@ -1,7 +1,6 @@
-using Oauth.Pages;
-
+using Chirp.Core.DTO;
+using Chirp.Infrastructure.DataModels;
 using Microsoft.EntityFrameworkCore;
-using Oauth.Data;
 
 public class AuthorRepository : IAuthorRepository
 {
@@ -49,6 +48,11 @@ public class AuthorRepository : IAuthorRepository
 
     public static AuthorDTO WrapInDTO(Author author)
     {
+        if (author == null)
+        {
+            throw new ArgumentNullException(nameof(author), "Author cannot be null");
+        }
+        
         return new AuthorDTO{
             Name = author.Name,
             Email = author.Email
