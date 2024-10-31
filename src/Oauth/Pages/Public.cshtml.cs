@@ -38,6 +38,7 @@ public class PublicModel : PageModel
         {
             var cheep = await _cheepServiceDb.CreateCheep(author, Text);
             _cheepRepository.WriteCheep(cheep);
+            _cheepServiceDb.WriteCheep(cheep);
         }
         else
         {
@@ -48,13 +49,21 @@ public class PublicModel : PageModel
                 Email = User.Identity.Name,
                 Cheeps = new List<Cheep>()
             };
+            author = newAuthor;
             var cheep = await _cheepServiceDb.CreateCheep(newAuthor, Text);
             _cheepRepository.WriteCheep(cheep);
+            _cheepServiceDb.WriteCheep(cheep);
         }
-        
+        await fetchCheeps(author.ToString());
         
         return RedirectToPage(author);
     }
+    
+    public async Task fetchCheeps(string author)
+    {
+            Cheeps = await _cheepRepository.ReadByAuthor(0, author);
+    }
+    
 
     public async Task<ActionResult> OnGet()
     {

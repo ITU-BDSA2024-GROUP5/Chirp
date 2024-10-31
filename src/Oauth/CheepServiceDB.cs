@@ -45,14 +45,11 @@ public class CheepServiceDB : ICheepServiceDB
 
     public async Task<Author> GetAuthorByString(string author)
     {
-        if (await CheckIfAuthorExists(author))
+        if (author.Contains('@'))
         {
-            return await _cheepRepository.GetAuthorByName(author);
+            return await _cheepRepository.GetAuthorByEmail(author);
         }
-        else
-        {
-            return null;
-        }
+        return await _cheepRepository.GetAuthorByName(author);
     }
 
     public async Task<bool> CheckIfAuthorExists(string author){
