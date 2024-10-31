@@ -10,8 +10,6 @@ public class CheepRepository : ICheepRepository
     public CheepRepository(ApplicationDbContext context)
     {
         _context = context;
-        context.Database.EnsureCreated();
-        DbInitializer.SeedDatabase(_context);
     
     }
 
@@ -63,15 +61,6 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public async Task<int> GetHighestAuthorId()
-    {
-        var query = _context.Authors
-            .Select(a => a)
-            .OrderByDescending(a => a.AuthorId);
-        var result = await query.FirstOrDefaultAsync();
-        return result?.AuthorId ?? 0;
-    }
-
     public async Task<int> GetHighestCheepId(){
         var query = _context.Cheeps
             .Select(c => c)
@@ -86,28 +75,6 @@ public class CheepRepository : ICheepRepository
         cheep.Author.Cheeps.Add(cheep);
         await _context.SaveChangesAsync();
     }
-
-    public async Task WriteAuthor(Author author){
-        var queryResult = await _context.Authors.AddAsync(author);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task<Author> GetAuthorByName(string author){
-        var query = _context.Authors
-            .Select(a => a)
-            .Where(a => a.Name == author);
-        var result = await query.FirstOrDefaultAsync();
-        return result;
-    }
-    
-    public async Task<Author> GetAuthorByEmail(string email){
-        var query = _context.Authors
-            .Select(a => a)
-            .Where(a => a.Email == email);
-        var result = await query.FirstOrDefaultAsync();
-        return result;
-    }
-
 
     public static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
     {

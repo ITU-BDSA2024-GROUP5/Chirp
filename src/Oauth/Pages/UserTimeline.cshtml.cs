@@ -9,11 +9,14 @@ public class UserTimelineModel : PageModel
     public required List<CheepDTO> Cheeps { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
+    private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDB;
-    public UserTimelineModel(ICheepRepository cheepRepository)
+
+    public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
     {
+        _authorRepository = authorRepository;
         _cheepRepository = cheepRepository;
-        _cheepServiceDB = new CheepServiceDB(cheepRepository);
+        _cheepServiceDB = new CheepServiceDB(cheepRepository, authorRepository);
     }
     
     public async Task<ActionResult> OnGet(string author)
@@ -30,11 +33,11 @@ public class UserTimelineModel : PageModel
         if (author.Contains('@'))
         {
             isEmail = true;
-            createdAuthor = await _cheepRepository.GetAuthorByEmail(author);
+            createdAuthor = await _authorRepository.GetAuthorByEmail(author);
         }
         else
         {
-            createdAuthor = await _cheepRepository.GetAuthorByName(author);
+            createdAuthor = await _authorRepository.GetAuthorByName(author);
         }
         
         if (createdAuthor == null)

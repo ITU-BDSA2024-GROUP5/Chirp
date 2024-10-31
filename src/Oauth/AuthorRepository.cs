@@ -12,22 +12,24 @@ public class AuthorRepository : IAuthorRepository
         _context = context;
     }
 
-    public async Task<Author> GetAuthorByName(string author)
+    public async Task<AuthorDTO> GetAuthorByName(string author)
     {
         var query = _context.Authors
             .Select(a => a)
             .Where(a => a.Name == author);
         var result = await query.FirstOrDefaultAsync();
-        return result;
+        var Author = WrapInDTO(result);
+        return Author;
     }
     
-    public async Task<Author> GetAuthorByEmail(string email)
+    public async Task<AuthorDTO> GetAuthorByEmail(string email)
     {
         var query = _context.Authors
             .Select(a => a)
             .Where(a => a.Email == email);
         var result = await query.FirstOrDefaultAsync();
-        return result;
+        var author = WrapInDTO(result);
+        return author;
     }
 
     public async Task<int> GetHighestAuthorId()
@@ -45,17 +47,11 @@ public class AuthorRepository : IAuthorRepository
         await _context.SaveChangesAsync();
     }
 
-    public static List<AuthorDTO> WrapInDTO(List<Author> authors)
+    public static AuthorDTO WrapInDTO(Author author)
     {
-        var list = new List<AuthorDTO>();
-        foreach (var author in authors)
-        {
-            list.Add(new AuthorDTO
-            {
-                Name = author.Name,
-                Email = author.Email
-            });
-        }
-        return list;
+        return new AuthorDTO{
+            Name = author.Name,
+            Email = author.Email
+        };
     }
 }

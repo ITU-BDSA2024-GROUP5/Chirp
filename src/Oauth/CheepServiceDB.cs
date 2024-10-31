@@ -4,14 +4,16 @@ using Oauth.Pages;
 public class CheepServiceDB : ICheepServiceDB
 {
     private readonly ICheepRepository _cheepRepository;
+    private readonly IAuthorRepository _authorRepository;
     
-    public CheepServiceDB(ICheepRepository cheepRepository) {
+    public CheepServiceDB(ICheepRepository cheepRepository, IAuthorRepository authorRepository) {
         _cheepRepository = cheepRepository;
+        _authorRepository = authorRepository;
     }
     
     public async Task WriteAuthor(Author author)
     {
-        await _cheepRepository.WriteAuthor(author);
+        await _authorRepository.WriteAuthor(author);
     }
     
     public async Task WriteCheep(Cheep cheep)
@@ -23,7 +25,7 @@ public class CheepServiceDB : ICheepServiceDB
         Author newAuthor = new Author()
         {
             Name = author,
-            AuthorId = await _cheepRepository.GetHighestAuthorId() + 1,
+            AuthorId = await _authorRepository.GetHighestAuthorId() + 1,
             Email = author + "@chirp.com",
             Cheeps = new List<Cheep>()
         };
@@ -44,7 +46,7 @@ public class CheepServiceDB : ICheepServiceDB
     }
 
     public async Task<bool> CheckIfAuthorExists(string author){
-        var checkauthor = await _cheepRepository.GetAuthorByName(author);
+        var checkauthor = await _authorRepository.GetAuthorByName(author);
     
         if(checkauthor == null)
         {
