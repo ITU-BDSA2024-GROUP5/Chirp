@@ -22,6 +22,15 @@ public class AuthorRepository : IAuthorRepository
         var Author = WrapInDTO(result);
         return Author;
     }
+
+    public async Task<Author> GetAuthorByNameEntity(string author)
+    {
+        var query = _context.Authors
+            .Select(a => a)
+            .Where(a => a.Name == author);
+        var result = await query.FirstOrDefaultAsync();
+        return result;
+    }
     
     public async Task<AuthorDTO> GetAuthorByEmail(string email)
     {
@@ -38,6 +47,15 @@ public class AuthorRepository : IAuthorRepository
         var query = _context.Authors
             .Select(a => a)
             .OrderByDescending(a => a.AuthorId);
+        var result = await query.FirstOrDefaultAsync();
+        return result?.AuthorId ?? 0;
+    }
+
+    public async Task<int> GetAuthorId(string author)
+    {
+        var query = _context.Authors
+            .Select(a => a)
+            .Where(a => a.Name == author);
         var result = await query.FirstOrDefaultAsync();
         return result?.AuthorId ?? 0;
     }

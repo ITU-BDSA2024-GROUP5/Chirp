@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using AspNet.Security.OAuth.GitHub;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Services;
 
 public class Program
 {

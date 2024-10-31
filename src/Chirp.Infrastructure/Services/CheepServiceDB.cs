@@ -25,34 +25,28 @@ public class CheepServiceDB : ICheepServiceDB
         await _cheepRepository.WriteCheep(cheep);
     }
 
-    public async Task<Author> CreateAuthor(string author){
+    public async Task<AuthorDTO> CreateAuthor(string authorName){
         Author newAuthor = new Author()
         {
-            Name = author,
+            Name = authorName,
             AuthorId = await _authorRepository.GetHighestAuthorId() + 1,
-            Email = author + "@chirp.com",
+            Email = authorName + "@chirp.com",
             Cheeps = new List<Cheep>()
         };
-        return newAuthor;
+        WriteAuthor(newAuthor);
+        return await _authorRepository.GetAuthorByEmail(newAuthor.Email);
     }
 
     public async Task<Cheep> CreateCheep(string name, string text)
     {
         var author = await GetAuthorByString(name);
-
-        if(author == null)
-        {
-            
-            author = await CreateAuthor(name);
-            await WriteAuthor(author);
-        }
         
         var cheep = new Cheep()
         {
             CheepId = await _cheepRepository.GetHighestCheepId() + 1,
             Text = text,
             TimeStamp = DateTime.Now,
-            Author = author
+            Author = await _authorRepository.GetAuthorByNameEntity(author.Name)
 
         };
         return cheep;
@@ -64,11 +58,10 @@ public class CheepServiceDB : ICheepServiceDB
         if (await CheckIfAuthorExists(author))
         {
             return await _authorRepository.GetAuthorByName(author);
+        } else {
+            return await CreateAuthor(author);
         }
-        else
-        {
-            return null;
-        }
+        
     }
 
     public async Task<bool> CheckIfAuthorExists(string author){

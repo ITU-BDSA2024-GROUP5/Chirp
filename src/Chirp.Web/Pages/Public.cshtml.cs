@@ -6,6 +6,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Chirp.Infrastructure.Data.DTO;
 using SQLitePCL;
+using Chirp.Core.DataModels;
 
 namespace Chirp.Web.Pages;
 
@@ -35,23 +36,8 @@ public class PublicModel : PageModel
         }
 
         var author = await _cheepServiceDb.GetAuthorByString(User.Identity.Name);
-        if (author!=null)
-        {
-            var cheep = await _cheepServiceDb.CreateCheep(author, Text);
-            _cheepRepository.WriteCheep(cheep);
-        }
-        else
-        {
-            Author newAuthor = new Author()
-            {
-                Name = User.Identity.Name,
-                AuthorId = await _cheepRepository.GetHighestAuthorId() + 1,
-                Email = User.Identity.Name,
-                Cheeps = new List<Cheep>()
-            };
-            var cheep = await _cheepServiceDb.CreateCheep(newAuthor, Text);
-            _cheepRepository.WriteCheep(cheep);
-        }
+        
+        var cheep = await _cheepServiceDb.CreateCheep(User.Identity?.Name, Text);
         
         
         return RedirectToPage(author);
