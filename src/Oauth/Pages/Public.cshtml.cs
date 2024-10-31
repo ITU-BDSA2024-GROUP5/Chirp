@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +9,7 @@ namespace Oauth.Pages;
 
 public class PublicModel : PageModel
 {
+    
     public required List<CheepDTO> Cheeps { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
@@ -34,5 +36,4 @@ public class PublicModel : PageModel
             return 0;
         }
     }
-    
 }

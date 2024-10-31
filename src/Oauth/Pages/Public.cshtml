@@ -1,5 +1,6 @@
 ﻿@page
 @using System.Formats.Asn1
+@inject SignInManager<IdentityUser> SignInManager
 @model PublicModel
 @{
     ViewData["Title"] = "Chirp!";
@@ -9,6 +10,14 @@
 <div>
     <h2> Public Timeline </h2>
 
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <h3>What's on your mind, @User.Identity?.Name!?</h3>
+        <form method="post"  action="/Submit">
+            <input type="text" name="Message" value="">
+            <input type="submit" value="Share">
+        </form>
+    }
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
