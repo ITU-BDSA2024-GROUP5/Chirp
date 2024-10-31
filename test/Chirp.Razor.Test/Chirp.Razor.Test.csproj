@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../src/Oauth/Oauth.csproj" />
+    <ProjectReference Include="../../src/Chirp.Web/Chirp.Web.csproj" />
   </ItemGroup>
 
 </Project>
