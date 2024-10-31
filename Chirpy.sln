@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Web", "src\Chirp.Web\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Infrastructure", "src\Chirp.Infrastructure\Chirp.Infrastructure.csproj", "{C290B09C-42B6-40FB-B3C0-CA2ABE9097D5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2AE1F336-B102-4632-94E6-2D5E05BB9C1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Razor.Test", "test\chirp.razor.test\Chirp.Razor.Test.csproj", "{347E903A-19EF-4E18-9112-8DE70D980FE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +36,15 @@ Global
 		{C290B09C-42B6-40FB-B3C0-CA2ABE9097D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C290B09C-42B6-40FB-B3C0-CA2ABE9097D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C290B09C-42B6-40FB-B3C0-CA2ABE9097D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{347E903A-19EF-4E18-9112-8DE70D980FE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{347E903A-19EF-4E18-9112-8DE70D980FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{347E903A-19EF-4E18-9112-8DE70D980FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{347E903A-19EF-4E18-9112-8DE70D980FE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1AB20B19-4759-4DF5-A022-9AF8ABCF69C9} = {0F470FE3-8EC2-4EBA-8638-C8A792A6D103}
 		{6FB91805-B716-4AEB-9ADC-F88F779F0814} = {0F470FE3-8EC2-4EBA-8638-C8A792A6D103}
 		{C290B09C-42B6-40FB-B3C0-CA2ABE9097D5} = {0F470FE3-8EC2-4EBA-8638-C8A792A6D103}
+		{347E903A-19EF-4E18-9112-8DE70D980FE6} = {2AE1F336-B102-4632-94E6-2D5E05BB9C1E}
 	EndGlobalSection
 EndGlobal
