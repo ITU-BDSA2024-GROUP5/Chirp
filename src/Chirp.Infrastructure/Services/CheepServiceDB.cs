@@ -48,6 +48,18 @@ public class CheepServiceDB : ICheepServiceDB
         return cheep;
     }
 
+    public async Task<Author> GetAuthorByString(string author)
+    {
+        if (await CheckIfAuthorExists(author))
+        {
+            return await _cheepRepository.GetAuthorByName(author);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public async Task<bool> CheckIfAuthorExists(string author){
         var checkauthor = await _authorRepository.GetAuthorByName(author);
     

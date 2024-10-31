@@ -22,9 +22,9 @@ public class UserTimelineModel : PageModel
     
     public async Task<ActionResult> OnGet(string author)
     {
-        if(await _cheepServiceDB.CheckIfAuthorExists(author)) 
+        if (!string.IsNullOrEmpty(author))
         {
-        await taskHandlerAsync(author); 
+            await taskHandlerAsync(author);
         }
         return Page();
     }
