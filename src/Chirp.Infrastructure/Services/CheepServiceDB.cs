@@ -1,8 +1,9 @@
 
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
-
 using System.Runtime.CompilerServices;
+
+namespace Chirp.Infrastructure.Services;
 
 public class CheepServiceDB : ICheepServiceDB
 {
@@ -35,24 +36,34 @@ public class CheepServiceDB : ICheepServiceDB
         return newAuthor;
     }
 
-    public async Task<Cheep> CreateCheep(Author author, string text)
+    public async Task<Cheep> CreateCheep(string name, string text)
     {
+        var author = await GetAuthorByString(name);
+
+        if(author == null)
+        {
+            
+            author = await CreateAuthor(name);
+            await WriteAuthor(author);
+        }
+        
         var cheep = new Cheep()
         {
             CheepId = await _cheepRepository.GetHighestCheepId() + 1,
             Text = text,
             TimeStamp = DateTime.Now,
-            Author = author,
-            AuthorId = author.AuthorId
+            Author = author
+
         };
         return cheep;
     }
+    
 
-    public async Task<Author> GetAuthorByString(string author)
+    public async Task<AuthorDTO> GetAuthorByString(string author)
     {
         if (await CheckIfAuthorExists(author))
         {
-            return await _cheepRepository.GetAuthorByName(author);
+            return await _authorRepository.GetAuthorByName(author);
         }
         else
         {

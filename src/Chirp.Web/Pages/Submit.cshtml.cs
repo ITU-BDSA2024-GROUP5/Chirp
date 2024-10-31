@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Chirp.Infrastructure.Data.DTO;
+using Chirp.Infrastructure.Services;
 
-namespace Oauth.Pages;
+namespace Chirp.Web.Pages;
 
 public class SubmitModel : PageModel
 {

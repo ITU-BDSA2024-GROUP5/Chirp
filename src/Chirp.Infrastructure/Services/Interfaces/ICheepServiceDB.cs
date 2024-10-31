@@ -1,5 +1,6 @@
 
 using Chirp.Core.DataModels;
+using Chirp.Infrastructure.Data.DTO;
 
 public interface ICheepServiceDB
 {
@@ -7,6 +8,6 @@ public interface ICheepServiceDB
     public Task WriteAuthor(Author author);
     public Task<bool> CheckIfAuthorExists(String author);
     public Task<Author> CreateAuthor(string author);
-    public Task<Cheep> CreateCheep(Author author, string text);
-    public Task<Author> GetAuthorByString(string author);
+    public Task<Cheep> CreateCheep(string name, string text);
+    public Task<AuthorDTO> GetAuthorByString(string author);
 }
