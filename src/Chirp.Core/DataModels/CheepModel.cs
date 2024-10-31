@@ -1,4 +1,4 @@
-namespace Chirp.Infrastructure.DataModels;
+namespace Chirp.Core.DataModels;
 
 public class Cheep
 {

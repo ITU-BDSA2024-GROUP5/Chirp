@@ -14,11 +14,11 @@
     <!-- This itemgroup is for importing/including folders -->
     <ItemGroup>
         <Folder Include="Repositories\"/>
-        <Folder Include="DataModels\"/>
     </ItemGroup>
 
     <!-- This itemgroup is for importing/including packages -->
     <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10"/>
         <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.8"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">

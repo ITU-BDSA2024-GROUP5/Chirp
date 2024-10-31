@@ -1,5 +1,5 @@
 
-using Chirp.Infrastructure.DataModels;
+using Chirp.Core.DataModels;
 
 public interface ICheepServiceDB
 {

@@ -1,4 +1,4 @@
-﻿using Chirp.Core.DTO;
+﻿using Chirp.Infrastructure.Data.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SQLitePCL;
@@ -22,15 +22,17 @@ public class UserTimelineModel : PageModel
     
     public async Task<ActionResult> OnGet(string author)
     {
-        await taskHandlerAsync(author);
+        if(await _cheepServiceDB.CheckIfAuthorExists(author)) 
+        {
+        await taskHandlerAsync(author); 
+        }
         return Page();
     }
 
     public async Task taskHandlerAsync(string author)
     {
-        if(await _cheepServiceDB.CheckIfAuthorExists(author)) 
-        {
-            AuthorDTO createdAuthor;
+        
+        AuthorDTO createdAuthor;
         var isEmail = false;
         
         if (author.Contains('@'))
@@ -44,7 +46,6 @@ public class UserTimelineModel : PageModel
         }
     
         await fetchCheeps(author, isEmail);
-        }
         
     }
 

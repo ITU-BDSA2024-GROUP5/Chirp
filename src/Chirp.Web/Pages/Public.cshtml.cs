@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Chirp.Infrastructure.Data.DTO;
 using SQLitePCL;
 
 namespace Chirp.Web.Pages;

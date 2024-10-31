@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AspNet.Security.OAuth.GitHub;
 using Microsoft.AspNetCore.Authentication.Cookies;
-
+using Chirp.Infrastructure.Data;
 
 public class Program
 {
@@ -70,6 +70,7 @@ public class Program
         using (var scope = app.Services.CreateScope())
         {
             using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            context.Database.EnsureCreated();
             context.Database.Migrate();
             DbInitializer.SeedDatabase(context);
         }

@@ -1,8 +1,11 @@
 ﻿
-using Chirp.Infrastructure.DataModels;
-
+using Chirp.Infrastructure.Data.DTO;
+using Chirp.Core.DataModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
+
+namespace Chirp.Infrastructure.Data;
 
 public class ApplicationDbContext : IdentityDbContext
 {

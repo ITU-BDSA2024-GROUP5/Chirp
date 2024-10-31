@@ -1,6 +1,8 @@
-using Chirp.Core.DTO;
-using Chirp.Infrastructure.DataModels;
+using Chirp.Core.DataModels;
+using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Data.DTO;
 using Microsoft.EntityFrameworkCore;
+
 
 public class AuthorRepository : IAuthorRepository
 {
@@ -47,12 +49,9 @@ public class AuthorRepository : IAuthorRepository
     }
 
     public static AuthorDTO WrapInDTO(Author author)
-    {
-        if (author == null)
-        {
-            throw new ArgumentNullException(nameof(author), "Author cannot be null");
-        }
-        
+    {   
+        if(author == null) return null;
+
         return new AuthorDTO{
             Name = author.Name,
             Email = author.Email

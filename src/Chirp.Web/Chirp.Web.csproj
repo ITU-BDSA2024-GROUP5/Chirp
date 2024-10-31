@@ -10,6 +10,7 @@
     <!-- This itemgroup is for importing/including other project files -->
     <ItemGroup>
         <ProjectReference Include="..\Chirp.Infrastructure\Chirp.Infrastructure.csproj" />
+        <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
     </ItemGroup>
 
     <!-- This itemgroup is for importing/including folders -->

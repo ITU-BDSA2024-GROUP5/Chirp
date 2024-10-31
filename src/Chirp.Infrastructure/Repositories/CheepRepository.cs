@@ -1,5 +1,8 @@
-﻿using Chirp.Infrastructure.DataModels;
+﻿using Chirp.Core.DataModels;
+using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Data.DTO;
 using Microsoft.EntityFrameworkCore;
+
 
 public class CheepRepository : ICheepRepository
 {

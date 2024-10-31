@@ -1,7 +1,8 @@
 
 
-using Chirp.Infrastructure.DataModels;
-using Chirp.Core.DTO;
+using Chirp.Core.DataModels;
+using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Data.DTO;
 
 public interface IAuthorRepository
 {

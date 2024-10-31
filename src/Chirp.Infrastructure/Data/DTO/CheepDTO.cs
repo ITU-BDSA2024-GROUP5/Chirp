@@ -1,3 +1,5 @@
+namespace Chirp.Infrastructure.Data.DTO;
+
 public class CheepDTO
 {
     public required string Text { get; set; }
