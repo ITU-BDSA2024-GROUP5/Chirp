@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SQLitePCL;
@@ -33,11 +34,26 @@ public class PublicModel : PageModel
         }
 
         var author = await _cheepServiceDb.GetAuthorByString(User.Identity.Name);
-        var cheep = await _cheepServiceDb.CreateCheep(author, Text);
-        _cheepRepository.WriteCheep(cheep);
+        if (author!=null)
+        {
+            var cheep = await _cheepServiceDb.CreateCheep(author, Text);
+            _cheepRepository.WriteCheep(cheep);
+        }
+        else
+        {
+            Author newAuthor = new Author()
+            {
+                Name = User.Identity.Name,
+                AuthorId = await _cheepRepository.GetHighestAuthorId() + 1,
+                Email = User.Identity.Name,
+                Cheeps = new List<Cheep>()
+            };
+            var cheep = await _cheepServiceDb.CreateCheep(newAuthor, Text);
+            _cheepRepository.WriteCheep(cheep);
+        }
         
         
-        return RedirectToPage("Public");
+        return RedirectToPage(author);
     }
 
     public async Task<ActionResult> OnGet()
