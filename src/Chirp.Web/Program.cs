@@ -4,6 +4,7 @@ using AspNet.Security.OAuth.GitHub;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Services;
+using Chirp.Infrastructure.Repositories;
 
 public class Program
 {
