@@ -18,7 +18,10 @@ public class UserTimelineModel : PageModel
     
     public async Task<ActionResult> OnGet(string author)
     {
-        await taskHandlerAsync(author);
+        if (!string.IsNullOrEmpty(author))
+        {
+            await taskHandlerAsync(author);
+        }
         return Page();
     }
 

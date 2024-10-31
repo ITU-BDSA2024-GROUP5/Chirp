@@ -57,5 +57,4 @@ public class PublicModel : PageModel
             return 0;
         }
     }
-    
 }
