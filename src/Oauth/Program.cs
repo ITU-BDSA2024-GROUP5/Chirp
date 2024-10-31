@@ -31,6 +31,7 @@ public class Program
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
         builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+        builder.Services.AddScoped<ICheepServiceDB, CheepServiceDB>();
 
         builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
         builder.Services.AddRazorPages();

@@ -7,4 +7,5 @@ public interface ICheepServiceDB
     public Task<bool> CheckIfAuthorExists(String author);
     public Task<Author> CreateAuthor(string author);
     public Task<Cheep> CreateCheep(Author author, string text);
+    public Task<Author> GetAuthorByString(string author);
 }
