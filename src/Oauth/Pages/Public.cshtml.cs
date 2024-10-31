@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,13 +9,35 @@ namespace Oauth.Pages;
 
 public class PublicModel : PageModel
 {
+    
+    [BindProperty]
+    [Required]
+    [StringLength(160,ErrorMessage = "Maximum length is 160 characters.")]
+    public string Text { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
-
-    public PublicModel(ICheepRepository cheepRepository)
+    private readonly ICheepServiceDB _cheepServiceDb;
+    public PublicModel(ICheepRepository cheepRepository,ICheepServiceDB cheepServiceDb)
     {
         _cheepRepository = cheepRepository;
+        _cheepServiceDb = cheepServiceDb;
+    }
+
+    public async Task<ActionResult> OnPost()
+    {
+        if (!ModelState.IsValid)
+        {
+            ModelState.AddModelError(string.Empty, "you made an oopsie");
+            return Page();
+        }
+
+        var author = await _cheepServiceDb.GetAuthorByString(User.Identity.Name);
+        var cheep = await _cheepServiceDb.CreateCheep(author, Text);
+        _cheepRepository.WriteCheep(cheep);
+        
+        
+        return RedirectToPage("Public");
     }
 
     public async Task<ActionResult> OnGet()

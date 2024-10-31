@@ -1,14 +1,28 @@
 ﻿@page
 @using System.Formats.Asn1
 @model PublicModel
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
 }
 
 <div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="cheepbox">
+            <h3>What's on your mind @(User.Identity.Name)?</h3>
+            <form method="post">
+                <input style="float: left" type="text" asp-for="Text">
+                <input type="submit" value="Share">
+            </form>
+        </div>
+    }
+    
     <h2> Public Timeline </h2>
-
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
