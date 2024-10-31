@@ -27,7 +27,7 @@ public class UserTimelineModel : PageModel
 
     public async Task taskHandlerAsync(string author)
     {
-        Author createdAuthor;
+        AuthorDTO createdAuthor;
         var isEmail = false;
         
         if (author.Contains('@'))
@@ -39,19 +39,7 @@ public class UserTimelineModel : PageModel
         {
             createdAuthor = await _authorRepository.GetAuthorByName(author);
         }
-        
-        if (createdAuthor == null)
-        {
-            createdAuthor = await _cheepServiceDB.CreateAuthor(author);
-            await _cheepServiceDB.WriteAuthor(createdAuthor);
-        }
-        var text = Request.Query["cheep"].ToString();
-        if (text.Length <= 160 && text.Length > 0)
-        {
-            var cheep = await _cheepServiceDB.CreateCheep(createdAuthor, text);
-            await _cheepServiceDB.WriteCheep(cheep);
-        }
-
+    
         await fetchCheeps(author, isEmail);
     }
 
