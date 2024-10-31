@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Infrastructure", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2AE1F336-B102-4632-94E6-2D5E05BB9C1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Razor.Test", "test\chirp.razor.test\Chirp.Razor.Test.csproj", "{347E903A-19EF-4E18-9112-8DE70D980FE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Razor.Test", "test\Chirp.Razor.Test\Chirp.Razor.Test.csproj", "{347E903A-19EF-4E18-9112-8DE70D980FE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
