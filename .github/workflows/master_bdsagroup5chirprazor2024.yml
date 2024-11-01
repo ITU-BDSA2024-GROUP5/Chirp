@@ -62,4 +62,4 @@ jobs:
           app-name: 'bdsagroup5chirprazor2024'
           slot-name: 'Production'
           package: .
-          startup-command: 'dotnet Oauth.dll'
+          startup-command: 'dotnet Chirp.Web.dll'
