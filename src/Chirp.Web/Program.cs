@@ -52,7 +52,7 @@ public class Program
         using (var scope = app.Services.CreateScope())
         {
             using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            context.Database.Migrate();
+            context.Database.EnsureCreated();
             DbInitializer.SeedDatabase(context);
         }
         // Configure the HTTP request pipeline.
