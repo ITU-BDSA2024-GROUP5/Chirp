@@ -77,7 +77,13 @@ public class Program
         app.UseAuthorization();
         app.UseSession();
         
-
+        app.MapGet("/debug/env", (IWebHostEnvironment env) => new
+        {
+            EnvironmentName = env.EnvironmentName,
+            IsProduction = env.IsProduction(),
+            IsDevelopment = env.IsDevelopment(),
+            AspNetCoreEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+        });
         app.Run();
   }
 }
