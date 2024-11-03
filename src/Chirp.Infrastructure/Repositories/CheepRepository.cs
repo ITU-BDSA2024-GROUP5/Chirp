@@ -73,7 +73,7 @@ public class CheepRepository : ICheepRepository
 
     public async Task WriteCheep(Cheep cheep)
     {
-        var queryResult = await _context.Cheeps.AddAsync(cheep);
+        await _context.Cheeps.AddAsync(cheep);
         cheep.Author.Cheeps.Add(cheep);
         await _context.SaveChangesAsync();
     }

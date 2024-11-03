@@ -20,10 +20,12 @@ public class PublicModel : PageModel
     public required List<CheepDTO> Cheeps { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
+    private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
-    public PublicModel(ICheepRepository cheepRepository,ICheepServiceDB cheepServiceDb)
+    public PublicModel(ICheepRepository cheepRepository, ICheepServiceDB cheepServiceDb, IAuthorRepository authorRepository)
     {
         _cheepRepository = cheepRepository;
+        _authorRepository = authorRepository;
         _cheepServiceDb = cheepServiceDb;
     }
 
@@ -36,12 +38,24 @@ public class PublicModel : PageModel
         }
 
         var author = await _cheepServiceDb.GetAuthorByString(User.Identity.Name);
+        if (author == null)
+        {
+            var newAuthor = await _cheepServiceDb.CreateAuthor(User.Identity.Name);
+            author = newAuthor;
+        }
+        var cheep = await _cheepServiceDb.CreateCheep(author.Name, Text);
+        await _cheepServiceDb.WriteCheep(cheep);
         
-        var cheep = await _cheepServiceDb.CreateCheep(User.Identity?.Name, Text);
-        
+        await fetchCheeps(author.Name);
         
         return RedirectToPage(author);
     }
+    
+    public async Task fetchCheeps(string author)
+    {
+            Cheeps = await _cheepRepository.ReadByAuthor(0, author);
+    }
+    
 
     public async Task<ActionResult> OnGet()
     {
@@ -49,7 +63,7 @@ public class PublicModel : PageModel
         return Page();
     }
 
-    public int parsePage(String pagenr)
+    public int parsePage(string pagenr)
     {
         try
         {
