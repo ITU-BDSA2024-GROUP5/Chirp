@@ -33,7 +33,10 @@ jobs:
           
   # Publish for Linux
       - name: Publish Linux
-        run: dotnet publish src/Chirp.Razor/Chirp.Razor.csproj -r linux-x64 -o publish/linux-x64 --no-self-contained 
+        run: |
+          dotnet publish src/Chirp.Core/Chirp.Core.csproj -r linux-x64 -o publish/linux-x64 --no-self-contained
+          dotnet publish src/Chirp.Infrastructure/Chirp.Infrastructure.csproj -r linux-x64 -o publish/linux-x64 --no-self-contained 
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj -r linux-x64 -o publish/linux-x64 --no-self-contained 
           
 # Zip Linux artifacts
       - name: Zip Linux Artifacts
@@ -41,7 +44,10 @@ jobs:
 
 # Publish for Windows
       - name: Publish Windows
-        run: dotnet publish src/Chirp.Razor/Chirp.Razor.csproj -r win-x64 -o publish/win-x64 --no-self-contained
+        run: |
+          dotnet publish src/Chirp.Core/Chirp.Core.csproj -r win-x64 -o publish/win-x64 --no-self-contained
+          dotnet publish src/Chirp.Infrastructure/Chirp.Infrastructure.csproj -r win-x64 -o publish/win-x64 --no-self-contained 
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj -r win-x64 -o publish/win-x64 --no-self-contained 
 
 # Zip Windows artifacts
       - name: Zip Windows Artifacts
@@ -49,7 +55,10 @@ jobs:
 
 # Publish for MacOS x64
       - name: Publish MacOS x64
-        run: dotnet publish src/Chirp.Razor/Chirp.Razor.csproj -r osx-x64 -o publish/osx-x64 --no-self-contained
+        run: |
+            dotnet publish src/Chirp.Core/Chirp.Core.csproj -r osx-x64 -o publish/osx-x64 --no-self-contained
+            dotnet publish src/Chirp.Infrastructure/Chirp.Infrastructure.csproj -r osx-x64 -o publish/osx-x64 --no-self-contained 
+            dotnet publish src/Chirp.Web/Chirp.Web.csproj -r osx-x64 -o publish/osx-x64 --no-self-contained
 
 # Zip MacOS x64 artifacts
       - name: Zip MacOS x64 Artifacts
@@ -57,7 +66,10 @@ jobs:
 
 # Publish for MacOS ARM
       - name: Publish MacOS ARM
-        run: dotnet publish src/Chirp.Razor/Chirp.Razor.csproj -r osx-arm64 -o publish/osx-arm64
+        run: |
+            dotnet publish src/Chirp.Core/Chirp.Core.csproj -r osx-arm64 -o publish/osx-arm64 --no-self-contained
+            dotnet publish src/Chirp.Infrastructure/Chirp.Infrastructure.csproj -r osx-arm64 -o publish/osx-arm64 --no-self-contained 
+            dotnet publish src/Chirp.Web/Chirp.Web.csproj -r osx-arm64 -o publish/osx-arm64 --no-self-contained
 
 # Zip MacOS ARM artifacts
       - name: Zip MacOS ARM Artifacts
