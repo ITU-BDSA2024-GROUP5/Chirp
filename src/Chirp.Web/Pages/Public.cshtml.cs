@@ -1,12 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualBasic.CompilerServices;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Chirp.Infrastructure.Data.DTO;
-using SQLitePCL;
-using Chirp.Core.DataModels;
 
 namespace Chirp.Web.Pages;
 
