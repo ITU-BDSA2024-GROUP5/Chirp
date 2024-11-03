@@ -13,6 +13,7 @@
 
     <!-- This itemgroup is for importing/including folders -->
     <ItemGroup>
+        <Folder Include="Migrations\" />
         <Folder Include="Repositories\"/>
     </ItemGroup>
 
