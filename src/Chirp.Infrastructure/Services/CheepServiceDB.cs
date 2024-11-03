@@ -25,12 +25,24 @@ public class CheepServiceDB : ICheepServiceDB
         await _cheepRepository.WriteCheep(cheep);
     }
 
-    public async Task<AuthorDTO> CreateAuthor(string authorName){
-        Author newAuthor = new Author()
+    public async Task<AuthorDTO> CreateAuthor(string authorName)
+    {
+        var name = "";
+        var email = "";
+        if (authorName.Contains('@'))
         {
-            Name = authorName,
+            name = authorName;
+            email = authorName;
+        }else{
+            name = authorName;
+            email = authorName + "@chirp.com";
+        }
+
+        var newAuthor = new Author()
+        {
+            Name = name,
             AuthorId = await _authorRepository.GetHighestAuthorId() + 1,
-            Email = authorName + "@chirp.com",
+            Email = email,
             Cheeps = new List<Cheep>()
         };
         WriteAuthor(newAuthor);

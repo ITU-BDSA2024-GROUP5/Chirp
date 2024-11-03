@@ -20,10 +20,12 @@ public class PublicModel : PageModel
     public required List<CheepDTO> Cheeps { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
+    private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
-    public PublicModel(ICheepRepository cheepRepository,ICheepServiceDB cheepServiceDb)
+    public PublicModel(ICheepRepository cheepRepository, ICheepServiceDB cheepServiceDb, IAuthorRepository authorRepository)
     {
         _cheepRepository = cheepRepository;
+        _authorRepository = authorRepository;
         _cheepServiceDb = cheepServiceDb;
     }
 
@@ -36,27 +38,15 @@ public class PublicModel : PageModel
         }
 
         var author = await _cheepServiceDb.GetAuthorByString(User.Identity.Name);
-        if (author!=null)
+        if (author == null)
         {
-            var cheep = await _cheepServiceDb.CreateCheep(author, Text);
-            _cheepRepository.WriteCheep(cheep);
-            _cheepServiceDb.WriteCheep(cheep);
-        }
-        else
-        {
-            Author newAuthor = new Author()
-            {
-                Name = User.Identity.Name,
-                AuthorId = await _cheepRepository.GetHighestAuthorId() + 1,
-                Email = User.Identity.Name,
-                Cheeps = new List<Cheep>()
-            };
+            var newAuthor = await _cheepServiceDb.CreateAuthor(User.Identity.Name);
             author = newAuthor;
-            var cheep = await _cheepServiceDb.CreateCheep(newAuthor, Text);
-            _cheepRepository.WriteCheep(cheep);
-            _cheepServiceDb.WriteCheep(cheep);
         }
-        await fetchCheeps(author.ToString());
+        var cheep = await _cheepServiceDb.CreateCheep(author.Name, Text);
+        await _cheepServiceDb.WriteCheep(cheep);
+        
+        await fetchCheeps(author.Name);
         
         return RedirectToPage(author);
     }
@@ -73,7 +63,7 @@ public class PublicModel : PageModel
         return Page();
     }
 
-    public int parsePage(String pagenr)
+    public int parsePage(string pagenr)
     {
         try
         {
