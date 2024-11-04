@@ -24,7 +24,10 @@ jobs:
       run: dotnet build --no-restore
       
     - name: Install playwright
-      run: pwsh bin/Debug/netX/playwright.ps1 install
+      run: |
+        pwd
+        ls
+        pwsh bin/Debug/netX/playwright.ps1 install
       
     - name: Test
       env:
