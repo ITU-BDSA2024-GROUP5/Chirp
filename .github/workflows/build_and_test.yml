@@ -30,18 +30,20 @@ jobs:
         cd src/Chirp.Web
         dotnet run &
     - name: Install playwright
-      
       run: |
         pwd
         ls
         cd test/PlaywrightTests
         pwsh bin/Debug/net8.0/playwright.ps1 install
+        ps -aux
       
     - name: Test
       env:
         authentication_github_clientId: ${{ secrets.GITHUBCLIENTID }}
         authentication_github_clientSecret: ${{ secrets.GITHUBCLIENTSECRET }} 
-      run: dotnet test --no-build --verbosity normal
+      run: |
+        dotnet test --no-build --verbosity normal
+        
 
 
       
