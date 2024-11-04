@@ -34,7 +34,7 @@ jobs:
       run: |
         pwd
         ls
-        cd test/PlaywrightTest
+        cd test/PlaywrightTests
         pwsh bin/Debug/net8.0/playwright.ps1 install
       
     - name: Test
