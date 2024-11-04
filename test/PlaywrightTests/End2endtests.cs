@@ -38,9 +38,9 @@ public class Tests : PageTest
         
         await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
         
-        await Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your email." }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Click here to confirm your" }).ClickAsync();
         
-        await Expect(Page.GetByText("Thank you for confirming your email.")).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Thank you for confirming your")).ToBeVisibleAsync();
     }
 
     [Test]
@@ -53,6 +53,27 @@ public class Tests : PageTest
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
         
         await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Hello testuser@gmail.com!" })).ToBeVisibleAsync();
+    }
+    
+    [Test]
+    public async Task CheepBoxNotVisibleWhenNotLoggedIn()
+    {
+        await Page.GotoAsync("http://localhost:5177/Public");
+        await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).Not.ToBeVisibleAsync();
+
+    }
+    
+    [Test]
+    public async Task CheepBoxVisibleWhenLoggedIn()
+    {
+        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        
+        await Page.GotoAsync("http://localhost:5177/Public");
+        await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).ToBeVisibleAsync();
 
     }
 }
