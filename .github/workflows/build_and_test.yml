@@ -23,11 +23,15 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       
-    - name: Install playwright
+    - name: Run localhost
       run: |
+        pwd
         cd src/Chirp.Web
         dotnet run &
-        cd ../../
+    - name: Install playwright
+      
+      run: |
+        pwd
         cd test/PlaywrightTest
         pwsh bin/Debug/net8.0/playwright.ps1 install
       
