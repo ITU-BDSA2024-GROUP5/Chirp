@@ -10,7 +10,7 @@ public class PublicModel : PageModel
     
     [BindProperty]
     [Required]
-    [StringLength(160,ErrorMessage = "Maximum length is 160 characters.")]
+    [StringLength(160, MinimumLength = 1, ErrorMessage = "String length must be between 1 and 160")]
     public string Text { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
     
