@@ -27,17 +27,7 @@ public class Tests : PageTest
     }
 
     [Test]
-    public async Task RunTestInCorrectOrder()
-    {
-        await UserCanRegister();
-        await UserCanLogin();
-        await CheepBoxNotVisibleWhenNotLoggedIn();
-        await CheepBoxVisibleWhenLoggedIn();
-        await UserCanCheep();
-        await UserTimeLineHasCheeps();
-    }
-    
-    public async Task UserCanRegister()
+    public async Task AUserCanRegister()
     {
         await Page.GotoAsync("http://localhost:5177/");
 
@@ -53,8 +43,9 @@ public class Tests : PageTest
 
         await Expect(Page.GetByText("Thank you for confirming your")).ToBeVisibleAsync();
     }
-    
-    public async Task UserCanLogin()
+
+    [Test]
+    public async Task BUserCanLogin()
     {
         await Page.GotoAsync("http://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
@@ -64,15 +55,17 @@ public class Tests : PageTest
 
         await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Hello testuser@gmail.com!" })).ToBeVisibleAsync();
     }
-    
-    public async Task CheepBoxNotVisibleWhenNotLoggedIn()
+
+    [Test]
+    public async Task CCheepBoxNotVisibleWhenNotLoggedIn()
     {
         await Page.GotoAsync("http://localhost:5177/Public");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).Not.ToBeVisibleAsync();
 
     }
-    
-    public async Task CheepBoxVisibleWhenLoggedIn()
+
+    [Test]
+    public async Task DCheepBoxVisibleWhenLoggedIn()
     {
         await Page.GotoAsync("http://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
@@ -84,8 +77,9 @@ public class Tests : PageTest
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).ToBeVisibleAsync();
 
     }
-    
-    public async Task UserCanCheep()
+
+    [Test]
+    public async Task EUserCanCheep()
     {
         await Page.GotoAsync("http://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
@@ -101,8 +95,9 @@ public class Tests : PageTest
 
         await Expect(Page.GetByText("This is a cheep")).ToBeVisibleAsync();
     }
-    
-    public async Task UserTimeLineHasCheeps()
+
+    [Test]
+    public async Task FUserTimeLineHasCheeps()
     {
         await Page.GotoAsync("http://localhost:5177/testuser@gmail.com");
         await Expect(Page.GetByText("There are no cheeps so far.")).Not.ToBeVisibleAsync();
