@@ -33,6 +33,7 @@ public class Tests : PageTest
 
         await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
 
+        await Page.GetByText("Username").FillAsync("testuser");
         await Page.GetByText("Email").FillAsync("testuser@gmail.com");
         await Page.GetByText("Password", new() { Exact = true }).FillAsync("Nicepassword123#");
         await Page.GetByText("Confirm Password").FillAsync("Nicepassword123#");
@@ -49,7 +50,7 @@ public class Tests : PageTest
     {
         await Page.GotoAsync("http://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Username" }).FillAsync("testuser");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
@@ -69,7 +70,7 @@ public class Tests : PageTest
     {
         await Page.GotoAsync("http://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Username" }).FillAsync("testuser");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
@@ -83,7 +84,7 @@ public class Tests : PageTest
     {
         await Page.GotoAsync("http://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Username" }).FillAsync("testuser");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
