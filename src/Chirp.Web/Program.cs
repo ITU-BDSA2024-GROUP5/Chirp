@@ -1,3 +1,4 @@
+using Chirp.Core.DataModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -17,8 +18,17 @@ public class Program
 
         // Add services to the container.
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
-
+        
+        // Database context
+        builder.Services.AddDbContext<ApplicationDbContext>(
+            options => options.UseSqlite(connectionString,
+            x => x.MigrationsAssembly("Chirp.Infrastructure")));
+        builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = true)
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddUserManager<UserManager<Author>>()
+            .AddSignInManager<SignInManager<Author>>();
+        
+        
         builder.Services.AddAuthentication(options =>
             {
                 //options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -34,15 +44,14 @@ public class Program
             });
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+        
+        // Dependencry
         builder.Services.AddScoped<ICheepServiceDB, CheepServiceDB>();
         builder.Services.AddScoped<ICheepRepository, CheepRepository>();
         builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 
         //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
-        builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddUserManager<UserManager<ApplicationUser>>()
-            .AddSignInManager<SignInManager<ApplicationUser>>();
+        
         
         
         builder.Services.AddRazorPages();
@@ -52,11 +61,6 @@ public class Program
 
         var app = builder.Build();
         
-        
-
-
-        
-
         // Apply database migrations at startup
         using (var scope = app.Services.CreateScope())
         {

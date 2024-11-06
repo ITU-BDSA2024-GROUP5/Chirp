@@ -1,7 +1,9 @@
 ﻿@page "/{author}"
+@using Chirp.Core.DataModels
 @using Chirp.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model UserTimelineModel
-@inject SignInManager<ApplicationUser> SignInManager
+@inject SignInManager<Author> SignInManager
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";

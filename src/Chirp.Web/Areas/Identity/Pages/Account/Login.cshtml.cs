@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Chirp.Core.DataModels;
 using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -9,9 +10,9 @@ namespace Chirp.Web.Areas.Identity.Pages.Account;
 
 public class LoginModel : PageModel
 {
-    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly SignInManager<Author> _signInManager;
     private readonly ILogger<LoginModel> _logger;
-    public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+    public LoginModel(SignInManager<Author> signInManager, ILogger<LoginModel> logger)
     {
         _signInManager = signInManager;
         _logger = logger;

@@ -1,10 +1,12 @@
 @page
-@inject SignInManager<ApplicationUser> SignInManager
+@inject SignInManager<Author> SignInManager
 
 @using System.Net.Mime
+@using Chirp.Core.DataModels
 @using Chirp.Infrastructure
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model PublicModel
-@inject UserManager<ApplicationUser> UserManager
+@inject UserManager<Author> UserManager
 
 
 @{
