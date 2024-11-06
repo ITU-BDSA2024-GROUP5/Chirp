@@ -7,12 +7,13 @@ namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {
+    public required List<CheepDTO> Cheeps { get; set; }
     
     [BindProperty]
     [Required]
     [StringLength(160,ErrorMessage = "Maximum length is 160 characters.")]
     public string Text { get; set; }
-    public required List<CheepDTO> Cheeps { get; set; }
+    
     
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
@@ -50,6 +51,11 @@ public class PublicModel : PageModel
     {
             Cheeps = await _cheepRepository.ReadByAuthor(0, author);
     }
+    
+    public async Task fetchCheeps()
+        {       
+                Cheeps = await _cheepRepository.Read(0);
+        }
     
 
     public async Task<ActionResult> OnGet()
