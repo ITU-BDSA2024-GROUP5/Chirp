@@ -55,7 +55,10 @@ public static class DbInitializer
             var a11 = new Author() { AuthorId = 11, UserName = "Helge", Email = "ropf@itu.dk", Cheeps = new List<Cheep>() };
             var a12 = new Author() { AuthorId = 12, UserName = "Adrian", Email = "adho@itu.dk", Cheeps = new List<Cheep>() };
 
+            //Helge
             await CreateTeacher(a11, "LetM31n!", userManager, userStore);
+            
+            //Adrian
             await CreateTeacher(a12, "M32Want_Access", userManager, userStore);
             
             var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
