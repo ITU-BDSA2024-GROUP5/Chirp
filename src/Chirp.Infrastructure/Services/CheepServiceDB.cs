@@ -40,7 +40,7 @@ public class CheepServiceDB : ICheepServiceDB
 
         var newAuthor = new Author()
         {
-            Name = name,
+            UserName = name,
             AuthorId = await _authorRepository.GetHighestAuthorId() + 1,
             Email = email,
             Cheeps = new List<Cheep>()

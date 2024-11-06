@@ -18,7 +18,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var query = _context.Authors
             .Select(a => a)
-            .Where(a => a.Name == author);
+            .Where(a => a.UserName == author);
         var result = await query.FirstOrDefaultAsync();
         var Author = WrapInDTO(result);
         return Author;
@@ -28,7 +28,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var query = _context.Authors
             .Select(a => a)
-            .Where(a => a.Name == author);
+            .Where(a => a.UserName == author);
         var result = await query.FirstOrDefaultAsync();
         return result;
     }
@@ -56,7 +56,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var query = _context.Authors
             .Select(a => a)
-            .Where(a => a.Name == author);
+            .Where(a => a.UserName == author);
         var result = await query.FirstOrDefaultAsync();
         return result?.AuthorId ?? 0;
     }
@@ -72,7 +72,7 @@ public class AuthorRepository : IAuthorRepository
         if(author == null) return null;
 
         return new AuthorDTO{
-            Name = author.Name,
+            Name = author.UserName,
             Email = author.Email
         };
     }

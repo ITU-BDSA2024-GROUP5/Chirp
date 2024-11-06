@@ -33,7 +33,7 @@ public class SubmitModel : PageModel
                 Cheeps.Add(new CheepDTO
                 {
                         Text = cheep.Text,
-                        Author = cheep.Author.Name,
+                        Author = cheep.Author.UserName,
                         TimeStamp = cheep.TimeStamp.ToString()
                 });
                 Message = msg;

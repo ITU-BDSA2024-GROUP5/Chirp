@@ -37,7 +37,7 @@ public class CheepRepository : ICheepRepository
         var query = _context.Cheeps
             .Select(cheep => cheep)
             .Include(c => c.Author)
-            .Where(cheep => cheep.Author.Name == author)
+            .Where(cheep => cheep.Author.UserName == author)
             .OrderByDescending(cheep => cheep.TimeStamp)
             .Skip((page - 1) * 32)
             .Take(32);
@@ -86,7 +86,7 @@ public class CheepRepository : ICheepRepository
             list.Add(new CheepDTO
             {
                 Text = cheep.Text,
-                Author = cheep.Author.Name,
+                Author = cheep.Author.UserName,
                 TimeStamp = cheep.TimeStamp.ToString()
             });
         }

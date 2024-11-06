@@ -12,7 +12,7 @@ namespace Chirp.Web;
 //this is the main entry point for the application
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -66,7 +66,9 @@ public class Program
         {
             using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             context.Database.EnsureCreated();
-            DbInitializer.SeedDatabase(context);
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Author>>();
+            var userStore = scope.ServiceProvider.GetRequiredService<IUserStore<Author>>();
+            await DbInitializer.SeedDatabase(context, userManager, userStore);
         }
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
