@@ -9,27 +9,31 @@ namespace Chirp.Web.Areas.Identity.Pages.Account;
 
 public class Register : PageModel
 {
+    [BindProperty]
+    public InputModel Input { get; set; }
+    public string ReturnUrl { get; set; }
+    public IList<AuthenticationScheme> ExternalLogins { get; set; }
+    
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserStore<ApplicationUser> _userStore;
     private readonly IUserEmailStore<ApplicationUser> _emailStore;
     private readonly ILogger<Register> _logger;
-    public Register(
-        UserManager<ApplicationUser> userManager,
-        IUserStore<ApplicationUser> userStore,
-        SignInManager<ApplicationUser> signInManager,
-        ILogger<Register> logger)
+    
+    public Register(UserManager<ApplicationUser> userManager, IUserStore<ApplicationUser> userStore, 
+        SignInManager<ApplicationUser> signInManager, ILogger<Register> logger)
     {
         _userManager = userManager;
         _userStore = userStore;
         _emailStore = GetEmailStore();
         _signInManager = signInManager;
         _logger = logger;
+        
+        Input = new InputModel();
+        
+        ReturnUrl = string.Empty;
+        ExternalLogins = new List<AuthenticationScheme>();
     }
-    [BindProperty]
-    public InputModel Input { get; set; }
-    public string ReturnUrl { get; set; }
-    public IList<AuthenticationScheme> ExternalLogins { get; set; }
     public class InputModel
     {
         [Required]
@@ -49,15 +53,23 @@ public class Register : PageModel
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public InputModel()
+        {
+            UserCreatedUserName = string.Empty;
+            Email = string.Empty;
+            Password = string.Empty;
+            ConfirmPassword = string.Empty;
+        }
     }
-    public async Task OnGetAsync(string returnUrl = null)
+    public async Task OnGetAsync(string returnUrl)
     {
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
-    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string returnUrl)
     {
-        returnUrl ??= Url.Content("~/");
+        returnUrl = Url.Content("~/");
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         if (ModelState.IsValid)
         {
@@ -71,7 +83,7 @@ public class Register : PageModel
             {
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                 {
-                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
                 }
                 else
                 {
