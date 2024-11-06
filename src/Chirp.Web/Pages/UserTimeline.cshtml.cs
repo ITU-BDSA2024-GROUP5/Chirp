@@ -105,7 +105,7 @@ public class UserTimelineModel : PageModel
         {
             return int.Parse(Request.Query["page"].ToString());
         }
-        catch (Exception _)
+        catch (Exception)
         {
             return 0;
         }

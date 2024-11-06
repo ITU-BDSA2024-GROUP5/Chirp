@@ -15,13 +15,12 @@ public class PublicModel : PageModel
     public required List<CheepDTO> Cheeps { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
-    private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
-    public PublicModel(ICheepRepository cheepRepository, ICheepServiceDB cheepServiceDb, IAuthorRepository authorRepository)
+    public PublicModel(ICheepRepository cheepRepository, ICheepServiceDB cheepServiceDb)
     {
         _cheepRepository = cheepRepository;
-        _authorRepository = authorRepository;
         _cheepServiceDb = cheepServiceDb;
+        Text = string.Empty;
     }
 
     public async Task<ActionResult> OnPost()
@@ -41,12 +40,12 @@ public class PublicModel : PageModel
         var cheep = await _cheepServiceDb.CreateCheep(author.Name, Text);
         await _cheepServiceDb.WriteCheep(cheep);
         
-        await fetchCheeps(author.Name);
+        await FetchCheeps(author.Name);
         
         return RedirectToPage(author);
     }
     
-    public async Task fetchCheeps(string author)
+    public async Task FetchCheeps(string author)
     {
             Cheeps = await _cheepRepository.ReadByAuthor(0, author);
     }
@@ -54,17 +53,17 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnGet()
     {
-        Cheeps = await _cheepRepository.Read(parsePage(Request.Query["page"].ToString()));
+        Cheeps = await _cheepRepository.Read(ParsePage(Request.Query["page"].ToString()));
         return Page();
     }
 
-    public int parsePage(string pagenr)
+    public int ParsePage(string pagenr)
     {
         try
         {
             return int.Parse(pagenr);
         }
-        catch (Exception _)
+        catch (Exception)
         {
             return 0;
         }
