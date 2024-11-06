@@ -23,6 +23,7 @@ public class UserTimelineModel : PageModel
         _authorRepository = authorRepository;
         _cheepRepository = cheepRepository;
         _cheepServiceDb = new CheepServiceDB(cheepRepository, authorRepository);
+        Text = string.Empty;
     }
     
     public async Task<ActionResult> OnPost()
@@ -33,6 +34,10 @@ public class UserTimelineModel : PageModel
             return Page();
         }
 
+        if (User.Identity == null)
+        {
+            ModelState.AddModelError(string.Empty, "you must authenticate first");
+        }
         var author = await _cheepServiceDb.GetAuthorByString(User.Identity.Name);
         if (author == null)
         {

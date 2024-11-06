@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using AspNet.Security.OAuth.GitHub;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Services;
 using Chirp.Infrastructure.Repositories;
-using Microsoft.AspNetCore;
 
+namespace Chirp.Web;
 
 //this is the main entry point for the application
 public class Program
@@ -28,8 +27,8 @@ public class Program
             .AddCookie()
             .AddGitHub(o =>
             {
-                o.ClientId = builder.Configuration["authentication_github_clientId"];
-                o.ClientSecret = builder.Configuration["authentication_github_clientSecret"];
+                o.ClientId = builder.Configuration["authentication_github_clientId"] ?? "defaultClientId";
+                o.ClientSecret = builder.Configuration["authentication_github_clientSecret"] ?? "defaultClientSecret";
                 o.CallbackPath = "/signin-github";
             });
 
@@ -82,7 +81,7 @@ public class Program
         
         app.MapGet("/debug/env", (IWebHostEnvironment env) => new
         {
-            EnvironmentName = env.EnvironmentName,
+            //EnvironmentName = env.EnvironmentName,
             IsProduction = env.IsProduction(),
             IsDevelopment = env.IsDevelopment(),
             AspNetCoreEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
