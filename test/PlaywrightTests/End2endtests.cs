@@ -4,6 +4,8 @@ using Microsoft.Playwright.NUnit;
 
 namespace PlaywrightTests;
 
+// Test can be generated with the help of pwsh bin/Debug/net8.0/playwright.ps1 codegen https://localhost:5177/
+
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class Tests : PageTest
@@ -29,10 +31,11 @@ public class Tests : PageTest
     [Test]
     public async Task AUserCanRegister()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("https://localhost:5177/");
 
         await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
 
+        await Page.GetByText("Username").FillAsync("testuser");
         await Page.GetByText("Email").FillAsync("testuser@gmail.com");
         await Page.GetByText("Password", new() { Exact = true }).FillAsync("Nicepassword123#");
         await Page.GetByText("Confirm Password").FillAsync("Nicepassword123#");
@@ -47,7 +50,7 @@ public class Tests : PageTest
     [Test]
     public async Task BUserCanLogin()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("https://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
@@ -59,7 +62,7 @@ public class Tests : PageTest
     [Test]
     public async Task CCheepBoxNotVisibleWhenNotLoggedIn()
     {
-        await Page.GotoAsync("http://localhost:5177/Public");
+        await Page.GotoAsync("https://localhost:5177/Public");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).Not.ToBeVisibleAsync();
 
     }
@@ -67,13 +70,13 @@ public class Tests : PageTest
     [Test]
     public async Task DCheepBoxVisibleWhenLoggedIn()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("https://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
-        await Page.GotoAsync("http://localhost:5177/Public");
+        await Page.GotoAsync("https://localhost:5177/Public");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).ToBeVisibleAsync();
 
     }
@@ -81,13 +84,13 @@ public class Tests : PageTest
     [Test]
     public async Task EUserCanCheep()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("https://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
-        await Page.GotoAsync("http://localhost:5177/Public");
+        await Page.GotoAsync("https://localhost:5177/Public");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).ToBeVisibleAsync();
 
         await Page.GetByRole(AriaRole.Textbox).FillAsync("This is a cheep");
@@ -99,7 +102,7 @@ public class Tests : PageTest
     [Test]
     public async Task FUserTimeLineHasCheeps()
     {
-        await Page.GotoAsync("http://localhost:5177/testuser@gmail.com");
+        await Page.GotoAsync("https://localhost:5177/testuser@gmail.com");
         await Expect(Page.GetByText("There are no cheeps so far.")).Not.ToBeVisibleAsync();
     }
 

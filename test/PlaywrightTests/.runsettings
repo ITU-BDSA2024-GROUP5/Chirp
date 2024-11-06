@@ -9,3 +9,5 @@
     </LaunchOptions>
   </Playwright>
 </RunSettings>
+
+<!-- dotnet test --settings .runsettings -->
