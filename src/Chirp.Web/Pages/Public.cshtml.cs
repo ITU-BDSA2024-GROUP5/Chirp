@@ -30,7 +30,7 @@ public class PublicModel : PageModel
             ModelState.AddModelError(string.Empty, "you made an oopsie");
             return Page();
         }
-
+        
         var author = await _cheepServiceDb.GetAuthorByString(User.Identity.Name);
         if (author == null)
         {

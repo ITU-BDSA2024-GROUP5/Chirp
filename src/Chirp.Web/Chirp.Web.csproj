@@ -13,9 +13,6 @@
     </ItemGroup>
 
     <!-- This itemgroup is for importing/including folders -->
-    <ItemGroup>
-        <!---->
-    </ItemGroup>
 
     <!-- This itemgroup is for importing/including packages -->
     <ItemGroup>
@@ -25,6 +22,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10" />
         <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
@@ -32,5 +30,10 @@
         <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.10" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
+    </ItemGroup>
+    <ItemGroup>
+      <AdditionalFiles Include="Areas\Identity\Pages\Account\Login.cshtml" />
+      <AdditionalFiles Include="Areas\Identity\Pages\Account\Register.cshtml" />
     </ItemGroup>
 </Project>

@@ -1,8 +1,10 @@
 @page
-@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<ApplicationUser> SignInManager
 
+@using System.Net.Mime
+@using Chirp.Infrastructure
 @model PublicModel
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<ApplicationUser> UserManager
 
 
 @{

@@ -1,6 +1,7 @@
 ﻿@page "/{author}"
+@using Chirp.Infrastructure
 @model UserTimelineModel
-@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
