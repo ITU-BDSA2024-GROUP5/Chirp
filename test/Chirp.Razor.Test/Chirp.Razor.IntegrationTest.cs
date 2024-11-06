@@ -1,3 +1,5 @@
+using Chirp.Web;
+
 namespace Chirp.Razor.Test;
 
 using Microsoft.AspNetCore.Mvc.Testing;
