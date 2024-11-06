@@ -6,6 +6,8 @@ using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Services;
 using Chirp.Infrastructure.Repositories;
 
+
+//this is the main entry point for the application
 public class Program
 {
     public static void Main(string[] args)

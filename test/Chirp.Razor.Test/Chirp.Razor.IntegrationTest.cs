@@ -13,6 +13,8 @@ public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
         _client = _fixture.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = true, HandleCookies = true });
     }
 
+
+    //Added test methods
     [Fact]
     public async Task CanSeePublicTimeline()
     {
