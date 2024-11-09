@@ -11,22 +11,30 @@
 }
 
 <div>
-    @if (SignInManager.IsSignedIn(User))
+    @if (SignInManager.IsSignedIn(User) && routeName != null)
     {
-        <div class="cheepbox">
-            @if (User.Identity != null)
-            {
-                <h3>What's on your mind @(User.Identity.Name)?</h3>
-            }
-            else
-            {
-                <h3>What's on your mind @(User.FindFirst("email")?.Value)?</h3>
-            }
-            <form method="post">
-                <input style="float: left" type="text" asp-for="Text">
-                <input type="submit" value="Share">
-            </form>
-        </div>
+        @if (routeName.ToString().Contains('@'))
+        {
+            routeName = routeName.ToString().Substring(0, routeName.ToString().IndexOf('@'));
+        }
+        @if (routeName.Equals(User.Identity.Name))
+        {
+            <div class="cheepbox">
+                @if (User.Identity != null)
+                {
+                    <h3>What's on your mind @(User.Identity.Name)?</h3>
+                }
+                else
+                {
+                    <h3>What's on your mind @(User.FindFirst("email")?.Value)?</h3>
+                }
+                <form method="post">
+                    <input style="float: left" type="text" asp-for="Text">
+                    <input type="submit" value="Share">
+                </form>
+            </div>
+        }
+        
     }<br/>
     <h2> @routeName's Timeline </h2>
 
