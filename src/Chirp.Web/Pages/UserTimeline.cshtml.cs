@@ -47,12 +47,12 @@ public class UserTimelineModel : PageModel
         var cheep = await _cheepServiceDb.CreateCheep(author.Name, Text);
         await _cheepServiceDb.WriteCheep(cheep);
         
-        await fetchCheeps(author.Name);
+        await FetchCheeps(author.Name);
         
         return RedirectToPage(author);
     }
     
-    public async Task fetchCheeps(string author)
+    public async Task FetchCheeps(string author)
     {
         Cheeps = await _cheepRepository.ReadByAuthor(0, author);
     }
@@ -61,12 +61,12 @@ public class UserTimelineModel : PageModel
     {
         if (!string.IsNullOrEmpty(author))
         {
-            await taskHandlerAsync(author);
+            await TaskHandlerAsync(author);
         }
         return Page();
     }
 
-    public async Task taskHandlerAsync(string author)
+    public async Task TaskHandlerAsync(string author)
     {
         
         AuthorDTO createdAuthor;
@@ -81,25 +81,27 @@ public class UserTimelineModel : PageModel
         {
             createdAuthor = await _authorRepository.GetAuthorByName(author);
         }
-    
-        await fetchCheeps(author, isEmail);
+
+        author = createdAuthor.Name;
+        
+        await FetchCheeps(author, isEmail);
         
     }
 
-    public async Task fetchCheeps(string author, bool isEmail)
+    public async Task FetchCheeps(string author, bool isEmail)
     {
         if (isEmail)
         {
-            Cheeps = await _cheepRepository.ReadByEmail(getPage(), author);
+            Cheeps = await _cheepRepository.ReadByEmail(GetPage(), author);
         }
         else
         {
-            Cheeps = await _cheepRepository.ReadByAuthor(getPage(), author);
+            Cheeps = await _cheepRepository.ReadByAuthor(GetPage(), author);
         }
     }
 
     
-    public int getPage()
+    public int GetPage()
     {
         try
         {

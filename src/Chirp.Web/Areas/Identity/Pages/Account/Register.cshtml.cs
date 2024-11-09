@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account;
 
-
-
 public class Register : PageModel
 {
     private readonly SignInManager<Author> _signInManager;
