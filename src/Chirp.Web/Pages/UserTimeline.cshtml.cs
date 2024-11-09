@@ -82,6 +82,11 @@ public class UserTimelineModel : PageModel
             createdAuthor = await _authorRepository.GetAuthorByName(author);
         }
 
+        if (createdAuthor == null)
+        {
+            ModelState.AddModelError(string.Empty, "Author not found");
+            return;
+        }
         author = createdAuthor.Name;
         
         await FetchCheeps(author, isEmail);

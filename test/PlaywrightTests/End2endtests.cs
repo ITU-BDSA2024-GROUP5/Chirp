@@ -8,7 +8,7 @@ namespace PlaywrightTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
-[Ignore("Failing in CI/CD")]
+[Ignore("Failing in CI/CD and local because Certificate is not trusted")]
 public class Tests : PageTest
 {
     [Test]
