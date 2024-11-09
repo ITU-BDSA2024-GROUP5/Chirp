@@ -148,7 +148,7 @@ public class CheepRepositoryTests
 
         var newAuthor = new Author()
         {
-            Name = "Test Author",
+            UserName = "Test Author",
             AuthorId = await aRepository.GetHighestAuthorId() + 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
@@ -192,7 +192,7 @@ public class CheepRepositoryTests
 
         var newAuthor = new Author()
         {
-            Name = "Test Author",
+            UserName = "Test Author",
             AuthorId = await aRepository.GetHighestAuthorId() + 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
@@ -227,7 +227,7 @@ public class CheepRepositoryTests
 
         var newAuthor = new Author()
         {
-            Name = "Test Author",
+            UserName = "Test Author",
             AuthorId = await aRepository.GetHighestAuthorId() + 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
@@ -239,7 +239,7 @@ public class CheepRepositoryTests
         var author = await aRepository.GetAuthorByName("Test Author");
         
         //Assert
-        Assert.Equal(newAuthor.Name, author.Name);
+        Assert.Equal(newAuthor.UserName, author.Name);
     }
 
     [Fact]
@@ -248,7 +248,7 @@ public class CheepRepositoryTests
         //Arrange
         var newAuthor = new Author()
         {
-            Name = "Test Author",
+            UserName = "Test Author",
             AuthorId = 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
