@@ -70,11 +70,8 @@ public class UserTimelineModel : PageModel
     {
         
         AuthorDTO createdAuthor;
-        var isEmail = false;
-        
         if (author.Contains('@'))
         {
-            isEmail = true;
             createdAuthor = await _authorRepository.GetAuthorByEmail(author);
         }
         else
@@ -89,22 +86,9 @@ public class UserTimelineModel : PageModel
         }
         author = createdAuthor.Name;
         
-        await FetchCheeps(author, isEmail);
+        Cheeps = await _cheepRepository.ReadByAuthor(GetPage(), author);
         
     }
-
-    public async Task FetchCheeps(string author, bool isEmail)
-    {
-        if (isEmail)
-        {
-            Cheeps = await _cheepRepository.ReadByEmail(GetPage(), author);
-        }
-        else
-        {
-            Cheeps = await _cheepRepository.ReadByAuthor(GetPage(), author);
-        }
-    }
-
     
     public int GetPage()
     {
