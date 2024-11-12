@@ -1,5 +1,5 @@
+namespace Chirp.Infrastructure;
 
-using System.Security.Cryptography;
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
@@ -7,38 +7,23 @@ using Microsoft.AspNetCore.Identity;
 public static class DbInitializer
 {
 
-    private static async Task CreateTeacher(Author teacher, string password, UserManager<Author> userManager, IUserStore<Author> userStore)
+    private static async Task CreateTeacher(Author teacher, string password, UserManager<Author> userManager)
     {
-        var user = CreateUser();
-        var emailStore = (IUserEmailStore<Author>)userStore;
+        var foundTeacher = userManager.Users.ToList().Find(u => u.UserName.Equals(teacher.UserName));
+        if (foundTeacher != null)
+        { 
+            userManager.NormalizeName(foundTeacher.UserName);
+            userManager.NormalizeEmail(foundTeacher.Email);
             
-        await userStore.SetUserNameAsync(user, teacher.UserName, CancellationToken.None);
-        await emailStore.SetEmailAsync(user, teacher.Email, CancellationToken.None);
-        user.UserName = teacher.UserName; //add this line....
+            var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(foundTeacher);
+            await userManager.ResetPasswordAsync(foundTeacher, passwordResetToken, password);
             
-        // Generate the email confirmation token
-        var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
-
-        // Confirm the email using the generated token
-        await userManager.ConfirmEmailAsync(user, code);
-            
-        await userManager.CreateAsync(user, password);
+            var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(foundTeacher);
+            await userManager.ConfirmEmailAsync(foundTeacher, emailConfirmationToken);
+        }
     }
     
-    private static Author CreateUser()
-    {
-        try
-        {
-            return Activator.CreateInstance<Author>();
-        }
-        catch
-        {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(Author)}'. " +
-                                                $"Ensure that '{nameof(Author)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                                                $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-        }
-    }
-    public static async Task SeedDatabase(ApplicationDbContext applicationContext, UserManager<Author> userManager, IUserStore<Author> userStore)
+    public static async Task SeedDatabase(ApplicationDbContext applicationContext, UserManager<Author> userManager)
     {
         if (!(applicationContext.Authors.Any() && applicationContext.Cheeps.Any()))
         {
@@ -54,12 +39,6 @@ public static class DbInitializer
             var a10 = new Author() { AuthorId = 10, UserName = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
             var a11 = new Author() { AuthorId = 11, UserName = "Helge", Email = "ropf@itu.dk", Cheeps = new List<Cheep>() };
             var a12 = new Author() { AuthorId = 12, UserName = "Adrian", Email = "adho@itu.dk", Cheeps = new List<Cheep>() };
- 
-            //Helge
-            await CreateTeacher(a11, "LetM31n!", userManager, userStore);
-            
-            //Adrian
-            await CreateTeacher(a12, "M32Want_Access", userManager, userStore);
             
             var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
 
@@ -737,7 +716,13 @@ public static class DbInitializer
 
             applicationContext.Authors.AddRange(authors);
             applicationContext.Cheeps.AddRange(cheeps);
-            applicationContext.SaveChanges();
+            await applicationContext.SaveChangesAsync();
+            
+            // //Helge
+            await CreateTeacher(a11, "LetM31n!", userManager);
+            
+            // //Adrian
+            await CreateTeacher(a12, "M32Want_Access", userManager);
         }
     }
 }

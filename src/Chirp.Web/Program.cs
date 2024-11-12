@@ -64,11 +64,10 @@ public class Program
         // Apply database migrations at startup
         using (var scope = app.Services.CreateScope())
         {
-            using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            context.Database.EnsureCreated();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            await context.Database.EnsureCreatedAsync();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Author>>();
-            var userStore = scope.ServiceProvider.GetRequiredService<IUserStore<Author>>();
-            await DbInitializer.SeedDatabase(context, userManager, userStore);
+            await DbInitializer.SeedDatabase(context, userManager);
         }
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -84,10 +83,7 @@ public class Program
         app.MapRazorPages();
         //app.UseHttpsRedirection();
         app.UseStaticFiles();
-
         app.UseRouting();
-
-        
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseSession();
@@ -99,6 +95,6 @@ public class Program
             IsDevelopment = env.IsDevelopment(),
             AspNetCoreEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
         });
-        app.Run();
+        await app.RunAsync();
   }
 }

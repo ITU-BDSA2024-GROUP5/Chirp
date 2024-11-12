@@ -1,7 +1,4 @@
 @page
-@inject SignInManager<Author> SignInManager
-@inject UserManager<Author> UserManager
-@using Chirp.Core.DataModels
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model AdminModel
 
@@ -11,18 +8,23 @@
 }
 
 <div>
-    @if (!SignInManager.IsSignedIn(User))
-    {
-        <p>
-            Sign in to access the admin panel.
-        </p>
-    }
-    else
-    {
-        <h1>
-            Admin panel
-        </h1>
-    }
-    
-
+    <h1>
+        Admin panel
+    </h1>
+    <p>Users registered in the database</p>
+    <select id="select">
+        @foreach(var user in Model.Users)
+        {
+            <option value="@user.Id">@user.UserName</option>
+        }
+    </select>
+    <form method="post" asp-page-handler="DeleteUser">
+        <button type="submit">Delete user</button>
+    </form>
+    <br/>
+    <br/>
+    <br/>
+    <form method="post" asp-page-handler="ResetDatabase">
+        <button type="submit">Reset DB</button>
+    </form>
 </div>
