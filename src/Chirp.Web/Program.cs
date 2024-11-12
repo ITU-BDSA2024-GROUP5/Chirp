@@ -6,6 +6,7 @@ using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Services;
 using Chirp.Infrastructure.Repositories;
+using Microsoft.Extensions.Options;
 
 namespace Chirp.Web;
 
@@ -23,7 +24,11 @@ public class Program
         builder.Services.AddDbContext<ApplicationDbContext>(
             options => options.UseSqlite(connectionString,
             x => x.MigrationsAssembly("Chirp.Infrastructure")));
-        builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = true)
+        builder.Services.AddDefaultIdentity<Author>(options =>
+        {
+            options.SignIn.RequireConfirmedAccount = true;
+            options.User.RequireUniqueEmail = true;
+        })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddUserManager<UserManager<Author>>()
             .AddSignInManager<SignInManager<Author>>();

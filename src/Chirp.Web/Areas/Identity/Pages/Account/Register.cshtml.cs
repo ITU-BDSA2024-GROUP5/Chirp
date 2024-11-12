@@ -15,17 +15,20 @@ public class Register : PageModel
     private readonly IUserStore<Author> _userStore;
     private readonly IUserEmailStore<Author> _emailStore;
     private readonly ILogger<Register> _logger;
+    private readonly IAuthorRepository _authorRepository;
     public Register(
         UserManager<Author> userManager,
         IUserStore<Author> userStore,
         SignInManager<Author> signInManager,
-        ILogger<Register> logger)
+        ILogger<Register> logger,
+        IAuthorRepository authorRepository)
     {
         _userManager = userManager;
         _userStore = userStore;
         _emailStore = GetEmailStore();
         _signInManager = signInManager;
         _logger = logger;
+        _authorRepository = authorRepository;
     }
     [BindProperty]
     public InputModel Input { get; set; }
@@ -68,7 +71,7 @@ public class Register : PageModel
             await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
             user.UserName = Input.UserName;    //add this line....
-            
+            user.AuthorId = await _authorRepository.GetHighestAuthorId() + 1;
             
             var result = await _userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded)
