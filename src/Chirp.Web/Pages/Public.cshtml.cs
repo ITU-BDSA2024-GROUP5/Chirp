@@ -7,7 +7,7 @@ namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {
-    
+     
     [BindProperty]
     [Required]
     [StringLength(160, MinimumLength = 1, ErrorMessage = "String length must be between 1 and 160")]
