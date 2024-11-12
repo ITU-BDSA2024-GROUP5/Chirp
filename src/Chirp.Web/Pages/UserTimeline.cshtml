@@ -1,9 +1,9 @@
 ﻿@page "/{author}"
 @using Chirp.Core.DataModels
-@using Chirp.Infrastructure
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model UserTimelineModel
 @inject SignInManager<Author> SignInManager
+@inject UserManager<Author> UserManager
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -15,7 +15,7 @@
     {
         @if (routeName.ToString().Contains('@'))
         {
-            routeName = routeName.ToString().Substring(0, routeName.ToString().IndexOf('@'));
+            routeName = await UserManager.FindByEmailAsync(routeName.ToString());
         }
         @if (routeName.Equals(User.Identity.Name))
         {
