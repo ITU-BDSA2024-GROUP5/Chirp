@@ -37,7 +37,7 @@ public class Register : PageModel
     public class InputModel
     {
         [Required]
-        [StringLength(20, MinimumLength = 1, ErrorMessage = "The {0} must be at least {0} and at max {20} characters long.")]
+        [StringLength(20, MinimumLength = 1, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
         public string UserName { get; set; }
           
         [Required]
