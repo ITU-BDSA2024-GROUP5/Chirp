@@ -6,23 +6,6 @@ using Microsoft.AspNetCore.Identity;
 
 public static class DbInitializer
 {
-
-    private static async Task CreateTeacher(Author teacher, string password, UserManager<Author> userManager)
-    {
-        var foundTeacher = userManager.Users.ToList().Find(u => u.UserName.Equals(teacher.UserName));
-        if (foundTeacher != null)
-        { 
-            userManager.NormalizeName(foundTeacher.UserName);
-            userManager.NormalizeEmail(foundTeacher.Email);
-            
-            var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(foundTeacher);
-            await userManager.ResetPasswordAsync(foundTeacher, passwordResetToken, password);
-            
-            var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(foundTeacher);
-            await userManager.ConfirmEmailAsync(foundTeacher, emailConfirmationToken);
-        }
-    }
-    
     public static async Task SeedDatabase(ApplicationDbContext applicationContext, UserManager<Author> userManager)
     {
         if (!(applicationContext.Authors.Any() && applicationContext.Cheeps.Any()))
@@ -719,10 +702,33 @@ public static class DbInitializer
             await applicationContext.SaveChangesAsync();
             
             // //Helge
-            await CreateTeacher(a11, "LetM31n!", userManager);
-            
+            await NormalizeAuthor(a11, userManager, "LetM31n!");
             // //Adrian
-            await CreateTeacher(a12, "M32Want_Access", userManager);
+            await NormalizeAuthor(a12, userManager, "M32Want_Access");
+
+            foreach (var author in authors)
+            {
+                NormalizeAuthor(author, userManager);
+            }
         }
     }
+    private static async Task NormalizeAuthor(Author teacher, UserManager<Author> userManager, string password = null)
+    {
+        var foundTeacher = userManager.Users.ToList().Find(u => u.UserName.Equals(teacher.UserName));
+        if (foundTeacher != null)
+        { 
+            userManager.NormalizeName(foundTeacher.UserName);
+            userManager.NormalizeEmail(foundTeacher.Email);
+
+            if (password != null)
+            {
+                var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(foundTeacher);
+                await userManager.ResetPasswordAsync(foundTeacher, passwordResetToken, password);
+            }
+            
+            var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(foundTeacher);
+            await userManager.ConfirmEmailAsync(foundTeacher, emailConfirmationToken);
+        }
+    }
+        
 }

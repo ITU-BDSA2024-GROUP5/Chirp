@@ -18,8 +18,9 @@
             <option value="@user.Id">@user.UserName</option>
         }
     </select>
-    <form method="post" asp-page-handler="DeleteUser">
-        <button type="submit">Delete user</button>
+    <form method="post" asp-page-handler="DeleteUser" onsubmit="setSelectedUser()">
+        <input type="hidden" asp-for="selectedUserID" name="selectedUserId" id="selectedUserId"/>
+        <button type="submit">Delete User</button>
     </form>
     <br/>
     <br/>
@@ -28,3 +29,13 @@
         <button type="submit">Reset DB</button>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        function setSelectedUser() {
+            var select = document.getElementById("select");
+            var selectedValue = select.options[select.selectedIndex].value;
+            document.getElementById("selectedUserId").value = selectedValue;
+        }
+    </script>
+}
