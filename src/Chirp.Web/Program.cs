@@ -28,6 +28,12 @@ public class Program
         {
             options.SignIn.RequireConfirmedAccount = true;
             options.User.RequireUniqueEmail = true;
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequiredLength = 0;
+            options.Password.RequiredUniqueChars = 0;
         })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddUserManager<UserManager<Author>>()
