@@ -708,7 +708,7 @@ public static class DbInitializer
 
             foreach (var author in authors)
             {
-                NormalizeAuthor(author, userManager);
+                await NormalizeAuthor(author, userManager);
             }
         }
     }
