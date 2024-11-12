@@ -12,13 +12,14 @@
         Admin panel
     </h1>
     <p>Users registered in the database</p>
-    <select id="select">
+    <select id="select" onchange="setSelectedUser()">
         @foreach(var user in Model.Users)
         {
-            <option value="@user.Id">@user.UserName</option>
+            <option value="@user.Id" data-authorid="@user.AuthorId" data-email="@user.Email" data-cheeps="@user.Cheeps">@user.UserName</option>
         }
     </select>
-    <form method="post" asp-page-handler="DeleteUser" onsubmit="setSelectedUser()">
+    <div><textarea id="textarea" rows="3" cols="40"></textarea></div>
+    <form method="post" asp-page-handler="DeleteUser">
         <input type="hidden" asp-for="selectedUserID" name="selectedUserId" id="selectedUserId"/>
         <button type="submit">Delete User</button>
     </form>
@@ -36,6 +37,14 @@
             var select = document.getElementById("select");
             var selectedValue = select.options[select.selectedIndex].value;
             document.getElementById("selectedUserId").value = selectedValue;
+            fillSelectedUserInfo()
+        }
+        function fillSelectedUserInfo() {
+            var select = document.getElementById("select");
+            var selectedValue = select.options[select.selectedIndex];
+            var authorId = selectedValue.getAttribute("data-authorid");
+            var email = selectedValue.getAttribute("data-email");
+            document.getElementById("textarea").value = "Author ID: " +authorId + "\nEmail: " + email;
         }
     </script>
 }
