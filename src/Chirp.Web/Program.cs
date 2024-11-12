@@ -6,6 +6,7 @@ using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Services;
 using Chirp.Infrastructure.Repositories;
+using Microsoft.Extensions.Options;
 
 namespace Chirp.Web;
 
@@ -23,7 +24,17 @@ public class Program
         builder.Services.AddDbContext<ApplicationDbContext>(
             options => options.UseSqlite(connectionString,
             x => x.MigrationsAssembly("Chirp.Infrastructure")));
-        builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = true)
+        builder.Services.AddDefaultIdentity<Author>(options =>
+        {
+            options.SignIn.RequireConfirmedAccount = true;
+            options.User.RequireUniqueEmail = true;
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequiredLength = 0;
+            options.Password.RequiredUniqueChars = 0;
+        })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddUserManager<UserManager<Author>>()
             .AddSignInManager<SignInManager<Author>>();
@@ -64,11 +75,10 @@ public class Program
         // Apply database migrations at startup
         using (var scope = app.Services.CreateScope())
         {
-            using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            context.Database.EnsureCreated();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            await context.Database.EnsureCreatedAsync();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Author>>();
-            var userStore = scope.ServiceProvider.GetRequiredService<IUserStore<Author>>();
-            await DbInitializer.SeedDatabase(context, userManager, userStore);
+            await DbInitializer.SeedDatabase(context, userManager);
         }
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -84,10 +94,7 @@ public class Program
         app.MapRazorPages();
         //app.UseHttpsRedirection();
         app.UseStaticFiles();
-
         app.UseRouting();
-
-        
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseSession();
@@ -99,6 +106,6 @@ public class Program
             IsDevelopment = env.IsDevelopment(),
             AspNetCoreEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
         });
-        app.Run();
+        await app.RunAsync();
   }
 }
