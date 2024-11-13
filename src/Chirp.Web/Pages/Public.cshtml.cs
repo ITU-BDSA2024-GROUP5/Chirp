@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Infrastructure.Data.DTO;
+using Chirp.Infrastructure.Repositories;
 
 namespace Chirp.Web.Pages;
 
@@ -16,10 +17,12 @@ public class PublicModel : PageModel
     
     private readonly ICheepRepository _cheepRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
-    public PublicModel(ICheepRepository cheepRepository, ICheepServiceDB cheepServiceDb)
+    private readonly IAuthorRepository _authorRepository;
+    public PublicModel(ICheepRepository cheepRepository, ICheepServiceDB cheepServiceDb, AuthorRepository authorRepository)
     {
         _cheepRepository = cheepRepository;
         _cheepServiceDb = cheepServiceDb;
+        _authorRepository = authorRepository;
         Text = string.Empty;
     }
 
@@ -53,6 +56,11 @@ public class PublicModel : PageModel
     public async Task FetchCheeps()
     {
         Cheeps = await _cheepRepository.Read(0);
+    }
+
+    public async Task FetchAuthorFollows()
+    {
+        
     }
     
     public async Task<ActionResult> OnGet()

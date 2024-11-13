@@ -76,4 +76,12 @@ public class AuthorRepository : IAuthorRepository
             Email = author.Email
         };
     }
+
+    public async Task<List<string>> AddAuthors(string you, string me)
+    {
+        var query = _context.Authors
+            .Select(a => a)
+            .Where(a => a.UserName == you);
+        
+    }
 }
