@@ -8,7 +8,7 @@ namespace PlaywrightTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
-[Ignore("Failing in CI/CD and local because Certificate is not trusted")]
+[Ignore("Failing in CI/CD")]
 public class Tests : PageTest
 {
     [Test]
@@ -32,7 +32,7 @@ public class Tests : PageTest
     [Test]
     public async Task AUserCanRegister()
     {
-        await Page.GotoAsync("https://localhost:5177/");
+        await Page.GotoAsync("http://localhost:5177/");
 
         await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
 
@@ -51,19 +51,19 @@ public class Tests : PageTest
     [Test]
     public async Task BUserCanLogin()
     {
-        await Page.GotoAsync("https://localhost:5177/");
+        await Page.GotoAsync("http://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Username" }).FillAsync("testuser");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
-        await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Hello testuser@gmail.com!" })).ToBeVisibleAsync();
+        await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Hello testuser" })).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task CCheepBoxNotVisibleWhenNotLoggedIn()
     {
-        await Page.GotoAsync("https://localhost:5177/Public");
+        await Page.GotoAsync("http://localhost:5177/Public");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).Not.ToBeVisibleAsync();
 
     }
@@ -71,13 +71,13 @@ public class Tests : PageTest
     [Test]
     public async Task DCheepBoxVisibleWhenLoggedIn()
     {
-        await Page.GotoAsync("https://localhost:5177/");
+        await Page.GotoAsync("http://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Username" }).FillAsync("testuser");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
-        await Page.GotoAsync("https://localhost:5177/Public");
+        await Page.GotoAsync("http://localhost:5177/Public");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).ToBeVisibleAsync();
 
     }
@@ -85,13 +85,13 @@ public class Tests : PageTest
     [Test]
     public async Task EUserCanCheep()
     {
-        await Page.GotoAsync("https://localhost:5177/");
+        await Page.GotoAsync("http://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Username" }).FillAsync("testuser");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
-        await Page.GotoAsync("https://localhost:5177/Public");
+        await Page.GotoAsync("http://localhost:5177/Public");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).ToBeVisibleAsync();
 
         await Page.GetByRole(AriaRole.Textbox).FillAsync("This is a cheep");
@@ -103,7 +103,7 @@ public class Tests : PageTest
     [Test]
     public async Task FUserTimeLineHasCheeps()
     {
-        await Page.GotoAsync("https://localhost:5177/testuser@gmail.com");
+        await Page.GotoAsync("http://localhost:5177/testuser@gmail.com");
         await Expect(Page.GetByText("There are no cheeps so far.")).Not.ToBeVisibleAsync();
     }
 
