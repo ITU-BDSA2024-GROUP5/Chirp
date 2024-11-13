@@ -17,23 +17,17 @@ public class ExternalLoginModel : PageModel
     private readonly UserManager<Author> _userManager;
     private readonly ILogger<ExternalLoginModel> _logger;
     private readonly IAuthorRepository _authorRepository;
-    private readonly IUserStore<Author> _userStore;
-    /*private readonly IUserEmailStore<Author> _emailStore;*/
 
     public ExternalLoginModel(
         SignInManager<Author> signInManager,
         UserManager<Author> userManager,
         ILogger<ExternalLoginModel> logger,
-        IAuthorRepository authorRepository,
-        IUserStore<Author> userStore)
-        /*IUserEmailStore<Author> emailStore*/
+        IAuthorRepository authorRepository)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _logger = logger;
         _authorRepository = authorRepository;
-        _userStore = userStore;
-       // _emailStore = GetEmailStore();
     }
 
     [BindProperty]
@@ -151,27 +145,5 @@ public class ExternalLoginModel : PageModel
             }
         }
         return Page();
-    }
-    private Author CreateUser()
-    {
-        try
-        {
-            return Activator.CreateInstance<Author>();
-        }
-        catch
-        {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(Author)}'. " +
-                                                $"Ensure that '{nameof(Author)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                                                $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-        }
-    }
-    
-    private IUserEmailStore<Author> GetEmailStore()
-    {
-        if (!_userManager.SupportsUserEmail)
-        {
-            throw new NotSupportedException("The default UI requires a user store with email support.");
-        }
-        return (IUserEmailStore<Author>)_userStore;
     }
 }
