@@ -30,8 +30,8 @@ public class ExternalLoginModel : PageModel
         _authorRepository = authorRepository;
     }
 
-    [BindProperty]
-    public InputModel Input { get; set; }
+    // [BindProperty]
+    // public InputModel Input { get; set; }
 
     public string LoginProvider { get; set; }
 
@@ -40,14 +40,14 @@ public class ExternalLoginModel : PageModel
     [TempData]
     public string ErrorMessage { get; set; }
 
-    public class InputModel
-    {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-        [Required]
-        public string Username { get; set; }
-    }
+    // public class InputModel
+    // {
+    //     [Required]
+    //     [EmailAddress]
+    //     public string Email { get; set; }
+    //     [Required]
+    //     public string Username { get; set; }
+    // }
 
     public IActionResult OnGetAsync()
     {

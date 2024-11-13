@@ -36,7 +36,4 @@
       <AdditionalFiles Include="Areas\Identity\Pages\Account\Login.cshtml" />
       <AdditionalFiles Include="Areas\Identity\Pages\Account\Register.cshtml" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Areas\Identity\Pages\Account\Manage\" />
-    </ItemGroup>
 </Project>
