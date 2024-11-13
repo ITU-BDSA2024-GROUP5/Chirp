@@ -1,0 +1,21 @@
+@page
+@model Chirp.Web.Areas.Identity.Pages.Account.ExternalLoginModel
+@{
+ViewData["Title"] = "Register";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <p>You are about to register an account using Github click the button below to continue.</p>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+@await Html.PartialAsync("_ValidationScriptsPartial")
+}

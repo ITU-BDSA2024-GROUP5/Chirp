@@ -42,7 +42,8 @@ public class Program
         
         builder.Services.AddAuthentication(options =>
             {
-                
+                //options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = "GitHub";
             })
             .AddCookie()
@@ -92,7 +93,7 @@ public class Program
             app.UseHsts();
         }
         app.MapRazorPages();
-        //app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthentication();
