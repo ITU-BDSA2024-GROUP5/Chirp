@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241113141923_AppDbContext")]
+    [Migration("20241113143316_AppDbContext")]
     partial class AppDbContext
     {
         /// <inheritdoc />
@@ -44,7 +44,6 @@ namespace Chirp.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Follows")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")

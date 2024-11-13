@@ -41,7 +41,6 @@ namespace Chirp.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Follows")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
