@@ -50,6 +50,11 @@ public class PublicModel : PageModel
             Cheeps = await _cheepRepository.ReadByAuthor(0, author);
     }
     
+    public async Task FetchCheeps()
+    {
+        Cheeps = await _cheepRepository.Read(0);
+    }
+    
     public async Task<ActionResult> OnGet()
     {
         Cheeps = await _cheepRepository.Read(ParsePage(Request.Query["page"].ToString()));

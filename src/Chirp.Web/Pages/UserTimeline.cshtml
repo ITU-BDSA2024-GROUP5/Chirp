@@ -58,6 +58,25 @@
     else if(Model.Cheeps==null)
     {
         <em>You can't cheep that.</em>
+        
+        <div style="display: none">
+            @Model.FetchCheeps(@routeName.ToString())
+        </div>
+        
+        <ul id="messagelist" class="cheeps">
+            @foreach (var cheep in Model.Cheeps)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/@cheep.Author">@cheep.Author</a>
+                        </strong>
+                        @cheep.Text
+                        <small>&mdash; @cheep.TimeStamp</small>
+                    </p>
+                </li>   
+            }
+        </ul>
     }else{
         <em>There are no cheeps so far.</em>}
     
