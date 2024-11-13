@@ -26,7 +26,7 @@ public class Program
             x => x.MigrationsAssembly("Chirp.Infrastructure")));
         builder.Services.AddDefaultIdentity<Author>(options =>
         {
-            options.SignIn.RequireConfirmedAccount = true;
+            options.SignIn.RequireConfirmedAccount = false;
             options.User.RequireUniqueEmail = true;
             options.Password.RequireDigit = false;
             options.Password.RequireLowercase = false;
@@ -42,8 +42,7 @@ public class Program
         
         builder.Services.AddAuthentication(options =>
             {
-                //options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                
                 options.DefaultChallengeScheme = "GitHub";
             })
             .AddCookie()
@@ -52,6 +51,7 @@ public class Program
                 o.ClientId = builder.Configuration["authentication_github_clientId"] ?? "defaultClientId";
                 o.ClientSecret = builder.Configuration["authentication_github_clientSecret"] ?? "defaultClientSecret";
                 o.CallbackPath = "/signin-github";
+                o.Scope.Add("user:email");
             });
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
