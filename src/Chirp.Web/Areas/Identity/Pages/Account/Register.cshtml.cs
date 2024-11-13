@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Authentication;

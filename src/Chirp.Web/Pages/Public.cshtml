@@ -42,6 +42,14 @@
                         </strong>
                         @cheep.Text
                         <small>&mdash; @cheep.TimeStamp</small>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <small> <a href="/@cheep.Author">Follow</a></small>
+                        }
+                        else
+                        {
+                            <small> <a href="/Identity/Account/Login">Follow</a></small>
+                        }
                     </p>
                 </li>   
             }
