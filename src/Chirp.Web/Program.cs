@@ -26,7 +26,7 @@ public class Program
             x => x.MigrationsAssembly("Chirp.Infrastructure")));
         builder.Services.AddDefaultIdentity<Author>(options =>
         {
-            options.SignIn.RequireConfirmedAccount = true;
+            options.SignIn.RequireConfirmedAccount = false;
             options.User.RequireUniqueEmail = true;
             options.Password.RequireDigit = false;
             options.Password.RequireLowercase = false;
@@ -93,7 +93,7 @@ public class Program
             app.UseHsts();
         }
         app.MapRazorPages();
-        //app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthentication();
