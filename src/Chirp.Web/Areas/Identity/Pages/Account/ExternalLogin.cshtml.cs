@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Chirp.Core.DataModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -89,7 +90,10 @@ public class ExternalLoginModel : PageModel
             var props = new AuthenticationProperties();
             props.StoreTokens(info.AuthenticationTokens);
             await _signInManager.SignInAsync(user, props, info.LoginProvider);
-
+            foreach (var claim in info.Principal.Claims)
+            {
+                Console.WriteLine(claim);
+            }
             _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
             return LocalRedirect("/Public");
         }
@@ -101,17 +105,6 @@ public class ExternalLoginModel : PageModel
         {
             ReturnUrl = returnUrl;
             LoginProvider = info.LoginProvider;
-            // if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-            // {
-            //     Input = new InputModel
-            //     {
-            //         Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-            //     };
-            // }
-            // if (info.Principal.HasClaim(c => c.Type == "urn:github:login"))
-            // {
-            //     Input.Username = info.Principal.FindFirstValue("urn:github:login");
-            // }
             return Page();
         }
     }
@@ -129,8 +122,8 @@ public class ExternalLoginModel : PageModel
 
             var user = new Author
             {
-                UserName = Input.Username,
-                Email = Input.Email,
+                UserName = info.Principal.Identity.Name,
+                Email = info.Principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
                 Cheeps = new List<Cheep>(),
                 AuthorId = await _authorRepository.GetHighestAuthorId() + 1
             };
@@ -141,20 +134,14 @@ public class ExternalLoginModel : PageModel
                 result = await _userManager.AddLoginAsync(user, info);
                 if (result.Succeeded)
                 {
-                    //await _userManager.AddClaimAsync(user, info.Principal.FindFirst(ClaimTypes.Gender));
-
-                    // var props = new AuthenticationProperties();
-                    // props.StoreTokens(info.AuthenticationTokens);
-                    //
-                    // await _signInManager.SignInAsync(user, props, authenticationMethod: info.LoginProvider);
-                    // _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                    // return LocalRedirect(Url.RouteUrl(returnUrl));
+                    var props = new AuthenticationProperties();
+                    props.StoreTokens(info.AuthenticationTokens);
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         await _userManager.ConfirmEmailAsync(user, emailConfirmationToken);
                     }
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(user, props, authenticationMethod: info.LoginProvider);
                     return LocalRedirect("/Public");
                 }
             }

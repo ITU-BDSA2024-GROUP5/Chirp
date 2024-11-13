@@ -52,6 +52,7 @@ public class Program
                 o.ClientId = builder.Configuration["authentication_github_clientId"] ?? "defaultClientId";
                 o.ClientSecret = builder.Configuration["authentication_github_clientSecret"] ?? "defaultClientSecret";
                 o.CallbackPath = "/signin-github";
+                o.Scope.Add("user:email");
             });
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
