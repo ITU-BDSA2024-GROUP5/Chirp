@@ -46,8 +46,9 @@
                         {
                             if (!User.Identity.Name.Equals(cheep.Author))
                             {
-                                <small> <a href="/@cheep.Author">Follow</a></small>
-                                Model.Auth
+                                <small> <a href="/@cheep.Author">
+                                    @(Model.IsFollowing ? "Unfollow" : "Follow")
+                                </a></small>
                             }
                         }
                         else
