@@ -42,7 +42,7 @@ public class ExternalLoginModel : PageModel
         return RedirectToPage("./Login");
     }
     
-    // Redirect to github for login
+    // Redirect to github for login by ChallengeResult
     public IActionResult OnPost(string provider, string returnUrl = null)
     {
         // Request a redirect to the external login provider.
@@ -59,15 +59,30 @@ public class ExternalLoginModel : PageModel
             ErrorMessage = $"Error from external provider: {remoteError}";
             return RedirectToPage("./Login");
         }
+        // Get authenticated user info
         var info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null)
         {
             return RedirectToPage("./Login");
         }
-
+        
+        // Check if there is already a user with the same email
+        var useremail = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value;
+        var userfound = await _userManager.FindByEmailAsync(useremail);
+        if (userfound != null)
+        {
+            // add the github login to the existing user
+            var userresult = await _userManager.AddLoginAsync(userfound, info);
+            var props = new AuthenticationProperties();
+            props.StoreTokens(info.AuthenticationTokens);
+            // sign in the user and redirect to the public page
+            await _signInManager.SignInAsync(userfound, props, info.LoginProvider);
+            return LocalRedirect("/Public");
+        }
+        
         var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
         if (result.Succeeded)
-        {
+        {   
             var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
             var props = new AuthenticationProperties();
             props.StoreTokens(info.AuthenticationTokens);
@@ -92,7 +107,7 @@ public class ExternalLoginModel : PageModel
     }
     
     //Confirmation of external login and registration if necessary
-    public async Task<IActionResult> OnPostConfirmationAsync()
+    public async Task<IActionResult> OnPostConfirmationAsync(string? provider)
     {
         if (ModelState.IsValid)
         {
@@ -101,11 +116,16 @@ public class ExternalLoginModel : PageModel
             {
                 throw new ApplicationException("Error loading external login information during confirmation.");
             }
-
+            
+            // if (info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value.Equals("nickyye@hotmail.dk") ?? false)
+            // {
+            //     handleTeacher(provider);
+            //     return LocalRedirect("/Public");
+            // }
             var user = new Author
             {
                 UserName = info.Principal.Identity.Name,
-                Email = info.Principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
+                Email = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value,
                 Cheeps = new List<Cheep>(),
                 AuthorId = await _authorRepository.GetHighestAuthorId() + 1
             };
@@ -133,5 +153,24 @@ public class ExternalLoginModel : PageModel
             }
         }
         return Page();
+    }
+    
+    private async void handleTeacher(string provider)
+    {
+        var user = await _userManager.FindByEmailAsync("nickyye@hotmail.dk");
+        Console.WriteLine("find user with email"+user);
+        Console.WriteLine("await get"+await _userManager.GetUserIdAsync(user));
+        var info = await _signInManager.GetExternalLoginInfoAsync();
+        var props = new AuthenticationProperties();
+        props.StoreTokens(info.AuthenticationTokens);
+        await _signInManager.SignInAsync(user, props, authenticationMethod: info.LoginProvider);
+        
+        var info2 = await _signInManager.GetExternalLoginInfoAsync(await _userManager.GetUserIdAsync(user));
+        Console.WriteLine(info2);
+        var result = await _userManager.AddLoginAsync(user, info2);
+        if (!result.Succeeded)
+        {
+            throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
+        }
     }
 }
