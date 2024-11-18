@@ -71,10 +71,11 @@ public class AuthorRepository : IAuthorRepository
     public static AuthorDTO WrapInDTO(Author author)
     {   
         if(author == null) return null;
-
+        if (author.Follows == null) author.Follows = new List<string>();
         return new AuthorDTO{
             Name = author.UserName,
-            Email = author.Email
+            Email = author.Email,
+            Follows = author.Follows
         };
     }
 
@@ -91,7 +92,7 @@ public class AuthorRepository : IAuthorRepository
     public async Task AddFollower(string you, string me)
     {
         var author = await _context.Authors
-            .FirstAsync(a => a.UserName == me);
+            .SingleOrDefaultAsync(a => a.UserName == me);
         
         if (author.Follows == null) author.Follows = new List<string>();
         author.Follows.Add(you);

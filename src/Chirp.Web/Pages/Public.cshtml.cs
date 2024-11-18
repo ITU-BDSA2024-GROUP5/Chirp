@@ -15,7 +15,7 @@ public class PublicModel : PageModel
     [StringLength(160, MinimumLength = 1, ErrorMessage = "String length must be between 1 and 160")]
     public string Text { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
-    public bool IsFollowing { get; private set; }
+    public bool IsFollowing { get; set; }
     public List<string> Followers { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
@@ -69,28 +69,33 @@ public class PublicModel : PageModel
     public async Task CheckIfAuthorFollows(string you)
     {
         Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
-        if (await _authorRepository.ContainsFollower(you, author.UserName))
-        {
-            IsFollowing = true;
-            return;
-        }
-        IsFollowing = false;
-        await AddOrRemoveFollower(IsFollowing, author);
+        IsFollowing = await _authorRepository.ContainsFollower(you, author.UserName);
     }
-
-    public async Task AddOrRemoveFollower(bool isFollowing, Author author)
+    
+    public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        if (isFollowing)
+        Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
+        
+        IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
+
+        if (IsFollowing)
         {
-            await _authorRepository.RemoveFollower(author.UserName, User.Identity.Name);
-            return;
+            await _authorRepository.RemoveFollower(author.UserName, authorToFollow);
         }
-        await _authorRepository.AddFollower(author.UserName, User.Identity.Name);
+        else
+        {
+            await _authorRepository.AddFollower(author.UserName, authorToFollow);
+        }
+
+        IsFollowing = !IsFollowing;
+
+        return RedirectToPage();
     }
     
     public async Task<ActionResult> OnGet()
     {
         Cheeps = await _cheepRepository.Read(ParsePage(Request.Query["page"].ToString()));
+        Followers = await _authorRepository.GetFollowers(User.Identity.Name);
         return Page();
     }
 
