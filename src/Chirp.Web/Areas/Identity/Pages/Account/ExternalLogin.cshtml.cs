@@ -66,7 +66,7 @@ public class ExternalLoginModel : PageModel
             return RedirectToPage("./Login");
         }
         
-        // Check if there is already a user with the same email
+        // Check if user already exists with the same email
         var useremail = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value;
         var userfound = await _userManager.FindByEmailAsync(useremail);
         if (userfound != null)
@@ -107,7 +107,7 @@ public class ExternalLoginModel : PageModel
     }
     
     //Confirmation of external login and registration if necessary
-    public async Task<IActionResult> OnPostConfirmationAsync(string? provider)
+    public async Task<IActionResult> OnPostConfirmationAsync()
     {
         if (ModelState.IsValid)
         {
@@ -117,11 +117,6 @@ public class ExternalLoginModel : PageModel
                 throw new ApplicationException("Error loading external login information during confirmation.");
             }
             
-            // if (info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value.Equals("nickyye@hotmail.dk") ?? false)
-            // {
-            //     handleTeacher(provider);
-            //     return LocalRedirect("/Public");
-            // }
             var user = new Author
             {
                 UserName = info.Principal.Identity.Name,
