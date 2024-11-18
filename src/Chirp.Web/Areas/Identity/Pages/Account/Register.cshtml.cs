@@ -65,6 +65,7 @@ public class Register : PageModel
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         if (ModelState.IsValid)
         {
+            // Handle teachers
             var predefinedUsers = new Dictionary<string, string>
             {
                 { "ropf@itu.dk", "Helge" },
@@ -77,6 +78,7 @@ public class Register : PageModel
                 ModelState.AddModelError(string.Empty, $"Hi {name}! We already registered your account for you! Proceed to the login page!");
                 return Page();
             }
+            // End handle teachers
             
             var user = CreateUser();
             //set the username

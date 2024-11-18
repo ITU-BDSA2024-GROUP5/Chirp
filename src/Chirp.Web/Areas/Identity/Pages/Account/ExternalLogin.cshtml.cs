@@ -42,7 +42,7 @@ public class ExternalLoginModel : PageModel
         return RedirectToPage("./Login");
     }
     
-    // Redirect to github for login
+    // Redirect to github for login by ChallengeResult
     public IActionResult OnPost(string provider, string returnUrl = null)
     {
         // Request a redirect to the external login provider.
@@ -59,15 +59,30 @@ public class ExternalLoginModel : PageModel
             ErrorMessage = $"Error from external provider: {remoteError}";
             return RedirectToPage("./Login");
         }
+        // Get authenticated user info
         var info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null)
         {
             return RedirectToPage("./Login");
         }
-
+        
+        // Check if user already exists with the same email
+        var useremail = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value;
+        var userfound = await _userManager.FindByEmailAsync(useremail);
+        if (userfound != null)
+        {
+            // add the github login to the existing user
+            var userresult = await _userManager.AddLoginAsync(userfound, info);
+            var props = new AuthenticationProperties();
+            props.StoreTokens(info.AuthenticationTokens);
+            // sign in the user and redirect to the public page
+            await _signInManager.SignInAsync(userfound, props, info.LoginProvider);
+            return LocalRedirect("/Public");
+        }
+        
         var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
         if (result.Succeeded)
-        {
+        {   
             var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
             var props = new AuthenticationProperties();
             props.StoreTokens(info.AuthenticationTokens);
@@ -101,11 +116,11 @@ public class ExternalLoginModel : PageModel
             {
                 throw new ApplicationException("Error loading external login information during confirmation.");
             }
-
+            
             var user = new Author
             {
                 UserName = info.Principal.Identity.Name,
-                Email = info.Principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
+                Email = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value,
                 Cheeps = new List<Cheep>(),
                 AuthorId = await _authorRepository.GetHighestAuthorId() + 1
             };
