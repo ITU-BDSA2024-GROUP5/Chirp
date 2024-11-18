@@ -149,23 +149,4 @@ public class ExternalLoginModel : PageModel
         }
         return Page();
     }
-    
-    private async void handleTeacher(string provider)
-    {
-        var user = await _userManager.FindByEmailAsync("nickyye@hotmail.dk");
-        Console.WriteLine("find user with email"+user);
-        Console.WriteLine("await get"+await _userManager.GetUserIdAsync(user));
-        var info = await _signInManager.GetExternalLoginInfoAsync();
-        var props = new AuthenticationProperties();
-        props.StoreTokens(info.AuthenticationTokens);
-        await _signInManager.SignInAsync(user, props, authenticationMethod: info.LoginProvider);
-        
-        var info2 = await _signInManager.GetExternalLoginInfoAsync(await _userManager.GetUserIdAsync(user));
-        Console.WriteLine(info2);
-        var result = await _userManager.AddLoginAsync(user, info2);
-        if (!result.Succeeded)
-        {
-            throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
-        }
-    }
 }
