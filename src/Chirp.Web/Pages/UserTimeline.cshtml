@@ -36,7 +36,13 @@
         }
         
     }<br/>
-    <h2> @routeName's Timeline </h2>
+    <h2> @routeName's Timeline
+        <form-inline method="post" asp-page-handler="ToggleFollow" asp-route-author="@routeName">
+            <button name="authorToFollow" value="@routeName" style="font-size: 12px">
+                @(Model.IsFollowing ? "Unfollow" : "Follow")
+            </button>
+        </form-inline>
+    </h2>
 
     @if (Model.Cheeps!=null)
     {

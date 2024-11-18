@@ -84,11 +84,11 @@
                         {
                             if (!User.Identity.Name.Equals(cheep.Author))
                             {
-                                <form method="post" asp-page-handler="ToggleFollow">
-                                <small> <a href="/@cheep.Author">
-                                @(Model.IsFollowing ? "Unfollow" : "Follow")
-                            </a></small>
-                    </form>
+                                <form-inline method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author">
+                                    <button onclick="location.href = encodeURI('/@cheep.Author')" name="authorToFollow" value="@cheep.Author">
+                                        @(Model.IsFollowing ? "Unfollow" : "Follow")
+                                    </button>
+                                </form-inline>
                             }
                         }
                     </p>
