@@ -63,6 +63,18 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    public async Task<List<CheepDTO>> ReadAllCheeps(string author){
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)
+            .Where(cheep => cheep.Author.UserName == author)
+            .OrderByDescending(cheep => cheep.TimeStamp);
+        // Execute the query and store the results
+        var result = await query.ToListAsync();
+        var cheeps = WrapInDTO(result);
+        return cheeps;
+    }
+
     public async Task<int> GetHighestCheepId(){
         var query = _context.Cheeps
             .Select(c => c)
