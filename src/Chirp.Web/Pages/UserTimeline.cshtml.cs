@@ -18,7 +18,7 @@ public class UserTimelineModel : PageModel
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
-    public bool IsFollowing { get; set; }
+    //public bool IsFollowing { get; set; }
     public List<string> Followers { get; set; }
 
     public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
@@ -109,15 +109,15 @@ public class UserTimelineModel : PageModel
     {
         Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
         
-        IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
+        var IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
 
         if (IsFollowing)
         {
-            await _authorRepository.RemoveFollower(author.UserName, authorToFollow);
+            await _authorRepository.RemoveFollows(author.UserName, authorToFollow);
         }
         else
         {
-            await _authorRepository.AddFollower(author.UserName, authorToFollow);
+            await _authorRepository.AddFollows(author.UserName, authorToFollow);
         }
 
         IsFollowing = !IsFollowing;

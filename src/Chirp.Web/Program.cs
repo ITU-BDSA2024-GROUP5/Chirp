@@ -26,7 +26,7 @@ public class Program
             x => x.MigrationsAssembly("Chirp.Infrastructure")));
         builder.Services.AddDefaultIdentity<Author>(options =>
         {
-            options.SignIn.RequireConfirmedAccount = false;
+            options.SignIn.RequireConfirmedAccount = true;
             options.User.RequireUniqueEmail = true;
             options.Password.RequireDigit = false;
             options.Password.RequireLowercase = false;

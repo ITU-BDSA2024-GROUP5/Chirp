@@ -37,11 +37,16 @@
         
     }<br/>
     <h2> @routeName's Timeline
-        <form-inline method="post" asp-page-handler="ToggleFollow" asp-route-author="@routeName">
+        @{var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+        Console.WriteLine(user);
+        Console.WriteLine(user?.Follows?.Count);
+        var follows = user.Follows.Contains(routeName);
+        <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@routeName">
             <button name="authorToFollow" value="@routeName" style="font-size: 12px">
-                @(Model.IsFollowing ? "Unfollow" : "Follow")
+                @(follows ? "Unfollow" : "Follow")
             </button>
-        </form-inline>
+        </form>
+        }
     </h2>
 
     @if (Model.Cheeps!=null)

@@ -89,22 +89,28 @@ public class AuthorRepository : IAuthorRepository
     }
 
     // to avoid ambiguity and confusion, 'you' is the user 'me' wants to follow
-    public async Task AddFollower(string you, string me)
+    public async Task AddFollows(string you, string me)
     {
-        var author = await _context.Authors
-            .SingleOrDefaultAsync(a => a.UserName == me);
-        
-        if (author.Follows == null) author.Follows = new List<string>();
-        author.Follows.Add(you);
+        var authordto = await GetAuthorByName(you);
+        var author = _context.Authors.First(a => a.UserName == authordto.Name);
+        if (author.Follows == null)
+        {
+            author.Follows = new List<string>();
+        }
+        author.Follows.Add(me);
+        await _context.SaveChangesAsync();
     }
     
-    public async Task RemoveFollower(string you, string me)
+    public async Task RemoveFollows(string you, string me)
     {
-        var author = await _context.Authors
-            .FirstAsync(a => a.UserName == me);
-        
-        author.Follows ??= new List<string>();
-        author.Follows.Remove(you);
+        var authordto = await GetAuthorByName(you);
+        var author = _context.Authors.First(a => a.UserName == authordto.Name);
+        if (author.Follows == null)
+        {
+            author.Follows = new List<string>();
+        }
+        author.Follows.Remove(me);
+        await _context.SaveChangesAsync();
     }
 
     public async Task<bool> ContainsFollower(string you, string me)
