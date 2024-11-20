@@ -19,7 +19,7 @@ namespace Chirp.Web.Pages.About
         private readonly ILogger<PersonalDataVaultModel> _logger;
 
         public string Username { get; private set; }
-        public required List<CheepDTO> Cheeps { get; set; }
+        public static List<CheepDTO> Cheeps { get; private set; }
 
         public List<PersonalDataItem> PersonalDataItems { get; private set; }
 
@@ -29,7 +29,7 @@ namespace Chirp.Web.Pages.About
 
             var user = userManager.FindByNameAsync(username).Result;
 
-            await FetchCheeps(username);
+            await FetchCheeps(Username);
             
             PersonalDataItems = new List<PersonalDataItem>
             {
@@ -44,19 +44,31 @@ namespace Chirp.Web.Pages.About
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = "Latest Cheep", Value = Cheeps[0].Text });
             }
-        
+            
+        }
+
+        public async Task<IActionResult> OnPostShowCheeps()
+        {
+            PersonalDataItems = new List<PersonalDataItem>();
+            
+            foreach (var cheep in Cheeps)
+            {
+                PersonalDataItems.Add(new PersonalDataItem { Key = cheep.TimeStamp, Value = cheep.Text });
+            }
+            
+            return Page();
         }
 
         public async Task FetchCheeps(string author)
         {
-        Cheeps = await cheepRepository.ReadByAuthor(0, author);
+            Cheeps = await cheepRepository.ReadAllCheeps(author);
         }
 
 
         public class PersonalDataItem
-    {
-        public string Key { get; set; }
-        public string Value { get; set; }
-    }
+        {
+            public string Key { get; set; }
+            public string Value { get; set; }
+        }
     }
 }

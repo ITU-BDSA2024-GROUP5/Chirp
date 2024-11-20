@@ -11,8 +11,8 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Key</th>
-            <th>Value</th>
+            <th>Detail</th>
+            <th>Data</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +25,16 @@
         }
     </tbody>
 </table>
-<form method="post" asp-page-handler="ShowCheeps">
-        <button type="submit">Show all cheeps</button>
+
+<form method="post">
+    <button type="submit" asp-page-handler="ShowCheeps">Show Cheeps</button>
 </form>
+<button id="backButton">Go Back</button>
+
+@section Scripts {
+    <script>
+        document.getElementById("backButton").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
+}
