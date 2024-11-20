@@ -22,14 +22,14 @@ public class AdminModel(
         Users = context.Authors.ToList();
     }
     
-    // public override void OnPageHandlerExecuting(PageHandlerExecutingContext execcontext)
-    // {
-    //     // ASPNETCORE_ENVIRONMENT is not set to "Development" in Properties/launchSettings.json: return 404.
-    //     if (!env.IsDevelopment())  // using Microsoft.Extensions.Hosting;
-    //     {
-    //         execcontext.Result = NotFound();
-    //     }
-    // }
+    public override void OnPageHandlerExecuting(PageHandlerExecutingContext execcontext)
+    {
+        // ASPNETCORE_ENVIRONMENT is not set to "Development" in Properties/launchSettings.json: return 404.
+        if (!env.IsDevelopment())  // using Microsoft.Extensions.Hosting;
+        {
+            execcontext.Result = NotFound();
+        }
+    }
 
     public async Task<IActionResult> OnPostResetDatabase()
     {

@@ -72,10 +72,10 @@ public class Register : PageModel
                 { "adho@itu.dk", "Adrian" }
             };
 
-            if (predefinedUsers.Any(user => user.Key.Equals(Input.Email) && user.Value.Equals(Input.UserName)))
+            if (predefinedUsers.Any(user => user.Key.Equals(Input.Email)/* && user.Value.Equals(Input.UserName)*/))
             {
                 predefinedUsers.TryGetValue(Input.Email, out var name);
-                ModelState.AddModelError(string.Empty, $"Hi {name}! We already registered your account for you! Proceed to the login page!");
+                ModelState.AddModelError(string.Empty, $"Hi {name}! We already registered your account for you! Proceed to the login page or register with Github!");
                 return Page();
             }
             // End handle teachers
