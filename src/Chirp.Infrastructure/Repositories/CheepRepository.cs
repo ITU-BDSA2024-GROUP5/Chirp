@@ -1,6 +1,7 @@
 ﻿using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Data.DTO;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Repositories;
@@ -8,11 +9,12 @@ namespace Chirp.Infrastructure.Repositories;
 public class CheepRepository : ICheepRepository
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<Author> UserManager;
 
-    public CheepRepository(ApplicationDbContext context)
+    public CheepRepository(ApplicationDbContext context, UserManager<Author> userManager)
     {
         _context = context;
-    
+        UserManager = userManager;
     }
 
     public async Task<List<CheepDTO>> Read(int page)
@@ -63,6 +65,19 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    public async Task<List<CheepDTO>> ReadAllCheeps(string author)
+    {
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)
+            .Where(cheep => cheep.Author.UserName == author)
+            .OrderByDescending(cheep => cheep.TimeStamp);
+        // Execute the query and store the results
+        var result = await query.ToListAsync();
+        var cheeps = WrapInDTO(result);
+        return cheeps;
+    }
+
     public async Task<int> GetHighestCheepId(){
         var query = _context.Cheeps
             .Select(c => c)
@@ -76,6 +91,13 @@ public class CheepRepository : ICheepRepository
         await _context.Cheeps.AddAsync(cheep);
         cheep.Author.Cheeps.Add(cheep);
         await _context.SaveChangesAsync();
+    }
+    
+    public async Task<List<CheepDTO>> GetCheepsByAuthor(string author)
+    {
+        var auth = UserManager.Users.FirstOrDefault(a => a.UserName == author);
+        var cheeps = await ReadAllCheeps(auth.UserName);
+        return cheeps;
     }
 
     public static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
