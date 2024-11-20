@@ -1,0 +1,9 @@
+@page "{username}"
+@model Chirp.Web.Pages.About.PersonalDataVaultModel
+@{
+    ViewData["Title"] = "About";
+}
+
+<h2>@ViewData["Title"]</h2>
+<p>Use this page to provide information about your application.</p>
+<p>Welcome, @Model.Username!</p>
