@@ -26,13 +26,15 @@ namespace Chirp.Web.Pages.About
         public string ButtonFunction { get; set; } = "ShowCheeps";
         public static List<CheepDTO> Cheeps { get; private set; }
 
+        public static Author? user { get; private set; }
+
         public List<PersonalDataItem> PersonalDataItems { get; private set; }
 
         public async void OnGet(string username)
         {
             Username = username;
 
-            var user = userManager.FindByNameAsync(username).Result;
+            user = userManager.FindByNameAsync(username).Result;
 
             await FetchCheeps(Username);
             
@@ -45,7 +47,7 @@ namespace Chirp.Web.Pages.About
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = "Phone Number", Value = user.PhoneNumber });
             }   
-            if (Cheeps.Count > 0)
+            if (!IsCheepEmpty())
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = "Latest Cheep", Value = Cheeps[0].Text });
             }
@@ -55,14 +57,23 @@ namespace Chirp.Web.Pages.About
         public async Task<IActionResult> OnPostShowCheeps()
         {
             PersonalDataItems = new List<PersonalDataItem>();
-            
+            Username = user.UserName;
+            if(IsCheepEmpty())
+            {
+                PersonalDataItems.Add(new PersonalDataItem { Key = "No cheeps to show", Value = "" });
+                ButtonText = "Go back";
+                ButtonFunction = "GoBack";
+
+                return Page();
+            }
             foreach (var cheep in Cheeps)
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = cheep.TimeStamp, Value = cheep.Text });
             }
-            Username = Cheeps[0].Author;
+            
             ButtonText = "Go back";
             ButtonFunction = "GoBack";
+
             return Page();
         }
 
@@ -83,13 +94,17 @@ namespace Chirp.Web.Pages.About
         {
             var csv = new StringBuilder();
             csv.AppendLine("Timestamp,Text");
-            var user = userManager.FindByNameAsync(Cheeps[0].Author).Result;
+            
 
             csv.AppendLine($"Name,{user.UserName}");
             csv.AppendLine($"Email,{user.Email}");
             if (user.PhoneNumber != null)
             {
                 csv.AppendLine($"Phone Number,{user.PhoneNumber}");
+            }
+            if(IsCheepEmpty())
+            {
+                return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", $"{user.UserName}_data.csv");
             }
 
             foreach (var cheep in Cheeps)
@@ -100,11 +115,20 @@ namespace Chirp.Web.Pages.About
             return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", $"{user.UserName}_data.csv");
         }
 
+        public async Task<IActionResult> OnPostDeleteData()
+        {
+            return Redirect($"/Identity/Account/Manage/DeletePersonalData");
+        }
+
         public async Task FetchCheeps(string author)
         {
             Cheeps = await cheepRepository.ReadAllCheeps(author);
         }
 
+        public Boolean IsCheepEmpty()
+        {
+            return Cheeps.Count == 0;
+        }
 
         public class PersonalDataItem
         {

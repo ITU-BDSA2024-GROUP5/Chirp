@@ -12,11 +12,6 @@
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>
     <li class="nav-item">
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-    <li class="nav-item">
         <a class="btn btn-primary nav-link btn btn-link text-dar" href="/@User.Identity?.Name">
             My Timeline
         </a>
@@ -25,6 +20,11 @@
         <a class="btn btn-primary nav-link btn btn-link text-dar" href="/About/PersonalDataVault/@User.Identity?.Name">
             About me
         </a>
+    </li>
+    <li class="nav-item">
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+            <button  type="submit" class="btn btn-danger">Logout</button>
+        </form>
     </li>
 }
 else
