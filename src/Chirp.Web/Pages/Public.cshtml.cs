@@ -95,7 +95,10 @@ public class PublicModel : PageModel
     public async Task<ActionResult> OnGet()
     {
         Cheeps = await _cheepRepository.Read(ParsePage(Request.Query["page"].ToString()));
-        Followers = await _authorRepository.GetFollowers(User.Identity.Name);
+        if (User.Identity.Name != null)
+        {
+            Followers = await _authorRepository.GetFollowers(User.Identity.Name);
+        }
         return Page();
     }
 
