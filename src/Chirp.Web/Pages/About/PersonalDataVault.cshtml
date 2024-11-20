@@ -26,15 +26,13 @@
     </tbody>
 </table>
 
-<form method="post">
-    <button type="submit" asp-page-handler="ShowCheeps">Show Cheeps</button>
+<form method="post" id="cheepsForm">
+    <button id="Cheeps" type="submit" asp-page-handler="ShowCheeps">@Model.ButtonText</button> <button id="Download" type="submit" asp-page-handler="DownloadData">Download my data</button>
 </form>
-<button id="backButton">Go Back</button>
+
+
 
 @section Scripts {
     <script>
-        document.getElementById("backButton").addEventListener("click", function() {
-            window.history.back();
-        });
     </script>
 }

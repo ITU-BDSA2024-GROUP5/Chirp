@@ -19,6 +19,8 @@ namespace Chirp.Web.Pages.About
         private readonly ILogger<PersonalDataVaultModel> _logger;
 
         public string Username { get; private set; }
+
+        public string ButtonText { get; set; } = "Show Cheeps";
         public static List<CheepDTO> Cheeps { get; private set; }
 
         public List<PersonalDataItem> PersonalDataItems { get; private set; }
@@ -55,7 +57,8 @@ namespace Chirp.Web.Pages.About
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = cheep.TimeStamp, Value = cheep.Text });
             }
-            
+            Username = Cheeps[0].Author;
+            ButtonText = "Go back";
             return Page();
         }
 
