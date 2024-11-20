@@ -22,6 +22,8 @@ namespace Chirp.Web.Pages.About
         public string Username { get; private set; }
 
         public string ButtonText { get; set; } = "Show Cheeps";
+
+        public string ButtonFunction { get; set; } = "ShowCheeps";
         public static List<CheepDTO> Cheeps { get; private set; }
 
         public List<PersonalDataItem> PersonalDataItems { get; private set; }
@@ -60,7 +62,20 @@ namespace Chirp.Web.Pages.About
             }
             Username = Cheeps[0].Author;
             ButtonText = "Go back";
+            ButtonFunction = "GoBack";
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostGoBack()
+        {
+           var username = User.Identity?.Name;
+            if (string.IsNullOrEmpty(username))
+            {
+                // Handle the case where the user is not authenticated
+                return RedirectToPage("/Index");
+            }
+
+            return Redirect($"/About/PersonalDataVault/{username}"); 
         }
 
         //Function for downloading data as a CSV file

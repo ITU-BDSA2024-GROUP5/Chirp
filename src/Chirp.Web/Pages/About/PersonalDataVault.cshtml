@@ -27,7 +27,7 @@
 </table>
 
 <form method="post" id="cheepsForm">
-    <button id="Cheeps" type="submit" asp-page-handler="ShowCheeps">@Model.ButtonText</button> 
+    <button id="Cheeps" type="submit" asp-page-handler=@Model.ButtonFunction>@Model.ButtonText</button> 
     <button id="Download" type="submit" asp-page-handler="DownloadData">Download my data</button>
 </form>
 
