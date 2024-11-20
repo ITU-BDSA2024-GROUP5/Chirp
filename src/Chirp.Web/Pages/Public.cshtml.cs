@@ -74,17 +74,17 @@ public class PublicModel : PageModel
     
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
+        AuthorDTO author = await _authorRepository.GetAuthorByName(User.Identity.Name);
         
         IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
 
         if (IsFollowing)
         {
-            await _authorRepository.RemoveFollower(author.UserName, authorToFollow);
+            await _authorRepository.RemoveFollower(authorToFollow, author.Name);
         }
         else
         {
-            await _authorRepository.AddFollower(author.UserName, authorToFollow);
+            await _authorRepository.AddFollower(authorToFollow, author.Name);
         }
 
         IsFollowing = !IsFollowing;
