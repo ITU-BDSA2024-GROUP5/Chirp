@@ -9,6 +9,7 @@ using Microsoft.Build.Framework;
 using System.Collections.Generic;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Data.DTO;
+using System.Text;
 
 
 namespace Chirp.Web.Pages.About
@@ -60,6 +61,28 @@ namespace Chirp.Web.Pages.About
             Username = Cheeps[0].Author;
             ButtonText = "Go back";
             return Page();
+        }
+
+        //Function for downloading data as a CSV file
+        public async Task<IActionResult> OnPostDownloadData()
+        {
+            var csv = new StringBuilder();
+            csv.AppendLine("Timestamp,Text");
+            var user = userManager.FindByNameAsync(Cheeps[0].Author).Result;
+
+            csv.AppendLine($"Name,{user.UserName}");
+            csv.AppendLine($"Email,{user.Email}");
+            if (user.PhoneNumber != null)
+            {
+                csv.AppendLine($"Phone Number,{user.PhoneNumber}");
+            }
+
+            foreach (var cheep in Cheeps)
+            {
+                csv.AppendLine($"{cheep.TimeStamp},{cheep.Text}");
+            }
+
+            return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", $"{user.UserName}_data.csv");
         }
 
         public async Task FetchCheeps(string author)
