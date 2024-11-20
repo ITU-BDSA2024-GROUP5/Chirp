@@ -1,9 +1,27 @@
 @page "{username}"
 @model Chirp.Web.Pages.About.PersonalDataVaultModel
 @{
-    ViewData["Title"] = "About";
+    ViewData["Title"] = "Personal Data Vault";
 }
 
 <h2>@ViewData["Title"]</h2>
-<p>Use this page to provide information about your application.</p>
 <p>Welcome, @Model.Username!</p>
+<p>this page shows all the good personal information we have on you.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PersonalDataItems)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>@item.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>
