@@ -46,11 +46,17 @@
                         {
                             if (!User.Identity.Name.Equals(cheep.Author))
                             {
-                                <form-inline method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author">
-                                    <button onclick="location.href = encodeURI('/@cheep.Author')" name="authorToFollow" value="@cheep.Author">
-                                        @(Model.IsFollowing ? "Unfollow" : "Follow")
+                                var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+                                Console.WriteLine(user);
+                                Console.WriteLine(user?.Follows?.Count);
+                                var follows = user.Follows.Contains(@cheep.Author);
+                                
+                                <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author">
+                                    <button type="submit" name="authorToFollow" value="@cheep.Author">
+                                        @(follows ? "Unfollow" : "Follow")
                                     </button>
-                                </form-inline>
+                                </form>
+                                
                             }
                         }
                         else
@@ -86,11 +92,16 @@
                         {
                             if (!User.Identity.Name.Equals(cheep.Author))
                             {
-                                <form-inline method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author">
-                                    <button onclick="location.href = encodeURI('/@cheep.Author')" name="authorToFollow" value="@cheep.Author">
-                                        @(Model.IsFollowing ? "Unfollow" : "Follow")
+                                var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+                                Console.WriteLine(user);
+                                Console.WriteLine(user?.Follows?.Count);
+                                var follows = user.Follows.Contains(@cheep.Author);
+                                
+                                <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author">
+                                    <button type="submit" name="authorToFollow" value="@cheep.Author">
+                                        @(follows ? "Unfollow" : "Follow")
                                     </button>
-                                </form-inline>
+                                </form>
                             }
                         }
                     </p>

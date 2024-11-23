@@ -15,8 +15,8 @@ public class PublicModel : PageModel
     [StringLength(160, MinimumLength = 1, ErrorMessage = "String length must be between 1 and 160")]
     public string Text { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
-    public bool IsFollowing { get; set; }
-    public List<string> Followers { get; set; }
+    //public bool IsFollowing { get; set; }
+    //public List<string> Followers { get; set; }
     
     private readonly ICheepRepository _cheepRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
@@ -53,7 +53,7 @@ public class PublicModel : PageModel
     
     public async Task FetchCheeps(string author)
     {
-            Cheeps = await _cheepRepository.ReadByAuthor(0, author);
+        Cheeps = await _cheepRepository.ReadByAuthor(0, author);
     }
     
     public async Task FetchCheeps()
@@ -61,44 +61,44 @@ public class PublicModel : PageModel
         Cheeps = await _cheepRepository.Read(0);
     }
 
-    public async Task FetchAuthors()
-    {
-        Followers = await _authorRepository.GetFollowers(User.Identity.Name);
-    }
+    // public async Task FetchAuthors()
+    // {
+    //     Followers = await _authorRepository.GetFollowers(User.Identity.Name);
+    // }
 
-    public async Task CheckIfAuthorFollows(string you)
-    {
-        Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
-        IsFollowing = await _authorRepository.ContainsFollower(you, author.UserName);
-    }
+    // public async Task CheckIfAuthorFollows(string you)
+    // {
+    //     Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
+    //     IsFollowing = await _authorRepository.ContainsFollower(you, author.UserName);
+    // }
     
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        AuthorDTO author = await _authorRepository.GetAuthorByName(User.Identity.Name);
+        var author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
         
-        IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
+        var IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
 
         if (IsFollowing)
         {
-            await _authorRepository.RemoveFollower(authorToFollow, author.Name);
+            await _authorRepository.RemoveFollows(author.UserName, authorToFollow);
         }
         else
         {
-            await _authorRepository.AddFollower(authorToFollow, author.Name);
+            await _authorRepository.AddFollows(author.UserName, authorToFollow);
         }
-
+        
         IsFollowing = !IsFollowing;
-
+        
         return RedirectToPage();
     }
     
     public async Task<ActionResult> OnGet()
     {
         Cheeps = await _cheepRepository.Read(ParsePage(Request.Query["page"].ToString()));
-        if (User.Identity.Name != null)
-        {
-            Followers = await _authorRepository.GetFollowers(User.Identity.Name);
-        }
+        // if (User.Identity.Name != null)
+        // {
+        //     Followers = await _authorRepository.GetFollowers(User.Identity.Name);
+        // }
         return Page();
     }
 

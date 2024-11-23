@@ -18,7 +18,7 @@ public class UserTimelineModel : PageModel
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
-    public bool IsFollowing { get; set; }
+    //public bool IsFollowing { get; set; }
     public List<string> Followers { get; set; }
 
     public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
@@ -26,7 +26,6 @@ public class UserTimelineModel : PageModel
         _authorRepository = authorRepository;
         _cheepRepository = cheepRepository;
         _cheepServiceDb = new CheepServiceDB(cheepRepository, authorRepository);
-        IsFollowing = false;
         Text = string.Empty;
     }
     
@@ -106,19 +105,19 @@ public class UserTimelineModel : PageModel
         }
     }
     
-    public async Task<ActionResult> OnPostToggleFollow(string authorToFollow)
+    public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        AuthorDTO author = await _authorRepository.GetAuthorByName(User.Identity.Name);
+        Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
         
-        IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, author.Name);
+        var IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
 
         if (IsFollowing)
         {
-            await _authorRepository.RemoveFollower(authorToFollow, author.Name);
+            await _authorRepository.RemoveFollows(author.UserName, authorToFollow);
         }
         else
         {
-            await _authorRepository.AddFollower(authorToFollow, author.Name);
+            await _authorRepository.AddFollows(author.UserName, authorToFollow);
         }
 
         IsFollowing = !IsFollowing;
