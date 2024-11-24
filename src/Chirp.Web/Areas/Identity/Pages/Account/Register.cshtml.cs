@@ -67,6 +67,21 @@ public class Register : PageModel
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         if (ModelState.IsValid)
         {
+            // Handle teachers
+            var predefinedUsers = new Dictionary<string, string>
+            {
+                { "ropf@itu.dk", "Helge" },
+                { "adho@itu.dk", "Adrian" }
+            };
+
+            if (predefinedUsers.Any(user => user.Key.Equals(Input.Email)/* && user.Value.Equals(Input.UserName)*/))
+            {
+                predefinedUsers.TryGetValue(Input.Email, out var name);
+                ModelState.AddModelError(string.Empty, $"Hi {name}! We already registered your account for you! Proceed to the login page or register with Github!");
+                return Page();
+            }
+            // End handle teachers
+            
             var user = CreateUser();
             //set the username
             

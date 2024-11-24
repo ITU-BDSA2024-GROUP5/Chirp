@@ -4,8 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # SQLITE TEMP FILES
-.db-shm
-.db-wal
+*.db-shm
+*.db-wal
 
 # User-specific files
 *.rsuser
