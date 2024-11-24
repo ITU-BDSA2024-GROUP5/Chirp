@@ -18,8 +18,6 @@ public class UserTimelineModel : PageModel
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
-    //public bool IsFollowing { get; set; }
-    public List<string> Followers { get; set; }
 
     public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
     {
@@ -119,8 +117,6 @@ public class UserTimelineModel : PageModel
         {
             await _authorRepository.AddFollows(author.UserName, authorToFollow);
         }
-
-        IsFollowing = !IsFollowing;
 
         return RedirectToPage();
     }

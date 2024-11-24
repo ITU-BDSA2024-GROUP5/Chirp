@@ -36,55 +36,88 @@
             </div>
         }
         
-    }<br/>
+    }
+    <br/>
     <h2> @routeName's Timeline
-        @if(!User.Identity.Name.Equals(routeName))
+        @if (SignInManager.IsSignedIn(User))
         {
-            var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
-            Console.WriteLine(user);
-            Console.WriteLine(user?.Follows?.Count);
-            var follows = user.Follows.Contains(routeName);
-            <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@routeName">
-                <button name="authorToFollow" value="@routeName" style="font-size: 12px">
+            @if(!User.Identity.Name.Equals(routeName))
+
+            {
+                var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+                Console.WriteLine(user);
+                Console.WriteLine(user?.Follows?.Count);
+                var follows = user.Follows.Contains(routeName); 
+                    <form method = "post" asp-page-handler = "ToggleFollow" asp-route-author = "@routeName" >
+                    <button name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                     @(follows ? "Unfollow" : "Follow")
-                </button>
-            </form>
+                    </button >
+                    </form>
+            }
         }
-    </h2>
+        </h2>
 
     @if (Model.Cheeps!=null)
     {
-        var allcheeps = Model.Cheeps;
-        var userfollows = UserManager.FindByNameAsync(User.Identity.Name).Result?.Follows;
-        if (userfollows != null)
+        @if (SignInManager.IsSignedIn(User))
         {
-            foreach (var followed in userfollows)
+            var allcheeps = Model.Cheeps;
+            var userfollows = UserManager.FindByNameAsync(User.Identity.Name).Result?.Follows;
+            if (userfollows != null)
             {
-                var followee = UserManager.Users.FirstOrDefault(u => u.UserName == followed);
-                var cheeps = await CheepRepository.GetCheepsByAuthor(followee.UserName);
-                allcheeps.AddRange(cheeps);
+                foreach (var followed in userfollows)
+                {
+                    var followee = UserManager.Users.FirstOrDefault(u => u.UserName == followed);
+                    var cheeps = await CheepRepository.GetCheepsByAuthor(followee.UserName);
+                    allcheeps.AddRange(cheeps);
+                }
             }
-        }
 
-        if(User.Identity.Name.Equals(routeName))
-        {
-            <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in allcheeps)
+            if (User.Identity.Name.Equals(routeName))
             {
-                <li>
-                    <p>
-                        <strong>
-                            <a href="/@cheep.Author">@cheep.Author</a>
-                        </strong>
-                        @cheep.Text
-                        <small>&mdash; @cheep.TimeStamp</small>
-                    </p>
-                </li>
+                <ul id="messagelist" class="cheeps">
+                    @foreach (var cheep in allcheeps)
+                    {
+                        <li>
+                            <p>
+                                <strong>
+                                    <a href="/@cheep.Author">@cheep.Author</a>
+                                </strong>
+                                @cheep.Text
+                                <small>&mdash; @cheep.TimeStamp</small>
+                            </p>
+                        </li>
+                    }
+                </ul>
             }
-            </ul>
+            else
+            {
+                <div style="display: none">
+                    @Model.FetchCheeps(@routeName.ToString())
+                </div>
+        
+                <ul id="messagelist" class="cheeps">
+                    @foreach (var cheep in Model.Cheeps)
+                    {
+                        <li>
+                            <p>
+                                <strong>
+                                    <a href="/@cheep.Author">@cheep.Author</a>
+                                </strong>
+                                @cheep.Text
+                                <small>&mdash; @cheep.TimeStamp</small>
+                            </p>
+                        </li>
+                    }
+                </ul>
+            }
         }
         else
         {
+            <div style="display: none">
+                @Model.FetchCheeps(@routeName.ToString())
+            </div>
+        
             <ul id="messagelist" class="cheeps">
                 @foreach (var cheep in Model.Cheeps)
                 {
@@ -100,7 +133,6 @@
                 }
             </ul>
         }
-        
     }
     else if(Model.Cheeps==null)
     {
@@ -108,37 +140,8 @@
         
         <div style="display: none">
             @Model.FetchCheeps(@routeName.ToString())
+            
         </div>
-        
-        var allcheeps = Model.Cheeps;
-        var userfollows = UserManager.FindByNameAsync(User.Identity.Name).Result?.Follows;
-        if (userfollows != null)
-        {
-            foreach (var followed in userfollows)
-            {
-                var followee = UserManager.Users.FirstOrDefault(u => u.UserName == followed);
-                var cheeps = await CheepRepository.GetCheepsByAuthor(followee.UserName);
-                allcheeps.AddRange(cheeps);
-            }
-        }
-        if(User.Identity.Name.Equals(routeName))
-        {
-            <ul id="messagelist" class="cheeps">
-                @foreach (var cheep in allcheeps)
-                {
-                    <li>
-                        <p>
-                            <strong>
-                                <a href="/@cheep.Author">@cheep.Author</a>
-                            </strong>
-                            @cheep.Text
-                            <small>&mdash; @cheep.TimeStamp</small>
-                        </p>
-                    </li>
-                }
-            </ul>
-        }
-        else
         {
             <ul id="messagelist" class="cheeps">
                 @foreach (var cheep in Model.Cheeps)
