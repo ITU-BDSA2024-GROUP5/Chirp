@@ -38,24 +38,23 @@
         
     }
     <br/>
-    <h2> @routeName's Timeline
-        @if (SignInManager.IsSignedIn(User))
-        {
-            @if(!User.Identity.Name.Equals(routeName))
-
+    <form method = "post" asp-page-handler = "ToggleFollow" asp-route-author = "@routeName" >
+        <h2> @routeName's Timeline
+            @if (SignInManager.IsSignedIn(User))
             {
-                var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
-                Console.WriteLine(user);
-                Console.WriteLine(user?.Follows?.Count);
-                var follows = user.Follows.Contains(routeName); 
-                    <form method = "post" asp-page-handler = "ToggleFollow" asp-route-author = "@routeName" >
+                @if(!User.Identity.Name.Equals(routeName))
+                {
+                    var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+                    Console.WriteLine(user);
+                    Console.WriteLine(user?.Follows?.Count);
+                    var follows = user.Follows.Contains(routeName); 
                     <button name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
-                    @(follows ? "Unfollow" : "Follow")
-                    </button >
-                    </form>
+                        @(follows ? "Unfollow" : "Follow")
+                    </button>
+                }
             }
-        }
         </h2>
+    </form>
 
     @if (Model.Cheeps!=null)
     {
