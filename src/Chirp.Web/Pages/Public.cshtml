@@ -3,7 +3,7 @@
 @using Chirp.Core.DataModels
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model PublicModel
-@inject UserManager<Author> UserManager
+@inject IAuthorRepository AuthorRepository
 
 
 @{
@@ -47,7 +47,7 @@
                                 <small>&mdash; @cheep.TimeStamp</small>
                                 @if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
                                 {
-                                var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+                                var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
                                 Console.WriteLine(user);
                                 Console.WriteLine(user?.Follows?.Count);
                                 var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
@@ -102,7 +102,7 @@
                             {
                                 if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
                                 {
-                                    var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+                                    var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
                                     Console.WriteLine(user);
                                     Console.WriteLine(user?.Follows?.Count);
                                     var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
