@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model PublicModel
 @inject UserManager<Author> UserManager
+@inject IAuthorRepository AuthorRepository
 
 
 @{
@@ -46,7 +47,7 @@
                         {
                             if (!User.Identity.Name.Equals(cheep.Author))
                             {
-                                var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+                                var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
                                 Console.WriteLine(user);
                                 Console.WriteLine(user?.Follows?.Count);
                                 var follows = user.Follows.Contains(@cheep.Author);
@@ -92,7 +93,7 @@
                         {
                             if (!User.Identity.Name.Equals(cheep.Author))
                             {
-                                var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+                                var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
                                 Console.WriteLine(user);
                                 Console.WriteLine(user?.Follows?.Count);
                                 var follows = user.Follows.Contains(@cheep.Author);
