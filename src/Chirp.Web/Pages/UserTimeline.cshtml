@@ -42,12 +42,12 @@
         <h2> @routeName's Timeline
             @if (SignInManager.IsSignedIn(User))
             {
-                @if(!User.Identity.Name.Equals(routeName))
+                @if(User.Identity?.Name != null && !User.Identity.Name.Equals(routeName))
                 {
                     var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
                     Console.WriteLine(user);
                     Console.WriteLine(user?.Follows?.Count);
-                    var follows = user.Follows.Contains(routeName); 
+                    var follows =  user?.Follows != null && user.Follows.Contains(routeName); 
                     <button name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                         @(follows ? "Unfollow" : "Follow")
                     </button>

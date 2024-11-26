@@ -45,12 +45,12 @@
                                 </strong>
                                 @cheep.Text
                                 <small>&mdash; @cheep.TimeStamp</small>
-                                @if (!User.Identity.Name.Equals(cheep.Author))
+                                @if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
                                 {
                                 var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
                                 Console.WriteLine(user);
                                 Console.WriteLine(user?.Follows?.Count);
-                                var follows = user.Follows.Contains(@cheep.Author);
+                                var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
                                 <button type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px">
                                     @(follows ? "Unfollow" : "Follow")
                                 </button>
@@ -100,12 +100,12 @@
                             <small>&mdash; @cheep.TimeStamp</small>
                             @if (SignInManager.IsSignedIn(User))
                             {
-                                if (!User.Identity.Name.Equals(cheep.Author))
+                                if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
                                 {
                                     var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
                                     Console.WriteLine(user);
                                     Console.WriteLine(user?.Follows?.Count);
-                                    var follows = user.Follows.Contains(@cheep.Author);
+                                    var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
                                     <button type="submit" name="authorToFollow" value="@cheep.Author" style = "font-size: 12px">
                                         @(follows ? "Unfollow" : "Follow")
                                     </button>
