@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
 using Chirp.Infrastructure.Services;
@@ -53,9 +54,13 @@ public class UserTimelineModel : PageModel
         return RedirectToPage(author);
     }
     
-    public async Task FetchCheeps(string author)
+    public async Task<List<CheepDTO>> FetchCheeps(string author)
     {
         Cheeps = await _cheepRepository.ReadByAuthor(0, author);
+        Cheeps = Cheeps
+            .OrderBy(c => DateTime.Parse(c.TimeStamp).Date) // Parse and sort by DateTime
+            .ToList();
+        return Cheeps;
     }
     
     public async Task<ActionResult> OnGet(string author)
