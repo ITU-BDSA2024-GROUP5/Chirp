@@ -1,7 +1,6 @@
 ﻿using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Data.DTO;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Repositories;
@@ -9,12 +8,10 @@ namespace Chirp.Infrastructure.Repositories;
 public class CheepRepository : ICheepRepository
 {
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<Author> UserManager;
 
-    public CheepRepository(ApplicationDbContext context, UserManager<Author> userManager)
+    public CheepRepository(ApplicationDbContext context)
     {
         _context = context;
-        UserManager = userManager;
     }
 
     public async Task<List<CheepDTO>> Read(int page)
@@ -95,7 +92,7 @@ public class CheepRepository : ICheepRepository
     
     public async Task<List<CheepDTO>> GetCheepsByAuthor(string author)
     {
-        var auth = UserManager.Users.FirstOrDefault(a => a.UserName == author);
+        var auth = _context.Users.FirstOrDefault(a => a.UserName == author);
         var cheeps = await ReadAllCheeps(auth.UserName);
         return cheeps;
     }
