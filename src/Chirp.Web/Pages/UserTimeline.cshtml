@@ -67,7 +67,7 @@
                 foreach (var followed in userfollows)
                 {
                     var followee = UserManager.Users.FirstOrDefault(u => u.UserName == followed);
-                    var cheeps = await CheepRepository.GetCheepsByAuthor(followee.UserName);
+                    var cheeps = await Model.FetchCheeps(followee.UserName);
                     allcheeps.AddRange(cheeps);
                 }
             }
