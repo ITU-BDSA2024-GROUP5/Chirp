@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
@@ -87,6 +89,7 @@ public class Register : PageModel
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
             user.UserName = Input.UserName;    //add this line....
             user.AuthorId = await _authorRepository.GetHighestAuthorId() + 1;
+            user.Follows = new List<string>();
             
             var result = await _userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded)

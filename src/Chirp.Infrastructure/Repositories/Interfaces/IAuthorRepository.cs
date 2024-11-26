@@ -11,4 +11,8 @@ public interface IAuthorRepository
     public Task<int> GetHighestAuthorId();
     public Task<Author> GetAuthorByNameEntity(string author);
     public Task WriteAuthor(Author author);
+    public Task<List<string>> GetFollowers(string you);
+    public Task AddFollows(string you, string me);
+    public Task RemoveFollows(string you, string me);
+    public Task<bool> ContainsFollower(string you, string me);
 }

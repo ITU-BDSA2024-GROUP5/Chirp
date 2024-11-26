@@ -35,16 +35,48 @@
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
-                <li>
-                    <p>
-                        <strong>
-                            <a href="/@cheep.Author">@cheep.Author</a>
-                        </strong>
-                        @cheep.Text
-                        <small>&mdash; @cheep.TimeStamp</small>
-                    </p>
-                </li>   
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author" style="margin-right: auto;">
+                        <li>
+                            <p style="display: flex; align-items: normal;">
+                                <strong>
+                                    <a href="/@cheep.Author">@cheep.Author</a>
+                                </strong>
+                                @cheep.Text
+                                <small>&mdash; @cheep.TimeStamp</small>
+                                @if (!User.Identity.Name.Equals(cheep.Author))
+                                {
+                                var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+                                Console.WriteLine(user);
+                                Console.WriteLine(user?.Follows?.Count);
+                                var follows = user.Follows.Contains(@cheep.Author);
+                                <button type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px">
+                                    @(follows ? "Unfollow" : "Follow")
+                                </button>
+                                }
+                            </p>
+                        </li>
+                    </form>
+                }
+                else
+                {
+                    <li>
+                        <p style="display: flex; align-items: normal;">
+                            <strong>
+                                <a href="/@cheep.Author">@cheep.Author</a>
+                            </strong>
+                            @cheep.Text
+                            <small>&mdash; @cheep.TimeStamp</small>
+                            <small>
+                                <a href="/Identity/Account/Login">
+                                    <button>Follow</button>
+                                </a></small>
+                        </p>
+                    </li>
+                }
             }
+                
         </ul>
     }
     else if (Model.Cheeps==null)
@@ -58,15 +90,30 @@
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
-                <li>
-                    <p>
-                        <strong>
-                            <a href="/@cheep.Author">@cheep.Author</a>
-                        </strong>
-                        @cheep.Text
-                        <small>&mdash; @cheep.TimeStamp</small>
-                    </p>
-                </li>   
+                <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author">
+                    <li>
+                        <p>
+                            <strong>
+                                <a href="/@cheep.Author">@cheep.Author</a>
+                            </strong>
+                            @cheep.Text
+                            <small>&mdash; @cheep.TimeStamp</small>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                if (!User.Identity.Name.Equals(cheep.Author))
+                                {
+                                    var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+                                    Console.WriteLine(user);
+                                    Console.WriteLine(user?.Follows?.Count);
+                                    var follows = user.Follows.Contains(@cheep.Author);
+                                    <button type="submit" name="authorToFollow" value="@cheep.Author" style = "font-size: 12px">
+                                        @(follows ? "Unfollow" : "Follow")
+                                    </button>
+                                }
+                            }
+                        </p>
+                    </li>
+                </form>
             }
         </ul>
         

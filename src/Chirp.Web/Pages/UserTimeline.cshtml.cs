@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
 using Chirp.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -101,4 +102,23 @@ public class UserTimelineModel : PageModel
             return 0;
         }
     }
+    
+    public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
+    {
+        Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
+        
+        var IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
+
+        if (IsFollowing)
+        {
+            await _authorRepository.RemoveFollows(author.UserName, authorToFollow);
+        }
+        else
+        {
+            await _authorRepository.AddFollows(author.UserName, authorToFollow);
+        }
+
+        return RedirectToPage();
+    }
+    
 }

@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Data.DTO;
@@ -70,10 +71,53 @@ public class AuthorRepository : IAuthorRepository
     public static AuthorDTO WrapInDTO(Author author)
     {   
         if(author == null) return null;
-
+        if (author.Follows == null) author.Follows = new List<string>();
         return new AuthorDTO{
             Name = author.UserName,
-            Email = author.Email
+            Email = author.Email,
+            Follows = author.Follows
         };
     }
+
+    public async Task<List<string>> GetFollowers(string me)
+    {
+        var author = await _context.Authors
+            .FirstAsync(a => a.UserName == me);
+        
+        if (author.Follows == null) return new List<string>();
+        return author.Follows;
+    }
+
+    // to avoid ambiguity and confusion, 'you' is the user 'me' wants to follow
+    public async Task AddFollows(string you, string me)
+    {
+        var authordto = await GetAuthorByName(you);
+        var author = _context.Authors.First(a => a.UserName == authordto.Name);
+        if (author.Follows == null)
+        {
+            author.Follows = new List<string>();
+        }
+        author.Follows.Add(me);
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task RemoveFollows(string you, string me)
+    {
+        var authordto = await GetAuthorByName(you);
+        var author = _context.Authors.First(a => a.UserName == authordto.Name);
+        if (author.Follows == null)
+        {
+            author.Follows = new List<string>();
+        }
+        author.Follows.Remove(me);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<bool> ContainsFollower(string you, string me)
+    {
+        var author = await _context.Authors
+            .FirstAsync(a => a.UserName == me);
+        return author.Follows != null && author.Follows.Contains(you);
+    }
+    
 }

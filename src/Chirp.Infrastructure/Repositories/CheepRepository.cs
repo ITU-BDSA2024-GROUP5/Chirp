@@ -12,7 +12,6 @@ public class CheepRepository : ICheepRepository
     public CheepRepository(ApplicationDbContext context)
     {
         _context = context;
-    
     }
 
     public async Task<List<CheepDTO>> Read(int page)
@@ -63,7 +62,8 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
-    public async Task<List<CheepDTO>> ReadAllCheeps(string author){
+    public async Task<List<CheepDTO>> ReadAllCheeps(string author)
+    {
         var query = _context.Cheeps
             .Select(cheep => cheep)
             .Include(c => c.Author)
@@ -88,6 +88,13 @@ public class CheepRepository : ICheepRepository
         await _context.Cheeps.AddAsync(cheep);
         cheep.Author.Cheeps.Add(cheep);
         await _context.SaveChangesAsync();
+    }
+    
+    public async Task<List<CheepDTO>> GetCheepsByAuthor(string author)
+    {
+        var auth = _context.Users.FirstOrDefault(a => a.UserName == author);
+        var cheeps = await ReadAllCheeps(auth.UserName);
+        return cheeps;
     }
 
     public static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
