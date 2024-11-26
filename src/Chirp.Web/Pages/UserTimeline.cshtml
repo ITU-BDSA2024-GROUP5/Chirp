@@ -5,6 +5,7 @@
 @inject SignInManager<Author> SignInManager
 @inject UserManager<Author> UserManager
 @inject ICheepRepository CheepRepository
+@inject IAuthorRepository AuthorRepository
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -16,7 +17,7 @@
     {
         @if (routeName.ToString().Contains('@'))
         {
-            routeName = await UserManager.FindByEmailAsync(routeName.ToString());
+            routeName = await AuthorRepository.GetAuthorByEmail(routeName.ToString());
         }
         @if (routeName.Equals(User.Identity.Name))
         {
@@ -40,7 +41,7 @@
     <h2> @routeName's Timeline
         @if(!User.Identity.Name.Equals(routeName))
         {
-            var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
+            var user = AuthorRepository.GetAuthorByName(User.Identity.Name).Result;
             Console.WriteLine(user);
             Console.WriteLine(user?.Follows?.Count);
             var follows = user.Follows.Contains(routeName);
@@ -55,12 +56,12 @@
     @if (Model.Cheeps!=null)
     {
         var allcheeps = Model.Cheeps;
-        var userfollows = UserManager.FindByNameAsync(User.Identity.Name).Result?.Follows;
+        var userfollows = AuthorRepository.GetAuthorByName(User.Identity.Name).Result?.Follows;
         if (userfollows != null)
         {
             foreach (var followed in userfollows)
             {
-                var followee = UserManager.Users.FirstOrDefault(u => u.UserName == followed);
+                var followee = await AuthorRepository.GetAuthorByNameEntity(followed);
                 var cheeps = await CheepRepository.GetCheepsByAuthor(followee.UserName);
                 allcheeps.AddRange(cheeps);
             }
@@ -111,12 +112,12 @@
         </div>
         
         var allcheeps = Model.Cheeps;
-        var userfollows = UserManager.FindByNameAsync(User.Identity.Name).Result?.Follows;
+        var userfollows = AuthorRepository.GetAuthorByName(User.Identity.Name).Result?.Follows;
         if (userfollows != null)
         {
             foreach (var followed in userfollows)
             {
-                var followee = UserManager.Users.FirstOrDefault(u => u.UserName == followed);
+                var followee = await AuthorRepository.GetAuthorByNameEntity(followed);
                 var cheeps = await CheepRepository.GetCheepsByAuthor(followee.UserName);
                 allcheeps.AddRange(cheeps);
             }
