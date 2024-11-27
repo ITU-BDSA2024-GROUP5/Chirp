@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Chirp.Core.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Infrastructure.Data.DTO;
-using Chirp.Infrastructure.Repositories;
+using Chirp.Infrastructure.Services.Interfaces;
 
 namespace Chirp.Web.Pages;
 
@@ -15,17 +14,11 @@ public class PublicModel : PageModel
     [StringLength(160, MinimumLength = 1, ErrorMessage = "String length must be between 1 and 160")]
     public string Text { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
-    //public bool IsFollowing { get; set; }
-    //public List<string> Followers { get; set; }
     
-    private readonly ICheepRepository _cheepRepository;
-    private readonly ICheepServiceDB _cheepServiceDb;
-    private readonly IAuthorRepository _authorRepository;
-    public PublicModel(ICheepRepository cheepRepository, ICheepServiceDB cheepServiceDb, IAuthorRepository authorRepository)
+    private readonly IChirpService _chirpService;
+    public PublicModel(IChirpService chirpService)
     {
-        _cheepRepository = cheepRepository;
-        _cheepServiceDb = cheepServiceDb;
-        _authorRepository = authorRepository;
+        _chirpService = chirpService;
         Text = string.Empty;
     }
 
@@ -37,14 +30,8 @@ public class PublicModel : PageModel
             return Page();
         }
         
-        var author = await _cheepServiceDb.GetAuthorByString(User.Identity.Name);
-        if (author == null)
-        {
-            var newAuthor = await _cheepServiceDb.CreateAuthor(User.Identity.Name);
-            author = newAuthor;
-        }
-        var cheep = await _cheepServiceDb.CreateCheep(author.Name, Text);
-        await _cheepServiceDb.WriteCheep(cheep);
+        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
+        await _chirpService.CreateCheep(author.Name, Text);
         
         await FetchCheeps(author.Name);
         
@@ -53,38 +40,27 @@ public class PublicModel : PageModel
     
     public async Task FetchCheeps(string author)
     {
-        Cheeps = await _cheepRepository.ReadByAuthor(0, author);
+        Cheeps = await _chirpService.ReadByAuthor(0, author);
     }
     
     public async Task FetchCheeps()
     {
-        Cheeps = await _cheepRepository.Read(0);
+        Cheeps = await _chirpService.Read(0);
     }
-
-    // public async Task FetchAuthors()
-    // {
-    //     Followers = await _authorRepository.GetFollowers(User.Identity.Name);
-    // }
-
-    // public async Task CheckIfAuthorFollows(string you)
-    // {
-    //     Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
-    //     IsFollowing = await _authorRepository.ContainsFollower(you, author.UserName);
-    // }
     
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        var author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
+        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
         
-        var IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
+        var IsFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
 
         if (IsFollowing)
         {
-            await _authorRepository.RemoveFollows(author.UserName, authorToFollow);
+            await _chirpService.RemoveFollows(author.Name, authorToFollow);
         }
         else
         {
-            await _authorRepository.AddFollows(author.UserName, authorToFollow);
+            await _chirpService.AddFollows(author.Name, authorToFollow);
         }
         
         IsFollowing = !IsFollowing;
@@ -94,7 +70,7 @@ public class PublicModel : PageModel
     
     public async Task<ActionResult> OnGet()
     {
-        Cheeps = await _cheepRepository.Read(ParsePage(Request.Query["page"].ToString()));
+        Cheeps = await _chirpService.Read(ParsePage(Request.Query["page"].ToString()));
         return Page();
     }
 

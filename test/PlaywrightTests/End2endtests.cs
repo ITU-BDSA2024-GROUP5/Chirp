@@ -8,7 +8,6 @@ namespace PlaywrightTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
-[Ignore("Failing in CI/CD")]
 public class Tests : PageTest
 {
     [Test]
@@ -107,4 +106,18 @@ public class Tests : PageTest
         await Expect(Page.GetByText("There are no cheeps so far.")).Not.ToBeVisibleAsync();
     }
 
+    [Test]
+    public async Task GUserCanDeleteAccount()
+    {
+        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        
+        await Page.GotoAsync("http://localhost:5177/Identity/Account/Manage/DeletePersonalData");
+        await Page.GetByRole(AriaRole.Textbox, new() {Name="Password"}).FillAsync("Nicepassword123#");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Delete data and close my account" }).ClickAsync();
+        await Expect(Page).ToHaveTitleAsync("Home page - Chirp");
+    }
 }

@@ -1,9 +1,9 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Chirp.Core.DataModels;
+using Chirp.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,18 +16,18 @@ public class ExternalLoginModel : PageModel
     private readonly SignInManager<Author> _signInManager;
     private readonly UserManager<Author> _userManager;
     private readonly ILogger<ExternalLoginModel> _logger;
-    private readonly IAuthorRepository _authorRepository;
+    private readonly IChirpService _chirpService;
 
     public ExternalLoginModel(
         SignInManager<Author> signInManager,
         UserManager<Author> userManager,
         ILogger<ExternalLoginModel> logger,
-        IAuthorRepository authorRepository)
+        IChirpService chirpService)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _logger = logger;
-        _authorRepository = authorRepository;
+        _chirpService = chirpService;
     }
 
     public string LoginProvider { get; set; }
@@ -122,7 +122,7 @@ public class ExternalLoginModel : PageModel
                 UserName = info.Principal.Identity.Name,
                 Email = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value,
                 Cheeps = new List<Cheep>(),
-                AuthorId = await _authorRepository.GetHighestAuthorId() + 1
+                AuthorId = await _chirpService.GetHighestAuthorId() + 1
             };
 
             var result = await _userManager.CreateAsync(user);
