@@ -8,7 +8,7 @@ namespace PlaywrightTests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
-[Ignore("Failing in CI/CD")]
+//[Ignore("Failing in CI/CD")]
 public class Tests : PageTest
 {
     [Test]
@@ -106,5 +106,45 @@ public class Tests : PageTest
         await Page.GotoAsync("http://localhost:5177/testuser@gmail.com");
         await Expect(Page.GetByText("There are no cheeps so far.")).Not.ToBeVisibleAsync();
     }
+    
+       
+    [Test]
+        public async Task UserFollow()
+        {
+            await Page.GotoAsync("http://localhost:5177/");
+            await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+            await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+            
+            
+            await Page.GotoAsync("http://localhost:5177/Jacqualine%20Gilcoine");
+            await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Follow" })).ToBeVisibleAsync();
+
+            await Page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
+            await Page.GotoAsync("http://localhost:5177/testuser");
+
+            await Expect(Page.GetByText(" Starbuck now is what we hear the worst. ")).ToBeVisibleAsync();
+        }
+        
+    
+    [Test]
+            public async Task UserUnfollow()
+            {
+                await Page.GotoAsync("http://localhost:5177/");
+                await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+                await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+                await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+                await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+                
+                await Page.GotoAsync("http://localhost:5177/");
+                await Page.Locator("p").Filter(new() { HasText = "Jacqualine Gilcoine Starbuck now is what we hear the worst. — 01-08-2023 13:17:" }).GetByRole(AriaRole.Link).ClickAsync();
+                await Page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).ClickAsync();
+                await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
+   
+    
+                await Expect(Page.GetByText("Jacqualine Gilcoine")).Not.ToBeVisibleAsync();
+            }
+            
 
 }
