@@ -29,12 +29,13 @@ public class AuthorRepository : IAuthorRepository
         return author;
     }
 
-    public async Task<Author> GetAuthorByNameEntity(string author)
+    public async Task<Author?> GetAuthorByNameEntity(string authorName)
     {
         var query = _context.Authors
             .Select(a => a)
-            .Where(a => a.UserName == author);
+            .Where(a => a.UserName == authorName);
         var result = await query.FirstOrDefaultAsync();
+        
         return result;
     }
     
