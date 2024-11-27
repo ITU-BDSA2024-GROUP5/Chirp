@@ -2,7 +2,7 @@ name: .NET Build and Test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, 'test/fix-CI/CD-Testing']
   pull_request:
     branches: [ master ]
 
@@ -24,6 +24,9 @@ jobs:
       run: dotnet build --no-restore
       
     - name: Run localhost
+      env:
+        authentication_github_clientId: ${{ secrets.GITHUBCLIENTID }}
+        authentication_github_clientSecret: ${{ secrets.GITHUBCLIENTSECRET }}
       run: |
         pwd
         ls
@@ -38,9 +41,6 @@ jobs:
         ps -aux
       
     - name: Test
-      env:
-        authentication_github_clientId: ${{ secrets.GITHUBCLIENTID }}
-        authentication_github_clientSecret: ${{ secrets.GITHUBCLIENTSECRET }} 
       run: |
         dotnet test --no-build --verbosity normal
         
