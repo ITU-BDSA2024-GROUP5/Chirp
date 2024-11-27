@@ -1,3 +1,4 @@
+using System.Net.Security;
 using System.Runtime.InteropServices.JavaScript;
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data;
@@ -68,15 +69,16 @@ public class AuthorRepository : IAuthorRepository
         await _context.SaveChangesAsync();
     }
 
-    public static AuthorDTO WrapInDTO(Author author)
-    {   
-        if(author == null) return null;
-        if (author.Follows == null) author.Follows = new List<string>();
-        return new AuthorDTO{
-            Name = author.UserName,
-            Email = author.Email,
-            Follows = author.Follows
-        };
+    private static AuthorDTO WrapInDTO(Author author)
+    {
+        // if (author == null) return null; cannot be null 
+        var authorDto = new AuthorDTO(author.UserName, author.Email);
+        foreach (var item in author.Follows)
+        {
+            authorDto.Follows.Add(item);
+        }
+        
+        return authorDto;
     }
 
     public async Task<List<string>> GetFollowers(string me)
