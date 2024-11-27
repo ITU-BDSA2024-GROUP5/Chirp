@@ -11,6 +11,7 @@ public interface IChirpService
     public Task<bool> ContainsFollower(string you, string me);
     public Task AddFollows(string you, string me);
     public Task RemoveFollows(string you, string me);
+    public Task<List<CheepDTO>> ReadAllCheeps(string author);
     public Task<List<CheepDTO>> Read(int page);
     public Task<List<CheepDTO>> ReadByAuthor(int page, string author);
     public Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors);

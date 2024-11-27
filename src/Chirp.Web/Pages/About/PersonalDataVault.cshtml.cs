@@ -1,21 +1,17 @@
 using Chirp.Core.DataModels;
-using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Build.Framework;
-using System.Collections.Generic;
-using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Data.DTO;
 using System.Text;
+using Chirp.Infrastructure.Services.Interfaces;
 
 
 namespace Chirp.Web.Pages.About
 {
     public class PersonalDataVaultModel(ApplicationDbContext context,
-    UserManager<Author> userManager, ICheepRepository cheepRepository) : PageModel
+    UserManager<Author> userManager, IChirpService chirpService) : PageModel
     {
         private readonly ILogger<PersonalDataVaultModel> _logger;
 
@@ -122,7 +118,7 @@ namespace Chirp.Web.Pages.About
 
         public async Task FetchCheeps(string author)
         {
-            Cheeps = await cheepRepository.ReadAllCheeps(author);
+            Cheeps = await chirpService.ReadAllCheeps(author);
         }
 
         public Boolean IsCheepEmpty()
