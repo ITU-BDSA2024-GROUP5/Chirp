@@ -712,8 +712,9 @@ public static class DbInitializer
             }
         }
     }
-    private static async Task NormalizeAuthor(Author teacher, UserManager<Author> userManager, string password = null)
+    private static async Task NormalizeAuthor(Author teacher, UserManager<Author> userManager, string? password = null)
     {
+        
         var foundTeacher = userManager.Users.ToList().Find(u => u.UserName.Equals(teacher.UserName));
         if (foundTeacher != null)
         { 
