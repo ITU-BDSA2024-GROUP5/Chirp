@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.ComponentModel.DataAnnotations;
-using Chirp.Core.DataModels;
+﻿using System.ComponentModel.DataAnnotations;
 using Chirp.Infrastructure.Data.DTO;
-using Chirp.Infrastructure.Services;
 using Chirp.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

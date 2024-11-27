@@ -1,4 +1,3 @@
-
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
 using Chirp.Infrastructure.Services.Interfaces;
