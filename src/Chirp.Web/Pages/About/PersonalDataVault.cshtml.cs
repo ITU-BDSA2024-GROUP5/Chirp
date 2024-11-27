@@ -19,16 +19,16 @@ namespace Chirp.Web.Pages.About
     {
         private readonly ILogger<PersonalDataVaultModel> _logger;
 
-        public string Username { get; private set; }
+        public string? Username { get; private set; }
 
         public string ButtonText { get; set; } = "Show Cheeps";
 
         public string ButtonFunction { get; set; } = "ShowCheeps";
-        public static List<CheepDTO> Cheeps { get; private set; }
+        public static List<CheepDTO>? Cheeps { get; private set; }
 
         public static Author? user { get; private set; }
 
-        public List<PersonalDataItem> PersonalDataItems { get; private set; }
+        public List<PersonalDataItem>? PersonalDataItems { get; private set; }
 
         public async void OnGet(string username)
         {
@@ -57,6 +57,7 @@ namespace Chirp.Web.Pages.About
         public async Task<IActionResult> OnPostShowCheeps()
         {
             PersonalDataItems = new List<PersonalDataItem>();
+            if (user == null) return Page();
             Username = user.UserName;
             if(IsCheepEmpty())
             {
@@ -66,6 +67,8 @@ namespace Chirp.Web.Pages.About
 
                 return Page();
             }
+
+            if (Cheeps == null) return Page();
             foreach (var cheep in Cheeps)
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = cheep.TimeStamp, Value = cheep.Text });
