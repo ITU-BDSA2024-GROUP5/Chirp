@@ -1,10 +1,10 @@
 ﻿@page "/{author}"
 @using Chirp.Core.DataModels
+@using Chirp.Infrastructure.Services.Interfaces
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model UserTimelineModel
 @inject SignInManager<Author> SignInManager
-@inject ICheepRepository CheepRepository
-@inject IAuthorRepository AuthorRepository
+@inject IChirpService ChirpService
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -16,7 +16,7 @@
     {
         @if (routeName.ToString().Contains('@'))
         {
-            routeName = await AuthorRepository.GetAuthorByEmail(routeName.ToString());
+            routeName = ChirpService.GetAuthorByEmail(routeName.ToString()).Result.Name;
         }
         @if (routeName.Equals(User.Identity.Name))
         {
@@ -44,9 +44,7 @@
             {
                 @if(User.Identity?.Name != null && !User.Identity.Name.Equals(routeName))
                 {
-                    var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
-                    Console.WriteLine(user);
-                    Console.WriteLine(user?.Follows?.Count);
+                    var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
                     var follows =  user?.Follows != null && user.Follows.Contains(routeName); 
                     <button name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                         @(follows ? "Unfollow" : "Follow")
@@ -60,22 +58,10 @@
     {
         @if (SignInManager.IsSignedIn(User))
         {
-            var allcheeps = Model.Cheeps;
-            var userfollows = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result.Follows;
-            if (userfollows != null)
-            {
-                foreach (var followed in userfollows)
-                {
-                    var followee = AuthorRepository.GetAuthorByNameEntity(followed).Result;
-                    var cheeps = await CheepRepository.GetCheepsByAuthor(followee.UserName);
-                    allcheeps.AddRange(cheeps);
-                }
-            }
-
             if (User.Identity.Name.Equals(routeName))
             {
                 <ul id="messagelist" class="cheeps">
-                    @foreach (var cheep in allcheeps)
+                    @foreach (var cheep in @Model.Cheeps)
                     {
                         <li>
                             <p>
