@@ -5,6 +5,7 @@ using Chirp.Infrastructure.Data.DTO;
 using Chirp.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Chirp.Web.Pages;
 
@@ -90,10 +91,15 @@ public class UserTimelineModel : PageModel
             ModelState.AddModelError(string.Empty, "Author not found");
             return;
         }
-        author = createdAuthor.Name;
         
-        Cheeps = await _cheepRepository.ReadByAuthor(GetPage(), author);
-        
+        if (createdAuthor.Follows.IsNullOrEmpty())
+        {
+            Cheeps = await _cheepRepository.ReadByAuthor(GetPage(), createdAuthor.Name);
+        }
+        else
+        {   
+            Cheeps = await _cheepRepository.GetCheepsFollowedByAuthor(GetPage(), createdAuthor.Name, createdAuthor.Follows);
+        }
     }
     
     public int GetPage()

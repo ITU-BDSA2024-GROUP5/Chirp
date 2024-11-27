@@ -13,4 +13,5 @@ public interface ICheepRepository
     public Task<int> GetHighestCheepId();
     public Task WriteCheep(Cheep cheep);
     public Task<List<CheepDTO>> GetCheepsByAuthor(string author);
+    public Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors);
 }
