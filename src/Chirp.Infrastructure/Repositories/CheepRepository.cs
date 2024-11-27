@@ -46,6 +46,21 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
     
+    private async Task<List<Cheep>> ReadByAuthorEntity(int page, string author)
+    {
+        // Define the query - with our setup, EF Core translates this to an SQLite query in the background
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)
+            .Where(cheep => cheep.Author.UserName == author)
+            .OrderByDescending(cheep => cheep.TimeStamp)
+            .Skip((page - 1) * 32)
+            .Take(32);
+        // Execute the query and store the results
+        var result = await query.ToListAsync();
+        return result;
+    }
+    
     public async Task<List<CheepDTO>> ReadByEmail(int page, string email)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
@@ -99,7 +114,7 @@ public class CheepRepository : ICheepRepository
 
     public async Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
     {
-        var cheeps = new List<CheepDTO>();
+        var cheeps = new List<Cheep>();
         if (authors != null)
         {
             foreach (var auth in authors)
@@ -113,15 +128,17 @@ public class CheepRepository : ICheepRepository
                     .Take(32);
                 // Execute the query and store the results
                 var result = await query.ToListAsync();
-                cheeps.AddRange(WrapInDTO(result));
+                cheeps.AddRange(result);
             }
         }
         
-        var authorCheeps = await ReadByAuthor(page, author);
+        var authorCheeps = await ReadByAuthorEntity(page, author);
         cheeps.AddRange(authorCheeps);
-        cheeps = cheeps.OrderBy(c => DateTime.Parse(c.TimeStamp).Date).ToList();
+        cheeps = cheeps.OrderByDescending(c => c.TimeStamp).ToList();
+        cheeps = cheeps.Take(32).ToList();
+        var cheepsDTO = WrapInDTO(cheeps);
 
-        return cheeps;
+        return cheepsDTO;
     }
 
     public static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
@@ -138,6 +155,4 @@ public class CheepRepository : ICheepRepository
         }
         return list;
     }
-
-    
 }
