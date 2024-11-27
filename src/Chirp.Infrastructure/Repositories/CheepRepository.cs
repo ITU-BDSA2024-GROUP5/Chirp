@@ -136,7 +136,6 @@ public class CheepRepository : ICheepRepository
                 TimeStamp = cheep.TimeStamp.ToString()
             });
         }
-        //return dto stuff
         return list;
     }
 

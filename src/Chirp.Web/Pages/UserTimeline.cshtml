@@ -45,8 +45,6 @@
                 @if(User.Identity?.Name != null && !User.Identity.Name.Equals(routeName))
                 {
                     var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
-                    Console.WriteLine(user);
-                    Console.WriteLine(user?.Follows?.Count);
                     var follows =  user?.Follows != null && user.Follows.Contains(routeName); 
                     <button name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                         @(follows ? "Unfollow" : "Follow")
