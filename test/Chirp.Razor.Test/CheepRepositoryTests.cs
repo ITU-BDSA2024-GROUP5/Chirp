@@ -27,7 +27,7 @@ public class CheepRepositoryTests
         var cRepository = new CheepRepository(context);
         var aRepository = new AuthorRepository(context);
 
-        var service = new CheepServiceDB(cRepository, aRepository);
+        var service = new ChirpService(cRepository, aRepository);
         
         //Act
         var cheepDTOS = await cRepository.Read(0);
@@ -87,7 +87,7 @@ public class CheepRepositoryTests
         var cRepository = new CheepRepository(context);
         var aRepository = new AuthorRepository(context);
 
-        var service = new CheepServiceDB(cRepository, aRepository);
+        var service = new ChirpService(cRepository, aRepository);
 
         var query = context.Authors
             .Select(a => a);
@@ -144,7 +144,7 @@ public class CheepRepositoryTests
         var cRepository = new CheepRepository(context);
         var aRepository = new AuthorRepository(context);
 
-        var service = new CheepServiceDB(cRepository, aRepository);
+        var service = new ChirpService(cRepository, aRepository);
 
         var newAuthor = new Author()
         {
@@ -188,7 +188,7 @@ public class CheepRepositoryTests
         var cRepository = new CheepRepository(context);
         var aRepository = new AuthorRepository(context);
 
-        var service = new CheepServiceDB(cRepository, aRepository);
+        var service = new ChirpService(cRepository, aRepository);
 
         var newAuthor = new Author()
         {
@@ -223,7 +223,7 @@ public class CheepRepositoryTests
         var cRepository = new CheepRepository(context);
         var aRepository = new AuthorRepository(context);
 
-        var service = new CheepServiceDB(cRepository, aRepository);
+        var service = new ChirpService(cRepository, aRepository);
 
         var newAuthor = new Author()
         {

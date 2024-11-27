@@ -6,6 +6,7 @@ using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Services;
 using Chirp.Infrastructure.Repositories;
+using Chirp.Infrastructure.Services.Interfaces;
 using Microsoft.Extensions.Options;
 
 namespace Chirp.Web;
@@ -58,7 +59,7 @@ public class Program
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
         
         // Dependencry
-        builder.Services.AddScoped<ICheepServiceDB, CheepServiceDB>();
+        builder.Services.AddScoped<IChirpService, ChirpService>();
         builder.Services.AddScoped<ICheepRepository, CheepRepository>();
         builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 
