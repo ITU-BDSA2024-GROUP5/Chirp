@@ -89,6 +89,22 @@ public class CheepRepository : ICheepRepository
         var cheeps = WrapInDTO(result);
         return cheeps;
     }
+    /**
+     * Method returns all the cheeps that are stored in the database.
+     */
+    private async Task<List<CheepDTO>> ReadAllCheeps()
+    {
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)  
+            .OrderByDescending(cheep => cheep.TimeStamp);
+        
+        var result = await query.ToListAsync();
+        
+        var cheeps = WrapInDTO(result);
+
+        return cheeps;
+    }
 
     public async Task<int> GetHighestCheepId(){
         var query = _context.Cheeps
@@ -154,5 +170,29 @@ public class CheepRepository : ICheepRepository
             });
         }
         return list;
+    }
+    
+    /**
+     * This method is used to sort and divide all the cheeps registered into 32 per page on the user's timeline.
+     */
+    public async Task<List<CheepDTO>> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32)
+    {
+        var cheeps = await ReadAllCheeps(author);
+        return cheeps.OrderByDescending(c => c.TimeStamp).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+    }
+    
+    /**
+     * This method is used to sort and divide all the cheeps registered into 32 per page on the public timeline.
+     */
+    public async Task<List<CheepDTO>> GetPaginatedResult(int page, int pageSize = 32)
+    {
+        var cheeps = await ReadAllCheeps();
+        return cheeps.OrderByDescending(c => c.TimeStamp).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+    }
+
+    public async Task<int> GetCount()
+    {
+        var count = await _context.Cheeps.CountAsync();
+        return count;
     }
 }

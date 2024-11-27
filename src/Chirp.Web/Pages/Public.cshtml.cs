@@ -15,8 +15,13 @@ public class PublicModel : PageModel
     [StringLength(160, MinimumLength = 1, ErrorMessage = "String length must be between 1 and 160")]
     public string Text { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
-    //public bool IsFollowing { get; set; }
-    //public List<string> Followers { get; set; }
+    
+    [BindProperty(SupportsGet = true)]
+    public int CurrentPage { get; set; } = 1;
+    public int Count { get; set; }
+    public int PageSize { get; set; } = 32;
+
+    public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
     
     private readonly ICheepRepository _cheepRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
@@ -60,17 +65,6 @@ public class PublicModel : PageModel
     {
         Cheeps = await _cheepRepository.Read(0);
     }
-
-    // public async Task FetchAuthors()
-    // {
-    //     Followers = await _authorRepository.GetFollowers(User.Identity.Name);
-    // }
-
-    // public async Task CheckIfAuthorFollows(string you)
-    // {
-    //     Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
-    //     IsFollowing = await _authorRepository.ContainsFollower(you, author.UserName);
-    // }
     
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
@@ -94,7 +88,8 @@ public class PublicModel : PageModel
     
     public async Task<ActionResult> OnGet()
     {
-        Cheeps = await _cheepRepository.Read(ParsePage(Request.Query["page"].ToString()));
+        Cheeps = await _cheepRepository.GetPaginatedResult(CurrentPage, PageSize);
+        Count = await _cheepRepository.GetCount();
         return Page();
     }
 
