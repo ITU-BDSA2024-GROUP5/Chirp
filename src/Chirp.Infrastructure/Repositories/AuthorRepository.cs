@@ -16,7 +16,7 @@ public class AuthorRepository : IAuthorRepository
         _context = context;
     }
 
-    public async Task<AuthorDTO> GetAuthorByName(string authorName)
+    public async Task<AuthorDTO?> GetAuthorByName(string authorName)
     {
         var query = _context.Authors
             .Select(a => a)
@@ -39,12 +39,15 @@ public class AuthorRepository : IAuthorRepository
         return result;
     }
     
-    public async Task<AuthorDTO> GetAuthorByEmail(string email)
+    public async Task<AuthorDTO?> GetAuthorByEmail(string email)
     {
         var query = _context.Authors
             .Select(a => a)
             .Where(a => a.Email == email);
         var result = await query.FirstOrDefaultAsync();
+
+        if (result == null) return null;
+        
         var author = WrapInDTO(result);
         return author;
     }
@@ -99,8 +102,10 @@ public class AuthorRepository : IAuthorRepository
     // to avoid ambiguity and confusion, 'you' is the user 'me' wants to follow
     public async Task AddFollows(string you, string me)
     {
-        var authordto = await GetAuthorByName(you);
-        var author = _context.Authors.First(a => a.UserName == authordto.Name);
+        var authorDto = await GetAuthorByName(you);
+        if (authorDto == null) return;
+        
+        var author = _context.Authors.First(a => a.UserName == authorDto.Name);
         if (author.Follows == null)
         {
             author.Follows = new List<string>();
