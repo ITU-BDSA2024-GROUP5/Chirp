@@ -137,8 +137,7 @@ public class Tests : PageTest
                 await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
                 await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
                 
-                await Page.GotoAsync("http://localhost:5177/");
-                await Page.Locator("p").Filter(new() { HasText = "Jacqualine Gilcoine Starbuck now is what we hear the worst. — 01-08-2023 13:17:" }).GetByRole(AriaRole.Link).ClickAsync();
+                await Page.GotoAsync("http://localhost:5177/Jacqualine%20Gilcoine");
                 await Page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).ClickAsync();
                 await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
    
