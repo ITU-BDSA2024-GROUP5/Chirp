@@ -97,6 +97,33 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    public async Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
+    {
+        var cheeps = new List<CheepDTO>();
+        if (authors != null)
+        {
+            foreach (var auth in authors)
+            {
+                var query = _context.Cheeps
+                    .Select(cheep => cheep)
+                    .Include(c => c.Author)
+                    .Where(cheep => cheep.Author.UserName == auth)
+                    .OrderByDescending(cheep => cheep.TimeStamp)
+                    .Skip((page - 1) * 32)
+                    .Take(32);
+                // Execute the query and store the results
+                var result = await query.ToListAsync();
+                cheeps.AddRange(WrapInDTO(result));
+            }
+        }
+        
+        var authorCheeps = await ReadByAuthor(page, author);
+        cheeps.AddRange(authorCheeps);
+        cheeps = cheeps.OrderBy(c => DateTime.Parse(c.TimeStamp).Date).ToList();
+
+        return cheeps;
+    }
+
     public static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
     {
         var list = new List<CheepDTO>();
