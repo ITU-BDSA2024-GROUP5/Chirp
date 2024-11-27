@@ -3,8 +3,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model UserTimelineModel
 @inject SignInManager<Author> SignInManager
-@inject ICheepRepository CheepRepository
-@inject IAuthorRepository AuthorRepository
+@inject ICheepServiceDB CheepServiceDB
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -16,7 +15,7 @@
     {
         @if (routeName.ToString().Contains('@'))
         {
-            routeName = AuthorRepository.GetAuthorByEmail(routeName.ToString()).Result.Name;
+            routeName = CheepServiceDB.GetAuthorByEmail(routeName.ToString()).Result.Name;
         }
         @if (routeName.Equals(User.Identity.Name))
         {
@@ -44,7 +43,7 @@
             {
                 @if(User.Identity?.Name != null && !User.Identity.Name.Equals(routeName))
                 {
-                    var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
+                    var user = CheepServiceDB.GetAuthorByName(User.Identity.Name).Result;
                     var follows =  user?.Follows != null && user.Follows.Contains(routeName); 
                     <button name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                         @(follows ? "Unfollow" : "Follow")

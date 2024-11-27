@@ -16,18 +16,18 @@ public class ExternalLoginModel : PageModel
     private readonly SignInManager<Author> _signInManager;
     private readonly UserManager<Author> _userManager;
     private readonly ILogger<ExternalLoginModel> _logger;
-    private readonly IAuthorRepository _authorRepository;
+    private readonly ICheepServiceDB _cheepServiceDB;
 
     public ExternalLoginModel(
         SignInManager<Author> signInManager,
         UserManager<Author> userManager,
         ILogger<ExternalLoginModel> logger,
-        IAuthorRepository authorRepository)
+        ICheepServiceDB cheepServiceDB)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _logger = logger;
-        _authorRepository = authorRepository;
+        _cheepServiceDB = cheepServiceDB;
     }
 
     public string LoginProvider { get; set; }
@@ -122,7 +122,7 @@ public class ExternalLoginModel : PageModel
                 UserName = info.Principal.Identity.Name,
                 Email = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value,
                 Cheeps = new List<Cheep>(),
-                AuthorId = await _authorRepository.GetHighestAuthorId() + 1
+                AuthorId = await _cheepServiceDB.GetHighestAuthorId() + 1
             };
 
             var result = await _userManager.CreateAsync(user);

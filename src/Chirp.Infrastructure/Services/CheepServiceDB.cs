@@ -1,7 +1,6 @@
 
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
-using System.Runtime.CompilerServices;
 
 namespace Chirp.Infrastructure.Services;
 
@@ -14,76 +13,64 @@ public class CheepServiceDB : ICheepServiceDB
         _cheepRepository = cheepRepository;
         _authorRepository = authorRepository;
     }
-    
-    public async Task WriteAuthor(Author author)
-    {
-        await _authorRepository.WriteAuthor(author);
-    }
-    
-    public async Task WriteCheep(Cheep cheep)
-    {
-        await _cheepRepository.WriteCheep(cheep);
-    }
 
-    public async Task<AuthorDTO> CreateAuthor(string authorName)
+    public async Task CreateCheep(string name, string text)
     {
-        var name = "";
-        var email = "";
-        if (authorName.Contains('@'))
-        {
-            name = authorName;
-            email = authorName;
-        }else{
-            name = authorName;
-            email = authorName + "@chirp.com";
-        }
-
-        var newAuthor = new Author()
-        {
-            UserName = name,
-            AuthorId = await _authorRepository.GetHighestAuthorId() + 1,
-            Email = email,
-            Cheeps = new List<Cheep>()
-        };
-        WriteAuthor(newAuthor);
-        return await _authorRepository.GetAuthorByEmail(newAuthor.Email);
-    }
-
-    public async Task<Cheep> CreateCheep(string name, string text)
-    {
-        var author = await GetAuthorByString(name);
+        var author = await GetAuthorByName(name);
         
         var cheep = new Cheep()
         {
             CheepId = await _cheepRepository.GetHighestCheepId() + 1,
             Text = text,
             TimeStamp = DateTime.Now,
-            Author = await _authorRepository.GetAuthorByNameEntity(author.Name)
+            Author = await _authorRepository.GetAuthorByNameEntity(author.Name) // fix? repositories should only return dtos
 
         };
-        return cheep;
+        await _cheepRepository.WriteCheep(cheep);
     }
     
-
-    public async Task<AuthorDTO> GetAuthorByString(string author)
+    public async Task<AuthorDTO> GetAuthorByName(string author)
     {
-        if (await CheckIfAuthorExists(author))
-        {
-            return await _authorRepository.GetAuthorByName(author);
-        } else {
-            return await CreateAuthor(author);
-        }
-        
+        return await _authorRepository.GetAuthorByName(author);
     }
 
-    public async Task<bool> CheckIfAuthorExists(string author){
-        var checkauthor = await _authorRepository.GetAuthorByName(author);
-    
-        if(checkauthor == null)
-        {
-            return false;
-        }
+    public async Task<AuthorDTO> GetAuthorByEmail(string email)
+    {
+        return await _authorRepository.GetAuthorByEmail(email);
+    }
 
-        return true;
+    public async Task<int> GetHighestAuthorId()
+    {
+        return await _authorRepository.GetHighestAuthorId();
+    }
+
+    public async Task<bool> ContainsFollower(string you, string me)
+    {
+        return await _authorRepository.ContainsFollower(you, me);
+    }
+
+    public async Task AddFollows(string you, string me)
+    {
+        await _authorRepository.AddFollows(you, me);
+    }
+
+    public async Task RemoveFollows(string you, string me)
+    {
+        await _authorRepository.RemoveFollows(you, me);
+    }
+
+    public Task<List<CheepDTO>> Read(int page)
+    {
+        return _cheepRepository.Read(page);
+    }
+    
+    public async Task<List<CheepDTO>> ReadByAuthor(int page, string author)
+    {
+        return await _cheepRepository.ReadByAuthor(page, author);
+    }
+
+    public Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
+    {
+        return _cheepRepository.GetCheepsFollowedByAuthor(page, author, authors);
     }
 }

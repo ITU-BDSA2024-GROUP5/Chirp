@@ -3,7 +3,7 @@
 @using Chirp.Core.DataModels
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model PublicModel
-@inject IAuthorRepository AuthorRepository
+@inject ICheepServiceDB CheepServiceDB
 
 
 @{
@@ -47,9 +47,7 @@
                                 <small>&mdash; @cheep.TimeStamp</small>
                                 @if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
                                 {
-                                var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
-                                Console.WriteLine(user);
-                                Console.WriteLine(user?.Follows?.Count);
+                                var user = CheepServiceDB.GetAuthorByName(User.Identity.Name).Result;
                                 var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
                                 <button type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px">
                                     @(follows ? "Unfollow" : "Follow")
@@ -102,9 +100,7 @@
                             {
                                 if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
                                 {
-                                    var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
-                                    Console.WriteLine(user);
-                                    Console.WriteLine(user?.Follows?.Count);
+                                    var user = CheepServiceDB.GetAuthorByName(User.Identity.Name).Result;
                                     var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
                                     <button type="submit" name="authorToFollow" value="@cheep.Author" style = "font-size: 12px">
                                         @(follows ? "Unfollow" : "Follow")
