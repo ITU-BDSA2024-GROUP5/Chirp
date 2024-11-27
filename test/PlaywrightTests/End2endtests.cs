@@ -146,7 +146,7 @@ public class Tests : PageTest
             
 
     [Test]
-    public async Task GUserCanDeleteAccount()
+    public async Task ZUserCanDeleteAccount()
     {
         await Page.GotoAsync("http://localhost:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
