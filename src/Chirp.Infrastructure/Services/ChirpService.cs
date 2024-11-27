@@ -59,6 +59,11 @@ public class ChirpService : IChirpService
         await _authorRepository.RemoveFollows(you, me);
     }
 
+    public Task<List<CheepDTO>> ReadAllCheeps(string author)
+    {
+        return _cheepRepository.ReadAllCheeps(author);
+    }
+    
     public Task<List<CheepDTO>> Read(int page)
     {
         return _cheepRepository.Read(page);

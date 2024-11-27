@@ -60,22 +60,6 @@ public class CheepRepository : ICheepRepository
         var result = await query.ToListAsync();
         return result;
     }
-    
-    public async Task<List<CheepDTO>> ReadByEmail(int page, string email)
-    {
-        // Define the query - with our setup, EF Core translates this to an SQLite query in the background
-        var query = _context.Cheeps
-            .Select(cheep => cheep)
-            .Include(c => c.Author)
-            .Where(cheep => cheep.Author.Email == email)
-            .OrderByDescending(cheep => cheep.TimeStamp)
-            .Skip((page - 1) * 32)
-            .Take(32);
-        // Execute the query and store the results
-        var result = await query.ToListAsync();
-        var cheeps = WrapInDTO(result);
-        return cheeps;
-    }
 
     public async Task<List<CheepDTO>> ReadAllCheeps(string author)
     {
@@ -103,13 +87,6 @@ public class CheepRepository : ICheepRepository
         await _context.Cheeps.AddAsync(cheep);
         cheep.Author.Cheeps.Add(cheep);
         await _context.SaveChangesAsync();
-    }
-    
-    public async Task<List<CheepDTO>> GetCheepsByAuthor(string author)
-    {
-        var auth = _context.Users.FirstOrDefault(a => a.UserName == author);
-        var cheeps = await ReadAllCheeps(auth.UserName);
-        return cheeps;
     }
 
     public async Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
