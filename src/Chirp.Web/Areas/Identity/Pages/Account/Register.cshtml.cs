@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure;
+using Chirp.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,18 +17,18 @@ public class Register : PageModel
     private readonly UserManager<Author> _userManager;
     private readonly IUserStore<Author> _userStore;
     private readonly IUserEmailStore<Author> _emailStore;
-    private readonly ICheepServiceDB _cheepServiceDB;
+    private readonly IChirpService _chirpService;
     public Register(
         UserManager<Author> userManager,
         IUserStore<Author> userStore,
         SignInManager<Author> signInManager,
-        ICheepServiceDB cheepServiceDB)
+        IChirpService chirpService)
     {
         _userManager = userManager;
         _userStore = userStore;
         _emailStore = GetEmailStore();
         _signInManager = signInManager;
-        _cheepServiceDB = cheepServiceDB;
+        _chirpService = chirpService;
     }
     [BindProperty]
     public InputModel Input { get; set; }
@@ -85,7 +86,7 @@ public class Register : PageModel
             await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
             user.UserName = Input.UserName;    //add this line....
-            user.AuthorId = await _cheepServiceDB.GetHighestAuthorId() + 1;
+            user.AuthorId = await _chirpService.GetHighestAuthorId() + 1;
             user.Follows = new List<string>();
             
             var result = await _userManager.CreateAsync(user, Input.Password);

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
 using Chirp.Infrastructure.Services;
+using Chirp.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.IdentityModel.Tokens;
@@ -17,11 +18,11 @@ public class UserTimelineModel : PageModel
     public string Text { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
     
-    private readonly ICheepServiceDB _cheepServiceDb;
+    private readonly IChirpService _chirpService;
 
-    public UserTimelineModel(ICheepServiceDB cheepServiceDb)
+    public UserTimelineModel(IChirpService chirpService)
     {
-        _cheepServiceDb = cheepServiceDb;
+        _chirpService = chirpService;
         Text = string.Empty;
     }
     
@@ -37,8 +38,8 @@ public class UserTimelineModel : PageModel
         {
             ModelState.AddModelError(string.Empty, "you must authenticate first");
         }
-        var author = await _cheepServiceDb.GetAuthorByName(User.Identity.Name);
-        await _cheepServiceDb.CreateCheep(author.Name, Text);
+        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
+        await _chirpService.CreateCheep(author.Name, Text);
         
         await FetchCheeps(author.Name);
         
@@ -47,7 +48,7 @@ public class UserTimelineModel : PageModel
     
     public async Task<List<CheepDTO>> FetchCheeps(string author)
     {
-        Cheeps = await _cheepServiceDb.ReadByAuthor(0, author);
+        Cheeps = await _chirpService.ReadByAuthor(0, author);
         Cheeps = Cheeps
             .OrderBy(c => DateTime.Parse(c.TimeStamp).Date) // Parse and sort by DateTime
             .ToList();
@@ -68,11 +69,11 @@ public class UserTimelineModel : PageModel
         AuthorDTO createdAuthor;
         if (author.Contains('@'))
         {
-            createdAuthor = await _cheepServiceDb.GetAuthorByEmail(author);
+            createdAuthor = await _chirpService.GetAuthorByEmail(author);
         }
         else
         {
-            createdAuthor = await _cheepServiceDb.GetAuthorByName(author);
+            createdAuthor = await _chirpService.GetAuthorByName(author);
         }
 
         if (createdAuthor == null)
@@ -83,11 +84,11 @@ public class UserTimelineModel : PageModel
         
         if (createdAuthor.Follows.IsNullOrEmpty())
         {
-            Cheeps = await _cheepServiceDb.ReadByAuthor(GetPage(), createdAuthor.Name);
+            Cheeps = await _chirpService.ReadByAuthor(GetPage(), createdAuthor.Name);
         }
         else
         {   
-            Cheeps = await _cheepServiceDb.GetCheepsFollowedByAuthor(GetPage(), createdAuthor.Name, createdAuthor.Follows);
+            Cheeps = await _chirpService.GetCheepsFollowedByAuthor(GetPage(), createdAuthor.Name, createdAuthor.Follows);
         }
     }
     
@@ -105,17 +106,17 @@ public class UserTimelineModel : PageModel
     
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        var author = await _cheepServiceDb.GetAuthorByName(User.Identity.Name);
+        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
         
-        var IsFollowing = await _cheepServiceDb.ContainsFollower(authorToFollow, User.Identity.Name);
+        var IsFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
 
         if (IsFollowing)
         {
-            await _cheepServiceDb.RemoveFollows(author.Name, authorToFollow);
+            await _chirpService.RemoveFollows(author.Name, authorToFollow);
         }
         else
         {
-            await _cheepServiceDb.AddFollows(author.Name, authorToFollow);
+            await _chirpService.AddFollows(author.Name, authorToFollow);
         }
 
         return RedirectToPage();

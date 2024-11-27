@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Infrastructure.Data.DTO;
 using Chirp.Infrastructure.Repositories;
+using Chirp.Infrastructure.Services.Interfaces;
 
 namespace Chirp.Web.Pages;
 
@@ -16,10 +17,10 @@ public class PublicModel : PageModel
     public string Text { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
     
-    private readonly ICheepServiceDB _cheepServiceDb;
-    public PublicModel(ICheepServiceDB cheepServiceDb)
+    private readonly IChirpService _chirpService;
+    public PublicModel(IChirpService chirpService)
     {
-        _cheepServiceDb = cheepServiceDb;
+        _chirpService = chirpService;
         Text = string.Empty;
     }
 
@@ -31,8 +32,8 @@ public class PublicModel : PageModel
             return Page();
         }
         
-        var author = await _cheepServiceDb.GetAuthorByName(User.Identity.Name);
-        await _cheepServiceDb.CreateCheep(author.Name, Text);
+        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
+        await _chirpService.CreateCheep(author.Name, Text);
         
         await FetchCheeps(author.Name);
         
@@ -41,27 +42,27 @@ public class PublicModel : PageModel
     
     public async Task FetchCheeps(string author)
     {
-        Cheeps = await _cheepServiceDb.ReadByAuthor(0, author);
+        Cheeps = await _chirpService.ReadByAuthor(0, author);
     }
     
     public async Task FetchCheeps()
     {
-        Cheeps = await _cheepServiceDb.Read(0);
+        Cheeps = await _chirpService.Read(0);
     }
     
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        var author = await _cheepServiceDb.GetAuthorByName(User.Identity.Name);
+        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
         
-        var IsFollowing = await _cheepServiceDb.ContainsFollower(authorToFollow, User.Identity.Name);
+        var IsFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
 
         if (IsFollowing)
         {
-            await _cheepServiceDb.RemoveFollows(author.Name, authorToFollow);
+            await _chirpService.RemoveFollows(author.Name, authorToFollow);
         }
         else
         {
-            await _cheepServiceDb.AddFollows(author.Name, authorToFollow);
+            await _chirpService.AddFollows(author.Name, authorToFollow);
         }
         
         IsFollowing = !IsFollowing;
@@ -71,7 +72,7 @@ public class PublicModel : PageModel
     
     public async Task<ActionResult> OnGet()
     {
-        Cheeps = await _cheepServiceDb.Read(ParsePage(Request.Query["page"].ToString()));
+        Cheeps = await _chirpService.Read(ParsePage(Request.Query["page"].ToString()));
         return Page();
     }
 

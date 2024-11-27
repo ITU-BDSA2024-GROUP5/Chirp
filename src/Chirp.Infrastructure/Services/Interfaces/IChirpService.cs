@@ -1,6 +1,8 @@
 using Chirp.Infrastructure.Data.DTO;
 
-public interface ICheepServiceDB
+namespace Chirp.Infrastructure.Services.Interfaces;
+
+public interface IChirpService
 {
     public Task CreateCheep(string name, string text);
     public Task<AuthorDTO> GetAuthorByName(string author);

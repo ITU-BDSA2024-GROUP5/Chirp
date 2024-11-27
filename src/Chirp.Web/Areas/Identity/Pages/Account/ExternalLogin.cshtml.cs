@@ -4,6 +4,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Chirp.Core.DataModels;
+using Chirp.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,18 +17,18 @@ public class ExternalLoginModel : PageModel
     private readonly SignInManager<Author> _signInManager;
     private readonly UserManager<Author> _userManager;
     private readonly ILogger<ExternalLoginModel> _logger;
-    private readonly ICheepServiceDB _cheepServiceDB;
+    private readonly IChirpService _chirpService;
 
     public ExternalLoginModel(
         SignInManager<Author> signInManager,
         UserManager<Author> userManager,
         ILogger<ExternalLoginModel> logger,
-        ICheepServiceDB cheepServiceDB)
+        IChirpService chirpService)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _logger = logger;
-        _cheepServiceDB = cheepServiceDB;
+        _chirpService = chirpService;
     }
 
     public string LoginProvider { get; set; }
@@ -122,7 +123,7 @@ public class ExternalLoginModel : PageModel
                 UserName = info.Principal.Identity.Name,
                 Email = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value,
                 Cheeps = new List<Cheep>(),
-                AuthorId = await _cheepServiceDB.GetHighestAuthorId() + 1
+                AuthorId = await _chirpService.GetHighestAuthorId() + 1
             };
 
             var result = await _userManager.CreateAsync(user);

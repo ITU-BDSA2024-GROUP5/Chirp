@@ -1,9 +1,10 @@
 @page
 @inject SignInManager<Author> SignInManager
 @using Chirp.Core.DataModels
+@using Chirp.Infrastructure.Services.Interfaces
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model PublicModel
-@inject ICheepServiceDB CheepServiceDB
+@inject IChirpService ChirpService
 
 
 @{
@@ -47,7 +48,7 @@
                                 <small>&mdash; @cheep.TimeStamp</small>
                                 @if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
                                 {
-                                var user = CheepServiceDB.GetAuthorByName(User.Identity.Name).Result;
+                                var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
                                 var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
                                 <button type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px">
                                     @(follows ? "Unfollow" : "Follow")
@@ -100,7 +101,7 @@
                             {
                                 if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
                                 {
-                                    var user = CheepServiceDB.GetAuthorByName(User.Identity.Name).Result;
+                                    var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
                                     var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
                                     <button type="submit" name="authorToFollow" value="@cheep.Author" style = "font-size: 12px">
                                         @(follows ? "Unfollow" : "Follow")

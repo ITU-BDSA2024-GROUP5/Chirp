@@ -1,15 +1,16 @@
 
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
+using Chirp.Infrastructure.Services.Interfaces;
 
 namespace Chirp.Infrastructure.Services;
 
-public class CheepServiceDB : ICheepServiceDB
+public class ChirpService : IChirpService
 {
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
     
-    public CheepServiceDB(ICheepRepository cheepRepository, IAuthorRepository authorRepository) {
+    public ChirpService(ICheepRepository cheepRepository, IAuthorRepository authorRepository) {
         _cheepRepository = cheepRepository;
         _authorRepository = authorRepository;
     }
