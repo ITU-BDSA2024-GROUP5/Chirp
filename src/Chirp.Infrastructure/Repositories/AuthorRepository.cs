@@ -16,14 +16,17 @@ public class AuthorRepository : IAuthorRepository
         _context = context;
     }
 
-    public async Task<AuthorDTO> GetAuthorByName(string author)
+    public async Task<AuthorDTO> GetAuthorByName(string authorName)
     {
         var query = _context.Authors
             .Select(a => a)
-            .Where(a => a.UserName == author);
+            .Where(a => a.UserName == authorName);
         var result = await query.FirstOrDefaultAsync();
-        var Author = WrapInDTO(result);
-        return Author;
+        
+        if (result == null) return null;
+        
+        var author = WrapInDTO(result);
+        return author;
     }
 
     public async Task<Author> GetAuthorByNameEntity(string author)
@@ -71,8 +74,10 @@ public class AuthorRepository : IAuthorRepository
 
     private static AuthorDTO WrapInDTO(Author author)
     {
-        // if (author == null) return null; cannot be null 
         var authorDto = new AuthorDTO(author.UserName, author.Email);
+        
+        if(author.Follows == null) return authorDto;
+
         foreach (var item in author.Follows)
         {
             authorDto.Follows.Add(item);
