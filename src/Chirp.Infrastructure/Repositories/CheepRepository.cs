@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Repositories;
 
+
+/// <summary>
+/// Repository for the Cheep table. Contains methods to interact with the Cheep table.
+/// </summary>
 public class CheepRepository : ICheepRepository
 {
     private readonly ApplicationDbContext _context;
@@ -13,7 +17,13 @@ public class CheepRepository : ICheepRepository
     {
         _context = context;
     }
-
+    
+    
+    /// <summary>
+    /// Reads 32 cheeps from the database, starting from the page number provided.
+    /// </summary>
+    /// <param name="page">Page number to read from.</param>
+    /// <returns>List of CheepDTO</returns>
     public async Task<List<CheepDTO>> Read(int page)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
@@ -30,6 +40,13 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    
+    /// <summary>
+    /// Reads 32 cheeps from the database, starting from the page number provided, by a specific author.
+    /// </summary>
+    /// <param name="page">Page number to read from.</param>
+    /// <param name="author">Author to read cheeps by.</param>
+    /// <returns></returns>
     public async Task<List<CheepDTO>> ReadByAuthor(int page, string author)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
@@ -46,6 +63,13 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
     
+    
+    /// <summary>
+    /// Reads 32 cheeps from the database, starting from the page number provided, by a specific author.
+    /// </summary>
+    /// <param name="page">Page number to read from</param>
+    /// <param name="author">Author to read cheeps by</param>
+    /// <returns>List of Cheeps</returns>
     private async Task<List<Cheep>> ReadByAuthorEntity(int page, string author)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
@@ -76,7 +100,13 @@ public class CheepRepository : ICheepRepository
         var cheeps = WrapInDTO(result);
         return cheeps;
     }
-
+    
+    
+    /// <summary>
+    /// Reads all cheeps by a specific author.
+    /// </summary>
+    /// <param name="author">The author to read cheeps by</param>
+    /// <returns>List of CheepDTO</returns>
     public async Task<List<CheepDTO>> ReadAllCheeps(string author)
     {
         var query = _context.Cheeps
@@ -112,6 +142,14 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
 
+    
+    /// <summary>
+    /// Gets cheeps by authors followed by a specific author.
+    /// </summary>
+    /// <param name="page">Page number to read from</param>
+    /// <param name="author">The author to read cheeps by</param>
+    /// <param name="authors">List of authors that the author follows</param>
+    /// <returns></returns>
     public async Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
     {
         var cheeps = new List<Cheep>();

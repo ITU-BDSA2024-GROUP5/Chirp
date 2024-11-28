@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Repositories;
 
+
+/// <summary>
+/// Repository for the Author table. Contains methods to interact with the Authors table.
+/// </summary>
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ApplicationDbContext _context;
@@ -24,7 +28,11 @@ public class AuthorRepository : IAuthorRepository
         return Author;
     }
     
-    // fix? repositories should only return dtos
+    /// <summary>
+    /// Returns an author entity and not an AuthorDTO. This could be fixed.
+    /// </summary>
+    /// <param name="author">The author to find by name</param>
+    /// <returns>Author entity</returns>
     public async Task<Author> GetAuthorByNameEntity(string author)
     {
         var query = _context.Authors
@@ -53,7 +61,11 @@ public class AuthorRepository : IAuthorRepository
         return result?.AuthorId ?? 0;
     }
     
-    // to avoid ambiguity and confusion, 'you' is the user 'me' wants to follow
+    /// <summary>
+    /// Makes one author follow another author.
+    /// </summary>
+    /// <param name="you">The author that wants to follow another author.</param>
+    /// <param name="me">The author to follow</param>
     public async Task AddFollows(string you, string me)
     {
         var authordto = await GetAuthorByName(you);
@@ -66,6 +78,12 @@ public class AuthorRepository : IAuthorRepository
         await _context.SaveChangesAsync();
     }
     
+    
+    /// <summary>
+    /// Makes one author un-follow another author.
+    /// </summary>
+    /// <param name="you">The author that wants to un-follow another author.</param>
+    /// <param name="me">The author to un-follow</param>
     public async Task RemoveFollows(string you, string me)
     {
         var authordto = await GetAuthorByName(you);
@@ -78,6 +96,12 @@ public class AuthorRepository : IAuthorRepository
         await _context.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Checks if a given user follows another user.
+    /// </summary>
+    /// <param name="you">The author to check is followed.</param>
+    /// <param name="me">The author to check if following.</param>
+    /// <returns></returns>
     public async Task<bool> ContainsFollower(string you, string me)
     {
         var author = await _context.Authors

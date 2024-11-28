@@ -2,6 +2,10 @@ using Chirp.Infrastructure.Data.DTO;
 
 namespace Chirp.Infrastructure.Services.Interfaces;
 
+
+/// <summary>
+/// Service Interface that defines methods that provide access to cheeps and authors.
+/// </summary>
 public interface IChirpService
 {
     public Task CreateCheep(string name, string text);

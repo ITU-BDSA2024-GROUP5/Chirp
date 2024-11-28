@@ -1,6 +1,10 @@
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
 
+
+/// <summary>
+/// Interface for the AuthorRepository. Contains methods to interact with the Authors table.
+/// </summary>
 public interface IAuthorRepository
 {
     public Task<AuthorDTO> GetAuthorByName(string author);

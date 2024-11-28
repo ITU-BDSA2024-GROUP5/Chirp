@@ -1,6 +1,10 @@
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
 
+
+/// <summary>
+/// Interface for the CheepRepository. Contains methods to interact with the Cheeps table.
+/// </summary>
 public interface ICheepRepository
 {
     public Task<List<CheepDTO>> Read(int page);

@@ -1,9 +1,13 @@
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Core.DataModels;
 
+
+/// <summary>
+/// Represents a user for the Chirp application. Is called author because a user will be an author of cheeps.
+/// Extends IdentityUser to work with ASP.NET Identity.
+/// </summary>
 public class Author : IdentityUser
 {
     public required int AuthorId { get; set; }
