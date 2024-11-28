@@ -188,7 +188,10 @@ public class CheepRepository : ICheepRepository
     public async Task<List<CheepDTO>> GetPaginatedResult(int page, int pageSize = 32)
     {
         var cheeps = await ReadAllCheeps();
-        return cheeps.OrderByDescending(c => c.TimeStamp).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        return cheeps.OrderByDescending(c => c.TimeStamp)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
     }
 
     public async Task<int> GetCount()

@@ -20,16 +20,14 @@ public class UserTimelineModel : PageModel
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
-    
-    [BindProperty(SupportsGet = true)]
+
+    [BindProperty(SupportsGet = true)] 
     public int CurrentPage { get; set; } = 1;
     public int Count { get; set; }
     public int PageSize { get; set; } = 32;
     
     public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
     
-    public List<CheepDTO> CheepsPerPage { get; set; }
-
     public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
@@ -66,7 +64,7 @@ public class UserTimelineModel : PageModel
     
     public async Task<List<CheepDTO>> FetchCheeps(string author)
     {
-        Cheeps = await _cheepRepository.ReadByAuthor(0, author);
+        Cheeps = await _cheepRepository.ReadByAuthor(CurrentPage, author);
         Cheeps = Cheeps
             .OrderBy(c => DateTime.Parse(c.TimeStamp).Date) // Parse and sort by DateTime
             .ToList();
@@ -79,12 +77,19 @@ public class UserTimelineModel : PageModel
         {
             await TaskHandlerAsync(author);
         }
-
-        Cheeps = await _cheepRepository.GetPaginatedResultByAuthor(CurrentPage, author, PageSize);
-        Count = (await _cheepRepository.GetCheepsByAuthor(author)).Count;
+        
+        Cheeps = await _cheepRepository.GetPaginatedResult(CurrentPage, PageSize);
+        if (User.Identity != null && author == User.Identity.Name)
+        {
+            Count = Cheeps.Count;
+        }
+        else
+        {
+            Count = (await _cheepRepository.GetCheepsByAuthor(author)).Count;
+        }
         return Page();
     }
-
+    
     public async Task TaskHandlerAsync(string author)
     {
         
