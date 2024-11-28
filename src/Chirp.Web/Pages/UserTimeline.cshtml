@@ -100,7 +100,7 @@
         else
         {
             <div style="display: none">
-                @Model.FetchCheeps(@routeName.ToString())
+                @await Model.FetchCheeps(@routeName.ToString())
             </div>
         
             <ul id="messagelist" class="cheeps">
@@ -144,6 +144,17 @@
             </ul>
         }
     }else{
-        <em>There are no cheeps so far.</em>}
-    
+        <em>There are no cheeps so far.</em>
+        
+    }
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            
+        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+            <a asp-page="" asp-route-author="@routeName" asp-route-currentpage="@i" class="page-link">@i</a>
+
+        </li>
+        }
+    </ul>
 </div>

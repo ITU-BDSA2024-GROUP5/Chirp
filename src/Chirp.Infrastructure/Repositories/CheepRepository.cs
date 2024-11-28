@@ -89,6 +89,7 @@ public class CheepRepository : ICheepRepository
         var cheeps = WrapInDTO(result);
         return cheeps;
     }
+    
     /**
      * Method returns all the cheeps that are stored in the database.
      */

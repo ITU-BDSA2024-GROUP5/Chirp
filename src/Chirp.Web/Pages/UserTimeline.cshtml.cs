@@ -20,6 +20,15 @@ public class UserTimelineModel : PageModel
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
+    
+    [BindProperty(SupportsGet = true)]
+    public int CurrentPage { get; set; } = 1;
+    public int Count { get; set; }
+    public int PageSize { get; set; } = 32;
+    
+    public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
+    
+    public List<CheepDTO> CheepsPerPage { get; set; }
 
     public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
     {
@@ -70,6 +79,9 @@ public class UserTimelineModel : PageModel
         {
             await TaskHandlerAsync(author);
         }
+
+        Cheeps = await _cheepRepository.GetPaginatedResultByAuthor(CurrentPage, author, PageSize);
+        Count = (await _cheepRepository.GetCheepsByAuthor(author)).Count;
         return Page();
     }
 
@@ -94,23 +106,11 @@ public class UserTimelineModel : PageModel
         
         if (createdAuthor.Follows.IsNullOrEmpty())
         {
-            Cheeps = await _cheepRepository.ReadByAuthor(GetPage(), createdAuthor.Name);
+            Cheeps = await _cheepRepository.ReadByAuthor(CurrentPage, createdAuthor.Name);
         }
         else
         {   
-            Cheeps = await _cheepRepository.GetCheepsFollowedByAuthor(GetPage(), createdAuthor.Name, createdAuthor.Follows);
-        }
-    }
-    
-    public int GetPage()
-    {
-        try
-        {
-            return int.Parse(Request.Query["page"].ToString());
-        }
-        catch (Exception)
-        {
-            return 0;
+            Cheeps = await _cheepRepository.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
         }
     }
     
