@@ -4,8 +4,19 @@ using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 
+
+/// <summary>
+/// Class to seed the database with some initial Authors and cheeps.
+/// Also normalizes fields so authors are the same as identityusers.
+/// </summary>
 public static class DbInitializer
 {
+    
+    /// <summary>
+    /// Seeds the database with some initial Authors and cheeps.
+    /// </summary>
+    /// <param name="applicationContext"></param>
+    /// <param name="userManager"></param>
     public static async Task SeedDatabase(ApplicationDbContext applicationContext, UserManager<Author> userManager)
     {
         if (!(applicationContext.Authors.Any() && applicationContext.Cheeps.Any()))
@@ -712,6 +723,14 @@ public static class DbInitializer
             }
         }
     }
+    
+    
+    /// <summary>
+    /// Normalize the author's name and email, and optionally reset the password.
+    /// </summary>
+    /// <param name="teacher">Represents a teacher author to reset password for</param>
+    /// <param name="userManager">Gives access to modify identityusers</param>
+    /// <param name="password">Password to set to</param>
     private static async Task NormalizeAuthor(Author teacher, UserManager<Author> userManager, string password = null)
     {
         var foundTeacher = userManager.Users.ToList().Find(u => u.UserName.Equals(teacher.UserName));

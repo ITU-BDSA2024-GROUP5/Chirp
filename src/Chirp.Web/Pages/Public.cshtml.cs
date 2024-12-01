@@ -6,6 +6,10 @@ using Chirp.Infrastructure.Services.Interfaces;
 
 namespace Chirp.Web.Pages;
 
+
+/// <summary>
+/// PageModel for the public page. The public page is the main page where cheeps are displayed.
+/// </summary>
 public class PublicModel : PageModel
 {
      
@@ -21,7 +25,12 @@ public class PublicModel : PageModel
         _chirpService = chirpService;
         Text = string.Empty;
     }
-
+    
+    
+    /// <summary>
+    /// OnPost method for the public page. This method is called when the user posts a new cheep.
+    /// </summary>
+    /// <returns>Page reload</returns>
     public async Task<ActionResult> OnPost()
     {
         if (!ModelState.IsValid)
@@ -38,7 +47,8 @@ public class PublicModel : PageModel
         return RedirectToPage(author);
     }
     
-    public async Task FetchCheeps(string author)
+    
+    private async Task FetchCheeps(string author)
     {
         Cheeps = await _chirpService.ReadByAuthor(0, author);
     }
@@ -48,6 +58,13 @@ public class PublicModel : PageModel
         Cheeps = await _chirpService.Read(0);
     }
     
+    
+    /// <summary>
+    /// OnPost method for the public page. This method is handles displaying the proper text for the follow button.
+    /// Depending on if the logged-in user is following the author or not, the text will change.
+    /// </summary>
+    /// <param name="authorToFollow">The author to follow or un-follow</param>
+    /// <returns>Page reload</returns>
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
         var author = await _chirpService.GetAuthorByName(User.Identity.Name);
@@ -68,12 +85,24 @@ public class PublicModel : PageModel
         return RedirectToPage();
     }
     
+    
+    /// <summary>
+    /// OnGet method for the public page.
+    /// This method is called when the page is loaded to fetch cheeps to display on the public page.
+    /// </summary>
+    /// <returns>The public page</returns>
     public async Task<ActionResult> OnGet()
     {
         Cheeps = await _chirpService.Read(ParsePage(Request.Query["page"].ToString()));
         return Page();
     }
 
+    
+    /// <summary>
+    /// Parses the page number from the query string from string to integer.
+    /// </summary>
+    /// <param name="pagenr">Page number string to parse</param>
+    /// <returns>Integer</returns>
     public int ParsePage(string pagenr)
     {
         try

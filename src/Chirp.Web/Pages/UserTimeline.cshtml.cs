@@ -7,6 +7,12 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Chirp.Web.Pages;
 
+
+/// <summary>
+/// PageModel for a authors private timeline page.
+/// The private timeline page is a subpage where all the cheeps of a specific author are displayed
+/// and the cheeps that the author follows.
+/// </summary>
 public class UserTimelineModel : PageModel 
 {
     [BindProperty]
@@ -23,6 +29,11 @@ public class UserTimelineModel : PageModel
         Text = string.Empty;
     }
     
+    
+    /// <summary>
+    /// OnPost method for the private timeline page. This method is called when the user posts a new cheep.
+    /// </summary>
+    /// <returns></returns>
     public async Task<ActionResult> OnPost()
     {
         if (!ModelState.IsValid)
@@ -52,6 +63,13 @@ public class UserTimelineModel : PageModel
         return Cheeps;
     }
     
+    
+    /// <summary>
+    /// OnGet method for the private timeline page.
+    /// This method is called when the page is loaded to fetch cheeps to display.
+    /// </summary>
+    /// <param name="author">The Author to fecth cheeps by</param>
+    /// <returns>The private page</returns>
     public async Task<ActionResult> OnGet(string author)
     {
         if (!string.IsNullOrEmpty(author))
@@ -61,6 +79,14 @@ public class UserTimelineModel : PageModel
         return Page();
     }
 
+    
+    /// <summary>
+    /// Task handler for the private timeline page.
+    /// Handles searching for an author by name or email.
+    /// Also handles fetching all cheeps by authors followed by the author.
+    /// Only fetches the authors cheeps if the logged in author is not the same as the author searched for.
+    /// </summary>
+    /// <param name="author"></param>
     public async Task TaskHandlerAsync(string author)
     {
         AuthorDTO createdAuthor;
@@ -89,6 +115,11 @@ public class UserTimelineModel : PageModel
         }
     }
     
+    
+    /// <summary>
+    /// Gets the page number from the query string.
+    /// </summary>
+    /// <returns></returns>
     public int GetPage()
     {
         try
@@ -101,6 +132,13 @@ public class UserTimelineModel : PageModel
         }
     }
     
+    
+    /// <summary>
+    /// OnPost method for the public page. This method is handles displaying the proper text for the follow button.
+    /// Depending on if the logged-in user is following the author or not, the text will change.
+    /// </summary>
+    /// <param name="authorToFollow">The author to follow or un-follow</param>
+    /// <returns>Page reload</returns>
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
         var author = await _chirpService.GetAuthorByName(User.Identity.Name);

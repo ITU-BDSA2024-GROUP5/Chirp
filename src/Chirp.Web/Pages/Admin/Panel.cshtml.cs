@@ -9,6 +9,14 @@ using Microsoft.Build.Framework;
 
 namespace Chirp.Web.Pages.Admin;
 
+
+/// <summary>
+/// PageModel for the admin panel.
+/// The admin panel is a page where the admin can reset the database and see info about all users and delete them.
+/// </summary>
+/// <param name="context">ApplicationDbContext that contains Cheeps and Authors</param>
+/// <param name="userManager"></param>
+/// <param name="env"></param>
 public class AdminModel(
     ApplicationDbContext context,
     UserManager<Author> userManager,
@@ -17,11 +25,21 @@ public class AdminModel(
 {
     public ICollection<Author> Users { get; set; }
     
+    
+    
+    /// <summary>
+    /// Sets the Users property to all Authors in the database.
+    /// </summary>
     public void OnGet()
     {
         Users = context.Authors.ToList();
     }
     
+    
+    /// <summary>
+    /// Restricts the admin panel to development environment only.
+    /// </summary>
+    /// <param name="execcontext"></param>
     public override void OnPageHandlerExecuting(PageHandlerExecutingContext execcontext)
     {
         // ASPNETCORE_ENVIRONMENT is not set to "Development" in Properties/launchSettings.json: return 404.
@@ -31,6 +49,11 @@ public class AdminModel(
         }
     }
 
+    
+    /// <summary>
+    /// Resets the database by deleting all data and reseeding it.
+    /// </summary>
+    /// <returns></returns>
     public async Task<IActionResult> OnPostResetDatabase()
     {
         await context.Database.EnsureDeletedAsync();
@@ -43,6 +66,11 @@ public class AdminModel(
     [BindProperty]
     [Required]
     public string selectedUserID { get; set; }
+    
+    /// <summary>
+    /// Deletes a user from the database.
+    /// </summary>
+    /// <returns></returns>
     public async Task<ActionResult> OnPostDeleteUser()
     {
         Console.WriteLine("hallo "+selectedUserID);
