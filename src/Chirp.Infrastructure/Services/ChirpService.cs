@@ -68,7 +68,7 @@ public class ChirpService : IChirpService
     {
         return _cheepRepository.Read(page);
     }
-    
+     
     public async Task<List<CheepDTO>> ReadByAuthor(int page, string author)
     {
         return await _cheepRepository.ReadByAuthor(page, author);
