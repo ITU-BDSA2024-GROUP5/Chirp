@@ -1,4 +1,4 @@
-﻿using Chirp.Core.DataModels;
+using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Data.DTO;
 using Microsoft.EntityFrameworkCore;
