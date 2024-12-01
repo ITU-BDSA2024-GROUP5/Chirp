@@ -106,6 +106,17 @@ public class ChirpService : IChirpService
 
     
     /// <summary>
+    /// Reads all cheeps by a specific author.
+    /// </summary>
+    /// <param name="author">The author to read cheeps by</param>
+    /// <returns>List of CheepDTO</returns>
+    public Task<List<CheepDTO>> ReadAllCheeps(string author)
+    {
+        return _cheepRepository.ReadAllCheeps(author);
+    }
+    
+    
+    /// <summary>
     /// Reads 32 cheeps from the database, starting from the page number provided.
     /// </summary>
     /// <param name="page">Page number to read from.</param>
