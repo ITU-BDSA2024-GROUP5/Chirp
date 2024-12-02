@@ -108,6 +108,14 @@ public class AuthorRepository : IAuthorRepository
             .FirstAsync(a => a.UserName == me);
         return author.Follows != null && author.Follows.Contains(you);
     }
+
+
+    public async Task<List<string>> GetFollowed(string authorName)
+    {
+        var author = await _context.Authors
+            .FirstAsync(a => a.UserName == authorName);
+        return author.Follows;
+    }
     
     private static AuthorDTO WrapInDTO(Author author)
     {   

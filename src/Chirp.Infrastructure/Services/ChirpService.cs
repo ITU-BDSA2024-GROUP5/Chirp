@@ -139,6 +139,16 @@ public class ChirpService : IChirpService
         return await _cheepRepository.ReadByAuthor(page, author);
     }
 
+    /// <summary>
+    /// Gets a list of followers for a specific author.
+    /// </summary>
+    /// <param name="author"></param>
+    /// <returns></returns>
+    public Task<List<string>> GetFollowed(string author)
+    {
+        return _authorRepository.GetFollowed(author);
+    }
+
     
     /// <summary>
     /// Gets cheeps by authors followed by a specific author.
