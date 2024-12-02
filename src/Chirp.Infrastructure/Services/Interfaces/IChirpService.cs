@@ -19,4 +19,6 @@ public interface IChirpService
     public Task<List<CheepDTO>> Read(int page);
     public Task<List<CheepDTO>> ReadByAuthor(int page, string author);
     public Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors);
+
+    public Task<List<string>> GetFollowed(string author);
 }
