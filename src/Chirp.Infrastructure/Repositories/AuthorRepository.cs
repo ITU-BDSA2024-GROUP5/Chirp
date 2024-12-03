@@ -20,6 +20,11 @@ public class AuthorRepository : IAuthorRepository
         _context = context;
     }
 
+    /// <summary>
+    /// Function for getting an author by name.
+    /// </summary>
+    /// <param name="authorName"></param>
+    /// <returns>AuthorDTO</returns>
     public async Task<AuthorDTO?> GetAuthorByName(string authorName)
     {
         var query = _context.Authors
@@ -48,6 +53,11 @@ public class AuthorRepository : IAuthorRepository
         return result;
     }
     
+    /// <summary>
+    /// Function for getting/finding an author by email.
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
     public async Task<AuthorDTO?> GetAuthorByEmail(string email)
     {
         var query = _context.Authors
@@ -61,6 +71,10 @@ public class AuthorRepository : IAuthorRepository
         return author;
     }
 
+    /// <summary>
+    /// Function for getting the highest AuthorId in the database.
+    /// </summary>
+    /// <returns></returns>
     public async Task<int> GetHighestAuthorId()
     {
         var query = _context.Authors
@@ -71,7 +85,11 @@ public class AuthorRepository : IAuthorRepository
     }
     
     
-
+    /// <summary>
+    /// Function for getting the AuthorId by the name of the author.
+    /// </summary>
+    /// <param name="author"></param>
+    /// <returns></returns>
     public async Task<int> GetAuthorId(string author)
     {
         var query = _context.Authors
@@ -81,12 +99,22 @@ public class AuthorRepository : IAuthorRepository
         return result?.AuthorId ?? 0;
     }
 
+    /// <summary>
+    /// Writes an author to the database.
+    /// </summary>
+    /// <param name="author"></param>
+    /// <returns></returns>
     public async Task WriteAuthor(Author author)
     {
         var queryResult = await _context.Authors.AddAsync(author);
         await _context.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Wraps an Author entity in an AuthorDTO.
+    /// </summary>
+    /// <param name="author"></param>
+    /// <returns></returns>
     private static AuthorDTO WrapInDTO(Author author)
     {
         var authorDto = new AuthorDTO(author.UserName, author.Email);
@@ -101,6 +129,11 @@ public class AuthorRepository : IAuthorRepository
         return authorDto;
     }
 
+    /// <summary>
+    /// Function for getting the people an author follows.
+    /// </summary>
+    /// <param name="me"></param>
+    /// <returns></returns>
     public async Task<List<string>> GetFollowers(string me)
     {
         var author = await _context.Authors
