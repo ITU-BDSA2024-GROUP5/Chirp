@@ -108,41 +108,99 @@ public class Tests : PageTest
     
        
     [Test]
-        public async Task UserFollow()
-        {
-            await Page.GotoAsync("http://localhost:5177/");
-            await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
-            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
-            await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
-            
-            
-            await Page.GotoAsync("http://localhost:5177/Jacqualine%20Gilcoine");
-            await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Follow" })).ToBeVisibleAsync();
+    public async Task FUserFollow()
+    {
+        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        
+        
+        await Page.GotoAsync("http://localhost:5177/Jacqualine%20Gilcoine");
+        await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Follow" })).ToBeVisibleAsync();
 
-            await Page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
-            await Page.GotoAsync("http://localhost:5177/testuser");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
+        await Page.GotoAsync("http://localhost:5177/testuser");
 
-            await Expect(Page.GetByText(" Starbuck now is what we hear the worst. ")).ToBeVisibleAsync();
-        }
+        await Expect(Page.GetByText(" Starbuck now is what we hear the worst. ")).ToBeVisibleAsync();
+    }
         
     
     [Test]
-            public async Task UserUnfollow()
-            {
-                await Page.GotoAsync("http://localhost:5177/");
-                await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-                await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
-                await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
-                await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
-                
-                await Page.GotoAsync("http://localhost:5177/Jacqualine%20Gilcoine");
-                await Page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).ClickAsync();
-                await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
-   
+    public async Task GUserUnfollow()
+    {
+        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        
+        await Page.GotoAsync("http://localhost:5177/Jacqualine%20Gilcoine");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
+
+
+        await Expect(Page.GetByText("Jacqualine Gilcoine")).Not.ToBeVisibleAsync();
+    }
     
-                await Expect(Page.GetByText("Jacqualine Gilcoine")).Not.ToBeVisibleAsync();
-            }
+    [Test]
+    public async Task HUserSeeAboutMe()
+    {
+        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        
+        await Expect(Page.GetByText("Personal Data Vault")).ToBeVisibleAsync();
+    }
+    
+    [Test]
+    public async Task IShowCheepButtonsWork()
+    {
+        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        
+        await Expect(Page.GetByText("Show Cheeps")).ToBeVisibleAsync();
+        
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Show Cheeps" }).ClickAsync();
+        
+        await Expect(Page.GetByText("Go Back")).ToBeVisibleAsync();
+        
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Go Back" }).ClickAsync();
+        
+        await Expect(Page.GetByText("Show Cheeps")).ToBeVisibleAsync();
+    }
+    
+    [Test]
+    public async Task JShowFollowsButtonsWork()
+    {
+        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        
+        await Expect(Page.GetByText("Show Followed")).ToBeVisibleAsync();
+        
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Show Followed" }).ClickAsync();
+        
+        await Expect(Page.GetByText("Go Back")).ToBeVisibleAsync();
+        
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Go Back" }).ClickAsync();
+        
+        await Expect(Page.GetByText("Show Followed")).ToBeVisibleAsync();
+    }
             
 
     [Test]
