@@ -21,6 +21,7 @@ public class UserTimelineModel : PageModel
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
+    
 
     [BindProperty(SupportsGet = true)] public int CurrentPage { get; set; } = 1;
     public int Count { get; set; }
