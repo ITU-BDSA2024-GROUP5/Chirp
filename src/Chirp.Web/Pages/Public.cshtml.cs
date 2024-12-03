@@ -20,6 +20,11 @@ public class PublicModel : PageModel
     public required List<CheepDTO> Cheeps { get; set; }
     
     private readonly IChirpService _chirpService;
+    [BindProperty(SupportsGet = true)]
+    public int CurrentPage { get; set; } = 1;
+    public int Count { get; set; }
+    public int PageSize { get; set; } = 32;
+    public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
     public PublicModel(IChirpService chirpService)
     {
         _chirpService = chirpService;
@@ -93,7 +98,8 @@ public class PublicModel : PageModel
     /// <returns>The public page</returns>
     public async Task<ActionResult> OnGet()
     {
-        Cheeps = await _chirpService.Read(ParsePage(Request.Query["page"].ToString()));
+        Cheeps = await _chirpService.GetPaginatedResult(CurrentPage, PageSize);
+        Count = await _chirpService.GetCount();
         return Page();
     }
 

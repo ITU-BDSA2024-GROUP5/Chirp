@@ -22,6 +22,10 @@ public class UserTimelineModel : PageModel
     public required List<CheepDTO> Cheeps { get; set; }
     
     private readonly IChirpService _chirpService;
+    public int Count { get; set; }
+    public int PageSize { get; set; } = 32;
+    public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
+    [BindProperty(SupportsGet = true)] public int CurrentPage { get; set; } = 1;
 
     public UserTimelineModel(IChirpService chirpService)
     {
@@ -56,7 +60,7 @@ public class UserTimelineModel : PageModel
     
     public async Task<List<CheepDTO>> FetchCheeps(string author)
     {
-        Cheeps = await _chirpService.ReadByAuthor(0, author);
+        Cheeps = await _chirpService.ReadByAuthor(CurrentPage, author);
         Cheeps = Cheeps
             .OrderBy(c => DateTime.Parse(c.TimeStamp).Date) // Parse and sort by DateTime
             .ToList();
@@ -76,6 +80,17 @@ public class UserTimelineModel : PageModel
         {
             await TaskHandlerAsync(author);
         }
+        var tmpAuthor = await _chirpService.GetAuthorByName(author);
+        if (User.Identity != null && User.Identity.Name == author)
+        {
+            Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, author, tmpAuthor.Follows);
+            Count = await _chirpService.GetCheepsCountByFollows(author, tmpAuthor.Follows);
+            return Page();
+        }
+        
+        Cheeps = await _chirpService.GetPaginatedResultByAuthor(CurrentPage, author, PageSize);
+       
+        Count = _chirpService.GetCheepsByAuthor(author).Result.Count;
         return Page();
     }
 
@@ -107,11 +122,11 @@ public class UserTimelineModel : PageModel
         
         if (createdAuthor.Follows.IsNullOrEmpty())
         {
-            Cheeps = await _chirpService.ReadByAuthor(GetPage(), createdAuthor.Name);
+            Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
         }
         else
         {   
-            Cheeps = await _chirpService.GetCheepsFollowedByAuthor(GetPage(), createdAuthor.Name, createdAuthor.Follows);
+            Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
         }
     }
     

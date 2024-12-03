@@ -166,4 +166,27 @@ public class ChirpService : IChirpService
     {
         return _cheepRepository.GetCheepsFollowedByAuthor(page, author, authors);
     }
+    
+    public Task<List<CheepDTO>> GetPaginatedResult(int page, int pageSize = 32)
+    {
+        return _cheepRepository.GetPaginatedResult(page, pageSize);
+    }
+
+    public Task<int> GetCheepsCountByFollows(string author, List<string>? authors)
+    {
+        return _cheepRepository.GetCheepsCountByFollows(author, authors);
+    }
+    public Task<int> GetCount()
+    {
+        return _cheepRepository.GetCount();
+    }
+    public Task<List<CheepDTO>> GetCheepsByAuthor(string author)
+    {
+        return _cheepRepository.GetCheepsByAuthor(author);
+    }
+
+    public Task<List<CheepDTO>> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32)
+    {
+        return _cheepRepository.GetPaginatedResultByAuthor(page, author, pageSize);
+    }
 }
