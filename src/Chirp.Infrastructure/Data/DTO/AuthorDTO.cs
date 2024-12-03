@@ -6,7 +6,15 @@ namespace Chirp.Infrastructure.Data.DTO;
 /// </summary>
 public class AuthorDTO
 {
-    public string Name { get; set; }
-    public string Email { get; set; }
+    public AuthorDTO(string? name,string? email)
+    {
+        this.Name = name;
+        this.Email = email;
+        Follows = new List<string>();
+    }
+    
+    
+    public string? Name { get; set; }
+    public string? Email { get; set; }
     public List<string> Follows { get; set; }
 }

@@ -27,15 +27,20 @@ public class ChirpService : IChirpService
     public async Task CreateCheep(string name, string text)
     {
         var author = await GetAuthorByName(name);
+        if (author == null) return;
+        if (author.Name == null) return; 
+
+        var intendedAuthorName = await _authorRepository.GetAuthorByNameEntity(author.Name); // fix? repositories should only return dtos
+        if (intendedAuthorName == null) return;
         
         var cheep = new Cheep()
         {
             CheepId = await _cheepRepository.GetHighestCheepId() + 1,
             Text = text,
             TimeStamp = DateTime.Now,
-            Author = await _authorRepository.GetAuthorByNameEntity(author.Name) // fix? repositories should only return dtos
-
+            Author = intendedAuthorName
         };
+        
         await _cheepRepository.WriteCheep(cheep);
     }
     
@@ -45,7 +50,7 @@ public class ChirpService : IChirpService
     /// </summary>
     /// <param name="author">Author name to find author by</param>
     /// <returns>AuthorDTO</returns>
-    public async Task<AuthorDTO> GetAuthorByName(string author)
+    public async Task<AuthorDTO?> GetAuthorByName(string author)
     {
         return await _authorRepository.GetAuthorByName(author);
     }
@@ -56,7 +61,7 @@ public class ChirpService : IChirpService
     /// </summary>
     /// <param name="email">Email to find author by</param>
     /// <returns>AuthorDTO</returns>
-    public async Task<AuthorDTO> GetAuthorByEmail(string email)
+    public async Task<AuthorDTO?> GetAuthorByEmail(string email)
     {
         return await _authorRepository.GetAuthorByEmail(email);
     }

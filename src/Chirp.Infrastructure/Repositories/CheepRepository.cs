@@ -85,6 +85,13 @@ public class CheepRepository : ICheepRepository
         return result;
     }
     
+    /// <summary>
+    /// Reads 32 cheeps from the database, starting from the page number provided, by a specific author.
+    /// Finds the author by email.
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="email"></param>
+    /// <returns></returns>
     public async Task<List<CheepDTO>> ReadByEmail(int page, string email)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
@@ -119,24 +126,11 @@ public class CheepRepository : ICheepRepository
         var cheeps = WrapInDTO(result);
         return cheeps;
     }
-    
-    /**
-     * Method returns all the cheeps that are stored in the database.
-     */
-    private async Task<List<CheepDTO>> ReadAllCheeps()
-    {
-        var query = _context.Cheeps
-            .Select(cheep => cheep)
-            .Include(c => c.Author)  
-            .OrderByDescending(cheep => cheep.TimeStamp);
-        
-        var result = await query.ToListAsync();
-        
-        var cheeps = WrapInDTO(result);
 
-        return cheeps;
-    }
-
+    /// <summary>
+    /// Function for finding the highest CheepId in the database.
+    /// </summary>
+    /// <returns>The highest CheepID in the DB</returns>
     public async Task<int> GetHighestCheepId(){
         var query = _context.Cheeps
             .Select(c => c)
@@ -145,6 +139,11 @@ public class CheepRepository : ICheepRepository
         return result?.CheepId ?? 0;
     }
 
+    /// <summary>
+    /// Writes a cheep to the database.
+    /// </summary>
+    /// <param name="cheep"></param>
+    /// <returns></returns>
     public async Task WriteCheep(Cheep cheep)
     {
         await _context.Cheeps.AddAsync(cheep);
@@ -152,9 +151,17 @@ public class CheepRepository : ICheepRepository
         await _context.SaveChangesAsync();
     }
     
+    /// <summary>
+    /// Gets all the cheeps written by a specific author.
+    /// </summary>
+    /// <param name="author"></param>
+    /// <returns>List with CheepDTO's from a given user</returns>
     public async Task<List<CheepDTO>> GetCheepsByAuthor(string author)
     {
         var auth = _context.Users.FirstOrDefault(a => a.UserName == author);
+        if (auth == null) return new List<CheepDTO>();
+        if (auth.UserName == null) return new List<CheepDTO>();
+        
         var cheeps = await ReadAllCheeps(auth.UserName);
         return cheeps;
     }
@@ -180,6 +187,11 @@ public class CheepRepository : ICheepRepository
         return WrapInDTO(cheeps);
     }
 
+    /// <summary>
+    /// Wraps a list of Cheep objects in CheepDTO objects. 
+    /// </summary>
+    /// <param name="cheeps"></param>
+    /// <returns></returns>
     public static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
     {
         var list = new List<CheepDTO>();
@@ -189,7 +201,7 @@ public class CheepRepository : ICheepRepository
             {
                 Text = cheep.Text,
                 Author = cheep.Author.UserName,
-                TimeStamp = cheep.TimeStamp.ToString()
+                TimeStamp = cheep.TimeStamp.ToString("R")
             });
         }
         return list;
