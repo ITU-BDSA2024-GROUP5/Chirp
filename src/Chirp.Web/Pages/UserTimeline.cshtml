@@ -45,7 +45,7 @@
                 @if(User.Identity?.Name != null && !User.Identity.Name.Equals(routeName))
                 {
                     var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
-                    var follows =  user?.Follows != null && user.Follows.Contains(routeName); 
+                    var follows =  user.Follows != null && user.Follows.Contains(routeName); 
                     <button name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                         @(follows ? "Unfollow" : "Follow")
                     </button>
@@ -151,7 +151,7 @@
         @for (var i = 1; i <= Model.TotalPages; i++)
         {
             <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a asp-page="" asp-route-currentpage="@i" class="page-link">@i</a>
+                <a asp-page="" asp-route-author="@routeName" asp-route-currentpage="@i" class="page-link">@i</a>
             </li>
         }
     </ul>

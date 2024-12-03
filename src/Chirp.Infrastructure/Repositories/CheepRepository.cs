@@ -52,10 +52,7 @@ public class CheepRepository : ICheepRepository
         var query = _context.Cheeps
             .Select(cheep => cheep)
             .Include(c => c.Author)
-            .Where(cheep => cheep.Author.UserName == author)
-            .OrderByDescending(cheep => cheep.TimeStamp)
-            .Skip((page - 1) * 32)
-            .Take(32);
+            .Where(cheep => cheep.Author.UserName == author);
         // Execute the query and store the results
         var result = await query.ToListAsync();
         return result;
@@ -140,9 +137,7 @@ public class CheepRepository : ICheepRepository
                     .Select(cheep => cheep)
                     .Include(c => c.Author)
                     .Where(cheep => cheep.Author.UserName == auth)
-                    .OrderByDescending(cheep => cheep.TimeStamp)
-                    .Skip((page - 1) * 32)
-                    .Take(32);
+                    .OrderByDescending(cheep => cheep.TimeStamp);
                 // Execute the query and store the results
                 var result = await query.ToListAsync();
                 cheeps.AddRange(result);
@@ -151,8 +146,8 @@ public class CheepRepository : ICheepRepository
         
         var authorCheeps = await ReadByAuthorEntity(page, author);
         cheeps.AddRange(authorCheeps);
-        cheeps = cheeps.OrderByDescending(c => c.TimeStamp).ToList();
-        cheeps = cheeps.Take(32).ToList();
+        await GetPaginatedResult(page, 32);
+        
         var cheepsDTO = WrapInDTO(cheeps);
 
         return cheepsDTO;
@@ -171,15 +166,6 @@ public class CheepRepository : ICheepRepository
             });
         }
         return list;
-    }
-    
-    /**
-     * This method is used to sort and divide all the cheeps registered into 32 per page on the user's timeline.
-     */
-    public async Task<List<CheepDTO>> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32)
-    {
-        var cheeps = await ReadAllCheeps(author);
-        return cheeps.OrderByDescending(c => c.TimeStamp).Skip((page - 1) * pageSize).Take(pageSize).ToList();
     }
     
     /**

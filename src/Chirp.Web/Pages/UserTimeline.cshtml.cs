@@ -9,25 +9,25 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Chirp.Web.Pages;
 
-public class UserTimelineModel : PageModel 
+public class UserTimelineModel : PageModel
 {
     [BindProperty]
     [Required]
-    [StringLength(160,ErrorMessage = "Maximum length is 160 characters.")]
+    [StringLength(160, ErrorMessage = "Maximum length is 160 characters.")]
     public string Text { get; set; }
+
     public required List<CheepDTO> Cheeps { get; set; }
-    
+
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICheepServiceDB _cheepServiceDb;
 
-    [BindProperty(SupportsGet = true)] 
-    public int CurrentPage { get; set; } = 1;
+    [BindProperty(SupportsGet = true)] public int CurrentPage { get; set; } = 1;
     public int Count { get; set; }
     public int PageSize { get; set; } = 32;
-    
+
     public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
-    
+
     public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
@@ -35,7 +35,7 @@ public class UserTimelineModel : PageModel
         _cheepServiceDb = new CheepServiceDB(cheepRepository, authorRepository);
         Text = string.Empty;
     }
-    
+
     public async Task<ActionResult> OnPost()
     {
         if (!ModelState.IsValid)
@@ -48,20 +48,22 @@ public class UserTimelineModel : PageModel
         {
             ModelState.AddModelError(string.Empty, "you must authenticate first");
         }
+
         var author = await _cheepServiceDb.GetAuthorByString(User.Identity.Name);
         if (author == null)
         {
             var newAuthor = await _cheepServiceDb.CreateAuthor(User.Identity.Name);
             author = newAuthor;
         }
+
         var cheep = await _cheepServiceDb.CreateCheep(author.Name, Text);
         await _cheepServiceDb.WriteCheep(cheep);
-        
+
         await FetchCheeps(author.Name);
-        
+
         return RedirectToPage(author);
     }
-    
+
     public async Task<List<CheepDTO>> FetchCheeps(string author)
     {
         Cheeps = await _cheepRepository.ReadByAuthor(CurrentPage, author);
@@ -70,7 +72,7 @@ public class UserTimelineModel : PageModel
             .ToList();
         return Cheeps;
     }
-    
+
     public async Task<ActionResult> OnGet(string author)
     {
         if (!string.IsNullOrEmpty(author))
@@ -78,21 +80,23 @@ public class UserTimelineModel : PageModel
             await TaskHandlerAsync(author);
         }
         
-        Cheeps = await _cheepRepository.GetPaginatedResult(CurrentPage, PageSize);
-        if (User.Identity != null && author == User.Identity.Name)
+        var tmpAuthor = await _authorRepository.GetAuthorByName(author);
+
+        if (User.Identity != null && User.Identity.Name == author)
         {
+            Cheeps = await _cheepRepository.GetCheepsFollowedByAuthor(CurrentPage, author, tmpAuthor.Follows);
             Count = Cheeps.Count;
+            return Page();
         }
-        else
-        {
-            Count = (await _cheepRepository.GetCheepsByAuthor(author)).Count;
-        }
+        
+        Cheeps = await _cheepRepository.GetPaginatedResult(CurrentPage, PageSize);
+       
+        Count = _cheepRepository.GetCheepsByAuthor(author).Result.Count;
         return Page();
     }
-    
+
     public async Task TaskHandlerAsync(string author)
     {
-        
         AuthorDTO createdAuthor;
         if (author.Contains('@'))
         {
@@ -108,21 +112,22 @@ public class UserTimelineModel : PageModel
             ModelState.AddModelError(string.Empty, "Author not found");
             return;
         }
-        
+
         if (createdAuthor.Follows.IsNullOrEmpty())
         {
             Cheeps = await _cheepRepository.ReadByAuthor(CurrentPage, createdAuthor.Name);
         }
         else
-        {   
-            Cheeps = await _cheepRepository.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
+        {
+            Cheeps = await _cheepRepository.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name,
+                createdAuthor.Follows);
         }
     }
-    
+
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
         Author author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
-        
+
         var IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
 
         if (IsFollowing)
@@ -136,5 +141,4 @@ public class UserTimelineModel : PageModel
 
         return RedirectToPage();
     }
-    
 }
