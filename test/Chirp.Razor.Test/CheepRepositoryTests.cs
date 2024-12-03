@@ -78,11 +78,20 @@ public class CheepRepositoryTests
         await context.Database.EnsureCreatedAsync();
 
         var repository = new CheepRepository(context);
-        
+        var aRepository = new AuthorRepository(context);
+        var newAuthor = new Author()
+        {
+            UserName = author,
+            AuthorId = await aRepository.GetHighestAuthorId() + 1,
+            Email = author + "@chirp.com",
+            Cheeps = new List<Cheep>(),
+        };
         
         
         //Act
+        await aRepository.WriteAuthor(newAuthor);
         var cheepDTOS = await repository.ReadByAuthor(0, author);
+        
         
         //Assert
         foreach (var dto in cheepDTOS)
