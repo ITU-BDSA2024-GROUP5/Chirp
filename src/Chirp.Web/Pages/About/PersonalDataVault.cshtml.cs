@@ -32,6 +32,11 @@ namespace Chirp.Web.Pages.About
 
         public List<PersonalDataItem>? PersonalDataItems { get; private set; }
 
+
+        /// <summary>
+        /// Constructor for the PersonalDataVaultModel
+        /// </summary>
+        /// <param name="username"></param>
         public async void OnGet(string username)
         {
             Username = username;
@@ -61,6 +66,10 @@ namespace Chirp.Web.Pages.About
             }
         }
 
+        /// <summary>
+        /// Function for showing all the cheeps of the user
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostShowCheeps()
         {
             PersonalDataItems = new List<PersonalDataItem>();
@@ -84,6 +93,10 @@ namespace Chirp.Web.Pages.About
             return Page();
         }
 
+        /// <summary>
+        /// Function for showing all the people the user follows
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostShowFollowed()
         {
             PersonalDataItems = new List<PersonalDataItem>();
@@ -106,6 +119,10 @@ namespace Chirp.Web.Pages.About
             return Page();
         }
 
+        /// <summary>
+        /// Function for going back to the previous page / main page of the personaldatavault
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostGoBack()
         {
            var username = User.Identity?.Name;
@@ -119,7 +136,10 @@ namespace Chirp.Web.Pages.About
             return Redirect($"/About/PersonalDataVault/{username}"); 
         }
 
-        //Function for downloading data as a CSV file
+        /// <summary>
+        /// Function allowing the user to download their data in a csv file
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostDownloadData()
         {
             var csv = new StringBuilder();
@@ -154,24 +174,39 @@ namespace Chirp.Web.Pages.About
             return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", $"{user.UserName}_data.csv");
         }
 
-
+        /// <summary>
+        /// Function for redirecting the user to the delete personal data page
+        /// Relies on the Identity framework
+        /// Redirects to /Identity/Account/Manage/DeletePersonalData
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostDeleteData()
         {
             return Redirect($"/Identity/Account/Manage/DeletePersonalData");
         }
 
+        /// <summary>
+        /// Function for fetching all the cheeps of the user
+        /// </summary>
+        /// <param name="author"></param>
+        /// <returns></returns>
         public async Task FetchCheeps(string author)
         {
             Cheeps = await chirpService.ReadAllCheeps(author);
         }
 
+        /// <summary>
+        /// Function for fetching all the people the user follows
+        /// </summary>
+        /// <param name="author"></param>
+        /// <returns></returns>
         public async Task<List<string>>? FetchFollowed(string author)
         {
             Followed = await chirpService.GetFollowed(author);
             return Followed;
         }
         
-
+        
         public class PersonalDataItem
         {
             public PersonalDataItem(string key, string value)
