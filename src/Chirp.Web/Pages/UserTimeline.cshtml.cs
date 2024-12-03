@@ -60,7 +60,7 @@ public class UserTimelineModel : PageModel
     
     public async Task<List<CheepDTO>> FetchCheeps(string author)
     {
-        Cheeps = await _chirpService.ReadByAuthor(0, author);
+        Cheeps = await _chirpService.ReadByAuthor(CurrentPage, author);
         Cheeps = Cheeps
             .OrderBy(c => DateTime.Parse(c.TimeStamp).Date) // Parse and sort by DateTime
             .ToList();
