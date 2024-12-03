@@ -54,11 +54,25 @@ public class Register : PageModel
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+    
+    
+    /// <summary>
+    /// Get all external login methods to display on register page.
+    /// </summary>
+    /// <param name="returnUrl"></param>
     public async Task OnGetAsync(string returnUrl = null)
     {
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
+    
+    
+    /// <summary>
+    /// Register a new user, with the given user info.
+    /// If a prefined user is trying to register, we will return an error message.
+    /// </summary>
+    /// <param name="returnUrl"></param>
+    /// <returns></returns>
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
@@ -109,6 +123,13 @@ public class Register : PageModel
         }
         return Page();
     }
+    
+    
+    /// <summary>
+    /// Get an empty instance of an author object.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
     private Author CreateUser()
     {
         try

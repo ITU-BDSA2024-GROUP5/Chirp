@@ -42,7 +42,13 @@ public class ExternalLoginModel : PageModel
         return RedirectToPage("./Login");
     }
     
-    // Redirect to github for login by ChallengeResult
+    
+    /// <summary>
+    /// Redirect to GitHub for login by ChallengeResult.
+    /// </summary>
+    /// <param name="provider"></param>
+    /// <param name="returnUrl"></param>
+    /// <returns>ChallengeResult</returns>
     public IActionResult OnPost(string provider, string returnUrl = null)
     {
         // Request a redirect to the external login provider.
@@ -51,7 +57,15 @@ public class ExternalLoginModel : PageModel
         return new ChallengeResult(provider, properties);
     }
     
-    // Get callback from github and sign in or redirect to register
+    
+    /// <summary>
+    /// Callback from GitHub after login.
+    /// If an account with a GitHub account already exists sign in ot that account.
+    /// If an account with the same mail as the GitHub account already exists, add the GitHub login to that account.
+    /// </summary>
+    /// <param name="returnUrl"></param>
+    /// <param name="remoteError"></param>
+    /// <returns></returns>
     public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
     {
         if (remoteError != null)
@@ -106,7 +120,12 @@ public class ExternalLoginModel : PageModel
         }
     }
     
-    //Confirmation of external login and registration if necessary
+    
+    /// <summary>
+    /// Creates a new user with the GitHub account.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ApplicationException"></exception>
     public async Task<IActionResult> OnPostConfirmationAsync()
     {
         if (ModelState.IsValid)
