@@ -138,6 +138,9 @@ public class CheepRepository : ICheepRepository
     public async Task<List<CheepDTO>> GetCheepsByAuthor(string author)
     {
         var auth = _context.Users.FirstOrDefault(a => a.UserName == author);
+        if (auth == null) return new List<CheepDTO>();
+        if (auth.UserName == null) return new List<CheepDTO>();
+        
         var cheeps = await ReadAllCheeps(auth.UserName);
         return cheeps;
     }
@@ -188,7 +191,7 @@ public class CheepRepository : ICheepRepository
             {
                 Text = cheep.Text,
                 Author = cheep.Author.UserName,
-                TimeStamp = cheep.TimeStamp.ToString()
+                TimeStamp = cheep.TimeStamp.ToString("R")
             });
         }
         return list;

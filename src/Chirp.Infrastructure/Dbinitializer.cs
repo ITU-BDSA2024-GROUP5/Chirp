@@ -731,9 +731,20 @@ public static class DbInitializer
     /// <param name="teacher">Represents a teacher author to reset password for</param>
     /// <param name="userManager">Gives access to modify identityusers</param>
     /// <param name="password">Password to set to</param>
-    private static async Task NormalizeAuthor(Author teacher, UserManager<Author> userManager, string password = null)
+    private static async Task NormalizeAuthor(Author teacher, UserManager<Author> userManager, string? password = null)
     {
-        var foundTeacher = userManager.Users.ToList().Find(u => u.UserName.Equals(teacher.UserName));
+        var userList = userManager.Users.ToList();
+        Author? foundTeacher = null; 
+        
+        foreach (var user in userList)
+        {
+            if (user.UserName == null) continue;
+            if (!user.UserName.Equals(teacher.UserName)) continue;
+            
+            foundTeacher = user;
+            break;
+        }    
+            
         if (foundTeacher != null)
         { 
             userManager.NormalizeName(foundTeacher.UserName);
