@@ -206,7 +206,10 @@ namespace Chirp.Web.Pages.About
             return Followed;
         }
         
-        
+        /// <summary>
+        /// Class for the personal data items that are shown on the page
+        /// Contains a key and a value for each item displayed in the table on the page
+        /// </summary>
         public class PersonalDataItem
         {
             public PersonalDataItem(string key, string value)
