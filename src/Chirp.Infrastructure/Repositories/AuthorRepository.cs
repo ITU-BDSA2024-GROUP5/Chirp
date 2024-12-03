@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.JavaScript;
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Data.DTO;
@@ -6,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Repositories;
 
+
+/// <summary>
+/// Repository for the Author table. Contains methods to interact with the Authors table.
+/// </summary>
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ApplicationDbContext _context;
@@ -24,7 +27,12 @@ public class AuthorRepository : IAuthorRepository
         var Author = WrapInDTO(result);
         return Author;
     }
-
+    
+    /// <summary>
+    /// Returns an author entity and not an AuthorDTO. This could be fixed.
+    /// </summary>
+    /// <param name="author">The author to find by name</param>
+    /// <returns>Author entity</returns>
     public async Task<Author> GetAuthorByNameEntity(string author)
     {
         var query = _context.Authors
@@ -52,43 +60,12 @@ public class AuthorRepository : IAuthorRepository
         var result = await query.FirstOrDefaultAsync();
         return result?.AuthorId ?? 0;
     }
-
-    public async Task<int> GetAuthorId(string author)
-    {
-        var query = _context.Authors
-            .Select(a => a)
-            .Where(a => a.UserName == author);
-        var result = await query.FirstOrDefaultAsync();
-        return result?.AuthorId ?? 0;
-    }
-
-    public async Task WriteAuthor(Author author)
-    {
-        var queryResult = await _context.Authors.AddAsync(author);
-        await _context.SaveChangesAsync();
-    }
-
-    public static AuthorDTO WrapInDTO(Author author)
-    {   
-        if(author == null) return null;
-        if (author.Follows == null) author.Follows = new List<string>();
-        return new AuthorDTO{
-            Name = author.UserName,
-            Email = author.Email,
-            Follows = author.Follows
-        };
-    }
-
-    public async Task<List<string>> GetFollowers(string me)
-    {
-        var author = await _context.Authors
-            .FirstAsync(a => a.UserName == me);
-        
-        if (author.Follows == null) return new List<string>();
-        return author.Follows;
-    }
-
-    // to avoid ambiguity and confusion, 'you' is the user 'me' wants to follow
+    
+    /// <summary>
+    /// Makes one author follow another author.
+    /// </summary>
+    /// <param name="you">The author that wants to follow another author.</param>
+    /// <param name="me">The author to follow</param>
     public async Task AddFollows(string you, string me)
     {
         var authordto = await GetAuthorByName(you);
@@ -101,6 +78,12 @@ public class AuthorRepository : IAuthorRepository
         await _context.SaveChangesAsync();
     }
     
+    
+    /// <summary>
+    /// Makes one author un-follow another author.
+    /// </summary>
+    /// <param name="you">The author that wants to un-follow another author.</param>
+    /// <param name="me">The author to un-follow</param>
     public async Task RemoveFollows(string you, string me)
     {
         var authordto = await GetAuthorByName(you);
@@ -113,11 +96,43 @@ public class AuthorRepository : IAuthorRepository
         await _context.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Checks if a given user follows another user.
+    /// </summary>
+    /// <param name="you">The author to check is followed.</param>
+    /// <param name="me">The author to check if following.</param>
+    /// <returns></returns>
     public async Task<bool> ContainsFollower(string you, string me)
     {
         var author = await _context.Authors
             .FirstAsync(a => a.UserName == me);
         return author.Follows != null && author.Follows.Contains(you);
     }
+
+
+    public async Task<List<string>> GetFollowed(string authorName)
+    {
+        var author = await _context.Authors
+            .FirstAsync(a => a.UserName == authorName);
+        return author.Follows;
+    }
     
+    private static AuthorDTO WrapInDTO(Author author)
+    {   
+        if(author == null) return null;
+        if (author.Follows == null) author.Follows = new List<string>();
+        return new AuthorDTO{
+            Name = author.UserName,
+            Email = author.Email,
+            Follows = author.Follows
+        };
+    }
+    
+    
+    // for test
+    public async Task WriteAuthor(Author author)
+    {
+        var queryResult = await _context.Authors.AddAsync(author);
+        await _context.SaveChangesAsync();
+    }
 }

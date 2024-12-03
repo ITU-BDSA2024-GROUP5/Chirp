@@ -6,13 +6,12 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
 {
-    private readonly WebApplicationFactory<Program> _fixture;
     private readonly HttpClient _client;
 
     public TestAPI(WebApplicationFactory<Program> fixture)
     {
-        _fixture = fixture;
-        _client = _fixture.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = true, HandleCookies = true });
+        _client = new HttpClient();
+        _client.BaseAddress = new Uri("http://localhost:5177");
     }
 
 
@@ -20,7 +19,7 @@ public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task CanSeePublicTimeline()
     {
-        var response = await _client.GetAsync("/");
+        var response = await _client.GetAsync("/Public");
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
 

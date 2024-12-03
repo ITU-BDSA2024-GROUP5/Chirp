@@ -1,12 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Chirp.Core.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Infrastructure.Data.DTO;
-using Chirp.Infrastructure.Repositories;
+using Chirp.Infrastructure.Services.Interfaces;
 
 namespace Chirp.Web.Pages;
 
+
+/// <summary>
+/// PageModel for the public page. The public page is the main page where cheeps are displayed.
+/// </summary>
 public class PublicModel : PageModel
 {
      
@@ -16,24 +19,18 @@ public class PublicModel : PageModel
     public string Text { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
     
-    [BindProperty(SupportsGet = true)]
-    public int CurrentPage { get; set; } = 1;
-    public int Count { get; set; }
-    public int PageSize { get; set; } = 32;
-
-    public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
-    
-    private readonly ICheepRepository _cheepRepository;
-    private readonly ICheepServiceDB _cheepServiceDb;
-    private readonly IAuthorRepository _authorRepository;
-    public PublicModel(ICheepRepository cheepRepository, ICheepServiceDB cheepServiceDb, IAuthorRepository authorRepository)
+    private readonly IChirpService _chirpService;
+    public PublicModel(IChirpService chirpService)
     {
-        _cheepRepository = cheepRepository;
-        _cheepServiceDb = cheepServiceDb;
-        _authorRepository = authorRepository;
+        _chirpService = chirpService;
         Text = string.Empty;
     }
-
+    
+    
+    /// <summary>
+    /// OnPost method for the public page. This method is called when the user posts a new cheep.
+    /// </summary>
+    /// <returns>Page reload</returns>
     public async Task<ActionResult> OnPost()
     {
         if (!ModelState.IsValid)
@@ -42,43 +39,45 @@ public class PublicModel : PageModel
             return Page();
         }
         
-        var author = await _cheepServiceDb.GetAuthorByString(User.Identity.Name);
-        if (author == null)
-        {
-            var newAuthor = await _cheepServiceDb.CreateAuthor(User.Identity.Name);
-            author = newAuthor;
-        }
-        var cheep = await _cheepServiceDb.CreateCheep(author.Name, Text);
-        await _cheepServiceDb.WriteCheep(cheep);
+        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
+        await _chirpService.CreateCheep(author.Name, Text);
         
         await FetchCheeps(author.Name);
         
         return RedirectToPage(author);
     }
     
-    public async Task FetchCheeps(string author)
+    
+    private async Task FetchCheeps(string author)
     {
-        Cheeps = await _cheepRepository.ReadByAuthor(0, author);
+        Cheeps = await _chirpService.ReadByAuthor(0, author);
     }
     
     public async Task FetchCheeps()
     {
-        Cheeps = await _cheepRepository.Read(0);
+        Cheeps = await _chirpService.Read(0);
     }
     
+    
+    /// <summary>
+    /// OnPost method for the public page. This method is handles displaying the proper text for the follow button.
+    /// Depending on if the logged-in user is following the author or not, the text will change.
+    /// </summary>
+    /// <param name="authorToFollow">The author to follow or un-follow</param>
+    /// <returns>Page reload</returns>
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        var author = await _authorRepository.GetAuthorByNameEntity(User.Identity.Name);
+        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
         
-        var IsFollowing = await _authorRepository.ContainsFollower(authorToFollow, User.Identity.Name);
+        var IsFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
 
         if (IsFollowing)
         {
-            await _authorRepository.RemoveFollows(author.UserName, authorToFollow);
+            await _chirpService.RemoveFollows(author.Name, authorToFollow);
         }
         else
         {
-            await _authorRepository.AddFollows(author.UserName, authorToFollow);
+            await _chirpService.AddFollows(author.Name, authorToFollow);
         }
         
         IsFollowing = !IsFollowing;
@@ -86,13 +85,24 @@ public class PublicModel : PageModel
         return RedirectToPage();
     }
     
+    
+    /// <summary>
+    /// OnGet method for the public page.
+    /// This method is called when the page is loaded to fetch cheeps to display on the public page.
+    /// </summary>
+    /// <returns>The public page</returns>
     public async Task<ActionResult> OnGet()
     {
-        Cheeps = await _cheepRepository.GetPaginatedResult(CurrentPage, PageSize);
-        Count = await _cheepRepository.GetCount();
+        Cheeps = await _chirpService.Read(ParsePage(Request.Query["page"].ToString()));
         return Page();
     }
 
+    
+    /// <summary>
+    /// Parses the page number from the query string from string to integer.
+    /// </summary>
+    /// <param name="pagenr">Page number string to parse</param>
+    /// <returns>Integer</returns>
     public int ParsePage(string pagenr)
     {
         try

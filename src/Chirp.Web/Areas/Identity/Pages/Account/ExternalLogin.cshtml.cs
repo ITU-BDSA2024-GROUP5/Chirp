@@ -1,9 +1,9 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Chirp.Core.DataModels;
+using Chirp.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,18 +16,18 @@ public class ExternalLoginModel : PageModel
     private readonly SignInManager<Author> _signInManager;
     private readonly UserManager<Author> _userManager;
     private readonly ILogger<ExternalLoginModel> _logger;
-    private readonly IAuthorRepository _authorRepository;
+    private readonly IChirpService _chirpService;
 
     public ExternalLoginModel(
         SignInManager<Author> signInManager,
         UserManager<Author> userManager,
         ILogger<ExternalLoginModel> logger,
-        IAuthorRepository authorRepository)
+        IChirpService chirpService)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _logger = logger;
-        _authorRepository = authorRepository;
+        _chirpService = chirpService;
     }
 
     public string LoginProvider { get; set; }
@@ -42,7 +42,13 @@ public class ExternalLoginModel : PageModel
         return RedirectToPage("./Login");
     }
     
-    // Redirect to github for login by ChallengeResult
+    
+    /// <summary>
+    /// Redirect to GitHub for login by ChallengeResult.
+    /// </summary>
+    /// <param name="provider"></param>
+    /// <param name="returnUrl"></param>
+    /// <returns>ChallengeResult</returns>
     public IActionResult OnPost(string provider, string returnUrl = null)
     {
         // Request a redirect to the external login provider.
@@ -51,7 +57,15 @@ public class ExternalLoginModel : PageModel
         return new ChallengeResult(provider, properties);
     }
     
-    // Get callback from github and sign in or redirect to register
+    
+    /// <summary>
+    /// Callback from GitHub after login.
+    /// If an account with a GitHub account already exists sign in ot that account.
+    /// If an account with the same mail as the GitHub account already exists, add the GitHub login to that account.
+    /// </summary>
+    /// <param name="returnUrl"></param>
+    /// <param name="remoteError"></param>
+    /// <returns></returns>
     public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
     {
         if (remoteError != null)
@@ -106,7 +120,12 @@ public class ExternalLoginModel : PageModel
         }
     }
     
-    //Confirmation of external login and registration if necessary
+    
+    /// <summary>
+    /// Creates a new user with the GitHub account.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ApplicationException"></exception>
     public async Task<IActionResult> OnPostConfirmationAsync()
     {
         if (ModelState.IsValid)
@@ -122,7 +141,7 @@ public class ExternalLoginModel : PageModel
                 UserName = info.Principal.Identity.Name,
                 Email = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value,
                 Cheeps = new List<Cheep>(),
-                AuthorId = await _authorRepository.GetHighestAuthorId() + 1
+                AuthorId = await _chirpService.GetHighestAuthorId() + 1
             };
 
             var result = await _userManager.CreateAsync(user);

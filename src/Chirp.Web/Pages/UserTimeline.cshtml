@@ -1,10 +1,10 @@
 ﻿@page "/{author}"
 @using Chirp.Core.DataModels
+@using Chirp.Infrastructure.Services.Interfaces
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model UserTimelineModel
 @inject SignInManager<Author> SignInManager
-@inject ICheepRepository CheepRepository
-@inject IAuthorRepository AuthorRepository
+@inject IChirpService ChirpService
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -16,7 +16,7 @@
     {
         @if (routeName.ToString().Contains('@'))
         {
-            routeName = AuthorRepository.GetAuthorByEmail(routeName.ToString()).Result.Name;
+            routeName = ChirpService.GetAuthorByEmail(routeName.ToString()).Result.Name;
         }
         @if (routeName.Equals(User.Identity.Name))
         {
@@ -44,8 +44,8 @@
             {
                 @if(User.Identity?.Name != null && !User.Identity.Name.Equals(routeName))
                 {
-                    var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
-                    var follows =  user.Follows != null && user.Follows.Contains(routeName); 
+                    var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
+                    var follows =  user?.Follows != null && user.Follows.Contains(routeName); 
                     <button name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                         @(follows ? "Unfollow" : "Follow")
                     </button>
@@ -100,7 +100,7 @@
         else
         {
             <div style="display: none">
-                @await Model.FetchCheeps(@routeName.ToString())
+                @Model.FetchCheeps(@routeName.ToString())
             </div>
         
             <ul id="messagelist" class="cheeps">
@@ -144,29 +144,6 @@
             </ul>
         }
     }else{
-        <em>There are no cheeps so far.</em>
-        
-    }
-    <nav>
-        <ul class="pagination">
-            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                <a asp-page="" asp-route-author="@routeName" asp-route-currentpage="1" class="page-link">First</a>
-            </li>
-            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                <a asp-page="" asp-route-author="@routeName" asp-route-currentpage="@(Model.CurrentPage - 1)" class="page-link">← Previous</a>
-            </li>
-            @for (var i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
-            {
-            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a asp-page="" asp-route-author="@routeName" asp-route-currentpage="@i" class="page-link">@i</a>
-            </li>
-            }
-            <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
-                <a asp-page="" asp-route-author="@routeName" asp-route-currentpage="@(Model.CurrentPage + 1)" class="page-link">Next →</a>
-            </li>
-            <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
-                <a asp-page="" asp-route-author="@routeName" asp-route-currentpage="@Model.TotalPages" class="page-link">Last</a>
-            </li>
-        </ul>
-    </nav>
+        <em>There are no cheeps so far.</em>}
+    
 </div>

@@ -24,8 +24,22 @@ html {
 }
 
 
+.followbutton {
+  background: #d48a85;
+  border: 1px solid #473736;
+  padding: 1px 3px;
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  color: rgb(0, 0, 0);
+}
+
+
 a {
-  color: #1410ed;
+  color: #f7652b;
 }
 
 a:hover {

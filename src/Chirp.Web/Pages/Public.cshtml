@@ -1,9 +1,10 @@
 @page
 @inject SignInManager<Author> SignInManager
 @using Chirp.Core.DataModels
+@using Chirp.Infrastructure.Services.Interfaces
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model PublicModel
-@inject IAuthorRepository AuthorRepository
+@inject IChirpService ChirpService
 
 
 @{
@@ -14,21 +15,21 @@
 <div>
     @if (SignInManager.IsSignedIn(User))
     {
-    <div class="cheepbox">
-        @if (User.Identity != null)
-        {
-        <h3>What's on your mind @(User.Identity.Name)?</h3>
-        }
-        else
-        {
-        <h3>What's on your mind @(User.FindFirst("email")?.Value)?</h3>
-        }
-        <form method="post">
-            <input style="float: left" type="text" asp-for="Text">
-            <input type="submit" value="Share">
-        </form>
-    </div>
-    } <br/>
+        <div class="cheepbox">
+            @if (User.Identity != null)
+            {
+                <h3>What's on your mind @(User.Identity.Name)?</h3>
+            }
+            else
+            {
+                <h3>What's on your mind @(User.FindFirst("email")?.Value)?</h3>
+            }
+            <form method="post">
+                <input style="float: left" type="text" asp-for="Text">
+                <input type="submit" value="Share">
+            </form>
+        </div>
+    } <br />
     <h2> Public Timeline </h2>
     @if (Model.Cheeps != null)
     {
@@ -37,25 +38,27 @@
             {
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author" style="margin-right: auto;">
+                    <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author"
+                        style="margin-right: auto;">
                         <li>
-                            <p style="display: flex; align-items: normal;">
-                                <strong>
-                                    <a href="/@cheep.Author">@cheep.Author</a>
-                                </strong>
-                                @cheep.Text
-                                <small>&mdash; @cheep.TimeStamp</small>
-                                @if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
-                                {
-                                var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
-                                Console.WriteLine(user);
-                                Console.WriteLine(user?.Follows?.Count);
-                                var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
-                                <button type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px">
-                                    @(follows ? "Unfollow" : "Follow")
-                                </button>
-                                }
-                            </p>
+                            <div style="display: flex; align-items: normal;">
+                                <p>
+                                    <strong>
+                                        <a href="/@cheep.Author">@cheep.Author</a>
+                                    </strong>
+                                    @cheep.Text
+                                    <small>&mdash; @cheep.TimeStamp</small>
+                                    @if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
+                                    {
+                                        var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
+                                        var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
+                                        <button class="followbutton" type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px">
+                                            @(follows ? "Unfollow" : "Follow")
+                                        </button>
+                                    }
+                                </p>
+                            </div>
+
                         </li>
                     </form>
                 }
@@ -76,7 +79,7 @@
                     </li>
                 }
             }
-                
+
         </ul>
     }
     else if (Model.Cheeps == null)
@@ -102,9 +105,7 @@
                             {
                                 if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
                                 {
-                                    var user = AuthorRepository.GetAuthorByNameEntity(User.Identity.Name).Result;
-                                    Console.WriteLine(user);
-                                    Console.WriteLine(user?.Follows?.Count);
+                                    var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
                                     var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
                                     <button type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px">
                                         @(follows ? "Unfollow" : "Follow")
@@ -116,29 +117,10 @@
                 </form>
             }
         </ul>
-    }else{
-    <em>There are no cheeps so far.</em>
+
     }
-    <nav>
-        <ul class="pagination">
-            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                <a asp-page="/Public" asp-route-currentpage="1" class="page-link">First</a>
-            </li>
-            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                <a asp-page="/Public" asp-route-currentpage="@(Model.CurrentPage - 1)" class="page-link">← Previous</a>
-            </li>
-            @for (var i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
-            {
-            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a asp-page="/Public" asp-route-currentpage="@i" class="page-link">@i</a>
-            </li>
-            }
-            <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
-                <a asp-page="/Public" asp-route-currentpage="@(Model.CurrentPage + 1)" class="page-link">Next →</a>
-            </li>
-            <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
-                <a asp-page="/Public" asp-route-currentpage="@Model.TotalPages" class="page-link">Last</a>
-            </li>
-        </ul>
-    </nav>
+    else
+    {
+        <em>There are no cheeps so far.</em>
+    }
 </div>

@@ -49,6 +49,12 @@ public class LoginModel : PageModel
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         ReturnUrl = returnUrl;
     }
+    
+    /// <summary>
+    /// Login user
+    /// </summary>
+    /// <param name="returnUrl"></param>
+    /// <returns></returns>
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
