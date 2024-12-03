@@ -5,6 +5,7 @@ using Chirp.Infrastructure.Data.DTO;
 using Chirp.Infrastructure.Repositories;
 using Chirp.Infrastructure.Services;
 using Chirp.Core.DataModels;
+using Xunit.Abstractions;
 
 
 namespace Chirp.Razor.Test;
@@ -20,16 +21,33 @@ public class CheepRepositoryTests
         await connection.OpenAsync();
         var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
         
-        
         await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
 
         var cRepository = new CheepRepository(context);
         var aRepository = new AuthorRepository(context);
+        
+        var newAuthor = new Author()
+        {
+            UserName = "Jacqualine Gilcoine",
+            AuthorId = await aRepository.GetHighestAuthorId() + 1,
+            Email = "JacqualineGilcoine@chirp.com",
+            Cheeps = new List<Cheep>(),
+        };
+        
+        var newCheep = new Cheep()
+        {
+            CheepId = await cRepository.GetHighestCheepId() + 1,
+            Text = "Starbuck now is what we hear the worst.",
+            TimeStamp = DateTime.Now,
+            Author = newAuthor,
+            AuthorId = newAuthor.AuthorId,
+        };
 
         var service = new ChirpService(cRepository, aRepository);
         
         //Act
+        await cRepository.WriteCheep(newCheep);
         var cheepDTOS = await cRepository.Read(0);
         var cheepAuthors = new List<string>();
         var cheepTexts = new List<string>();
@@ -37,8 +55,8 @@ public class CheepRepositoryTests
         cheepDTOS.ForEach(dto => cheepTexts.Add(dto.Text));
         
         //Assert
-        //Assert.Contains("Jacqualine Gilcoine", cheepAuthors);
-        //Assert.Contains("Starbuck now is what we hear the worst.", cheepTexts);
+        Assert.Contains("Jacqualine Gilcoine", cheepAuthors);
+        Assert.Contains("Starbuck now is what we hear the worst.", cheepTexts);
     }
 
     [Theory]
@@ -56,11 +74,12 @@ public class CheepRepositoryTests
         await connection.OpenAsync();
         var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
         
-        
         await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
 
         var repository = new CheepRepository(context);
+        
+        
         
         //Act
         var cheepDTOS = await repository.ReadByAuthor(0, author);
