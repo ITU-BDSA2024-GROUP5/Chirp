@@ -85,7 +85,7 @@ public class UserTimelineModel : PageModel
         if (User.Identity != null && User.Identity.Name == author)
         {
             Cheeps = await _cheepRepository.GetCheepsFollowedByAuthor(CurrentPage, author, tmpAuthor.Follows);
-            Count = Cheeps.Count;
+            Count = await _cheepRepository.GetCheepsCountByFollows(author, tmpAuthor.Follows);
             return Page();
         }
         
