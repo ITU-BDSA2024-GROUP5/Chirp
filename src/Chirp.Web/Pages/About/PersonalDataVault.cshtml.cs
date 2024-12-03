@@ -128,33 +128,38 @@ namespace Chirp.Web.Pages.About
         public Task<IActionResult> OnPostDownloadData()
         {
             var csv = new StringBuilder();
-            csv.AppendLine("Timestamp,Text");
+            //csv.AppendLine("Timestamp,Text");
             
 
-            csv.AppendLine($"Name,{user?.UserName}");
-            csv.AppendLine($"Email,{user?.Email}");
+            csv.AppendLine($"Name: {user?.UserName}");
+            csv.AppendLine($"Email: {user?.Email}");
+            csv.AppendLine();
             if (user?.PhoneNumber != null)
             {
-                csv.AppendLine($"Phone Number,{user.PhoneNumber}");
+                csv.AppendLine($"Phone Number: {user.PhoneNumber}");
             }
             if(Cheeps != null && Cheeps.Count > 0)
             {
+                csv.AppendLine("Cheeps:");
                 foreach (var cheep in Cheeps)
                 {
-                    csv.AppendLine($"{cheep.TimeStamp},{cheep.Text}");
+                    csv.AppendLine($"- Timestamp: {cheep.TimeStamp}, Text: {cheep.Text}");
                 }
             }
 
+            csv.AppendLine();
+            
             if(Followed != null && Followed.Count > 0)
             {
+                csv.AppendLine("Following:");
                 foreach (var follower in Followed)
                 {
-                    csv.AppendLine($"Follow,{follower}");
+                    csv.AppendLine($"- {follower}");
                 }
             }
 
 
-            return Task.FromResult<IActionResult>(File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", $"{user?.UserName}_data.csv"));
+            return Task.FromResult<IActionResult>(File(Encoding.UTF8.GetBytes(csv.ToString()), "text/plain", $"{user?.UserName}_data.txt"));
         }
 
 
