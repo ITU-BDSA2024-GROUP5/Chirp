@@ -19,7 +19,7 @@ public class UserTimelineModel : PageModel
     [Required]
     [StringLength(160,ErrorMessage = "Maximum length is 160 characters.")]
     public string Text { get; set; }
-    public required List<CheepDTO> Cheeps { get; set; }
+    public required List<CheepDTO>? Cheeps { get; set; }
     
     private readonly IChirpService _chirpService;
     public int Count { get; set; }
@@ -58,7 +58,7 @@ public class UserTimelineModel : PageModel
         return RedirectToPage(author);
     }
     
-    public async Task<List<CheepDTO>> FetchCheeps(string author)
+    public async Task<List<CheepDTO>?> FetchCheeps(string author)
     {
         Cheeps = await _chirpService.ReadByAuthor(CurrentPage, author);
         Cheeps = Cheeps
