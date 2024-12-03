@@ -22,8 +22,8 @@ namespace Chirp.Web.Pages.About
         public string CheepButtonText { get; set; } = "Show Cheeps";
 
         public string CheepButtonFunction { get; set; } = "ShowCheeps";
-
         public string FollowerButtonText { get; set; } = "Show Followed";
+        public string FollowerButtonFunction { get; set; } = "ShowFollowed";
         public static List<CheepDTO>? Cheeps { get; private set; }
 
         public static List<string> Followed { get; private set; }
@@ -55,7 +55,7 @@ namespace Chirp.Web.Pages.About
             {
                 PersonalDataItems.Add(new PersonalDataItem("Phone Number",user.PhoneNumber));
             }   
-            if (!IsCheepEmpty() && Cheeps != null)
+            if (Cheeps != null)
             {
                 PersonalDataItems.Add(new PersonalDataItem("Latest Cheep",Cheeps[0].Text));
             }
@@ -65,24 +65,21 @@ namespace Chirp.Web.Pages.About
         {
             PersonalDataItems = new List<PersonalDataItem>();
             if (user == null) return Page();
+            if (Cheeps == null) return Page();
             Username = user.UserName;
             if(Cheeps.Count == 0)
             {
                 PersonalDataItems.Add(new PersonalDataItem("No cheeps to show"," "));
-                ButtonText = "Go back";
-                ButtonFunction = "GoBack";
-
                 return Page();
             }
 
-            if (Cheeps == null) return Page();
+            
             foreach (var cheep in Cheeps)
             {
                 PersonalDataItems.Add(new PersonalDataItem(cheep.TimeStamp,cheep.Text));
             }
             
             CheepButtonText = "Go back";
-            CheepButtonFunction = "GoBack";
 
             return Page();
         }
@@ -93,19 +90,18 @@ namespace Chirp.Web.Pages.About
             Username = user.UserName;
             if(Followed.Count == 0)
             {
-                PersonalDataItems.Add(new PersonalDataItem { Key = "No followed people to show", Value = "" });
-                FollowerButtonText = "Go back";
-                FollowerButtonFunction = "GoBack";
+                PersonalDataItems.Add(new PersonalDataItem("No followed people to show",""));
+                FollowerButtonFunction = "Go back";
 
                 return Page();
             }
             foreach (var follower in Followed)
             {
-                PersonalDataItems.Add(new PersonalDataItem { Key = follower, Value = "" });
+                PersonalDataItems.Add(new PersonalDataItem(follower,""));
             }
             
             FollowerButtonText = "Go back";
-            FollowerButtonFunction = "GoBack";
+            
 
             return Page();
         }
@@ -136,6 +132,8 @@ namespace Chirp.Web.Pages.About
             {
                 csv.AppendLine($"Phone Number,{user.PhoneNumber}");
             }
+
+            
             if(Cheeps.Count > 0)
             {
                 foreach (var cheep in Cheeps)
@@ -167,11 +165,10 @@ namespace Chirp.Web.Pages.About
             Cheeps = await chirpService.ReadAllCheeps(author);
         }
 
-        public async Task FetchFollowed(string author)
+        public async Task<List<string>>? FetchFollowed(string author)
         {
             Followed = await chirpService.GetFollowed(author);
-            if (Cheeps == null) return true;
-            return Cheeps.Count == 0;
+            return Followed;
         }
         
 
