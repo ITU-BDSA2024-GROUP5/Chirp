@@ -169,30 +169,15 @@ public class CheepRepository : ICheepRepository
     /// <returns></returns>
     public async Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
     {
-        var cheeps = new List<Cheep>();
-        if (authors != null)
-        {
-            foreach (var auth in authors)
-            {
-                var query = _context.Cheeps
-                    .Select(cheep => cheep)
-                    .Include(c => c.Author)
-                    .Where(cheep => cheep.Author.UserName == auth)
-                    .Skip((page - 1) * 32)
-                    .Take(32);
-                // Execute the query and store the results
-                var result = await query.ToListAsync();
-                cheeps.AddRange(result);
-            }
-        }
-        
-        var authorCheeps = await ReadByAuthorEntity(page, author);
-        cheeps.AddRange(authorCheeps);
-        cheeps = cheeps.OrderByDescending(c => c.TimeStamp).ToList();
-        cheeps = cheeps.Take(32).ToList();
-        var cheepsDTO = WrapInDTO(cheeps);
+        var cheepsQuery = _context.Cheeps
+            .Include(c => c.Author)
+            .Where(c => c.Author.UserName == author || (authors != null && authors.Contains(c.Author.UserName)))
+            .OrderByDescending(c => c.TimeStamp)
+            .Skip((page - 1) * 32)
+            .Take(32);
 
-        return cheepsDTO;
+        var cheeps = await cheepsQuery.ToListAsync();
+        return WrapInDTO(cheeps);
     }
 
     public static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
