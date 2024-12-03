@@ -46,7 +46,7 @@
                 {
                     var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
                     var follows =  user?.Follows != null && user.Follows.Contains(routeName); 
-                    <button name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
+                    <button class="followbutton" style="font-size: 20px" name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                         @(follows ? "Unfollow" : "Follow")
                     </button>
                 }
@@ -64,13 +64,15 @@
                     @foreach (var cheep in @Model.Cheeps)
                     {
                         <li>
-                            <p>
-                                <strong>
-                                    <a href="/@cheep.Author">@cheep.Author</a>
-                                </strong>
-                                @cheep.Text
-                                <small>&mdash; @cheep.TimeStamp</small>
-                            </p>
+                            <div style="display: flex; align-items: normal;">
+                                <p>
+                                    <strong>
+                                        <a href="/@cheep.Author">@cheep.Author</a>
+                                    </strong>
+                                    @cheep.Text
+                                    <small>&mdash; @cheep.TimeStamp</small>
+                                </p>
+                            </div>
                         </li>
                     }
                 </ul>
