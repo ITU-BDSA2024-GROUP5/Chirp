@@ -130,7 +130,7 @@ public class AuthorRepository : IAuthorRepository
     }
 
     /// <summary>
-    /// Function for getting the people an author follows.
+    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <returns></returns>
@@ -194,7 +194,11 @@ public class AuthorRepository : IAuthorRepository
         return author.Follows != null && author.Follows.Contains(you);
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="authorName"></param>
+    /// <returns></returns>
     public async Task<List<string>> GetFollowed(string authorName)
     {
         var author = await _context.Authors
