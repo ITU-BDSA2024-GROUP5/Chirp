@@ -5,13 +5,13 @@ using Chirp.Infrastructure.Data.DTO;
 using Chirp.Infrastructure.Repositories;
 using Chirp.Infrastructure.Services;
 using Chirp.Core.DataModels;
+using Chirp.Infrastructure;
 
 
 namespace Chirp.Razor.Test;
 
 public class CheepRepositoryTests
 {
-
     [Fact]
     public async Task TestRead()
     {
@@ -23,22 +23,40 @@ public class CheepRepositoryTests
         
         await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
+        await DbInitializer.SeedTestDatabase(context);
 
-        var cRepository = new CheepRepository(context);
-        var aRepository = new AuthorRepository(context);
-
-        var service = new ChirpService(cRepository, aRepository);
+        var cheepRepository = new CheepRepository(context);
         
         //Act
-        var cheepDTOS = await cRepository.Read(0);
-        var cheepAuthors = new List<string>();
-        var cheepTexts = new List<string>();
-        cheepDTOS.ForEach(dto => cheepAuthors.Add(dto.Author));
-        cheepDTOS.ForEach(dto => cheepTexts.Add(dto.Text));
+        var cheeps = await cheepRepository.Read(1);
         
-        //Assert
-        //Assert.Contains("Jacqualine Gilcoine", cheepAuthors);
-        //Assert.Contains("Starbuck now is what we hear the worst.", cheepTexts);
+        Assert.NotEmpty(cheeps);
+    }
+
+    [Fact]
+    public async Task TestReadAllCheeps()
+    {
+        {
+            //Arrange
+            await using var connection = new SqliteConnection("Filename=:memory:");
+            await connection.OpenAsync();
+            var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
+
+
+            await using var context = new ApplicationDbContext(builder.Options);
+            await context.Database.EnsureCreatedAsync();
+            await DbInitializer.SeedTestDatabase(context);
+
+            var cheepRepository = new CheepRepository(context);
+
+            //Act
+            var cheeps = await cheepRepository.ReadAllCheeps("Jacqualine Gilcoine");
+
+            foreach (var dto in cheeps)
+            {
+                Assert.Equal("Jacqualine Gilcoine", dto.Author);
+            }
+        }
     }
 
     [Theory]
@@ -59,47 +77,18 @@ public class CheepRepositoryTests
         
         await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
+        await DbInitializer.SeedTestDatabase(context);
 
         var repository = new CheepRepository(context);
         
         //Act
         var cheepDTOS = await repository.ReadByAuthor(0, author);
-        
+       
         //Assert
         foreach (var dto in cheepDTOS)
         {
             Assert.Equal(author, dto.Author);
         }
-    }
-    
-    [Fact]
-    public async Task TestGetHighestAuthorID()
-    {
-        //Arrange
-        await using var connection = new SqliteConnection("Filename=:memory:");
-        await connection.OpenAsync();
-        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
-        
-        
-        await using var context = new ApplicationDbContext(builder.Options);
-        await context.Database.EnsureCreatedAsync();
-
-        var cRepository = new CheepRepository(context);
-        var aRepository = new AuthorRepository(context);
-
-        var service = new ChirpService(cRepository, aRepository);
-
-        var query = context.Authors
-            .Select(a => a);
-        
-        var result = await query.ToListAsync();
-        var numberOfAuthors = result.Count();
-    
-        //Act
-        var hightestID = await aRepository.GetHighestAuthorId();
-        
-        //Assert
-        Assert.Equal(numberOfAuthors, hightestID);
     }
     
     [Fact]
@@ -113,14 +102,13 @@ public class CheepRepositoryTests
         
         await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
+        await DbInitializer.SeedTestDatabase(context);
 
         var repository = new CheepRepository(context);
+
+        var query = context.Cheeps.ToList();
         
-        var query = context.Cheeps
-            .Select(a => a);
-        
-        var result = await query.ToListAsync();
-        var numberOfCheeps = result.Count();
+        var numberOfCheeps = query.Count;
 
         //Act
         var hightestID = await repository.GetHighestCheepId();
@@ -140,11 +128,11 @@ public class CheepRepositoryTests
         
         await using var context = new ApplicationDbContext(builder.Options);
         await context.Database.EnsureCreatedAsync();
+        await DbInitializer.SeedTestDatabase(context);
 
         var cRepository = new CheepRepository(context);
         var aRepository = new AuthorRepository(context);
-
-        var service = new ChirpService(cRepository, aRepository);
+        
 
         var newAuthor = new Author()
         {
@@ -152,6 +140,7 @@ public class CheepRepositoryTests
             AuthorId = await aRepository.GetHighestAuthorId() + 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
+            Follows = new List<string>(),
         };
         
         var newCheep = new Cheep()
@@ -173,74 +162,7 @@ public class CheepRepositoryTests
         Assert.Equal(newCheep, cheep);
     }
     
-    [Fact]
-    public async Task TestWriteAuthor()
-    {
-        //Arrange
-        await using var connection = new SqliteConnection("Filename=:memory:");
-        await connection.OpenAsync();
-        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
-        
-        
-        await using var context = new ApplicationDbContext(builder.Options);
-        await context.Database.EnsureCreatedAsync();
-
-        var cRepository = new CheepRepository(context);
-        var aRepository = new AuthorRepository(context);
-
-        var service = new ChirpService(cRepository, aRepository);
-
-        var newAuthor = new Author()
-        {
-            UserName = "Test Author",
-            AuthorId = await aRepository.GetHighestAuthorId() + 1,
-            Email = "TestAuthor@gmail.com",
-            Cheeps = new List<Cheep>(),
-        };
-        
-        //Act
-        await aRepository.WriteAuthor(newAuthor);
-
-        var authors = context.Authors.ToList();
-        var author = authors.Last();
-        
-        //Assert
-        Assert.Equal(newAuthor, author);
-    }
     
-    [Fact]
-    public async Task TestGetAuthorByName()
-    {
-        //Arrange
-        await using var connection = new SqliteConnection("Filename=:memory:");
-        await connection.OpenAsync();
-        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
-        
-        
-        await using var context = new ApplicationDbContext(builder.Options);
-        await context.Database.EnsureCreatedAsync();
-
-        var cRepository = new CheepRepository(context);
-        var aRepository = new AuthorRepository(context);
-
-        var service = new ChirpService(cRepository, aRepository);
-
-        var newAuthor = new Author()
-        {
-            UserName = "Test Author",
-            AuthorId = await aRepository.GetHighestAuthorId() + 1,
-            Email = "TestAuthor@gmail.com",
-            Cheeps = new List<Cheep>(),
-        };
-        
-        //Act
-        await aRepository.WriteAuthor(newAuthor);
-
-        var author = await aRepository.GetAuthorByName("Test Author");
-        
-        //Assert
-        Assert.Equal(newAuthor.UserName, author.Name);
-    }
 
     [Fact]
     public void TestWrapInDTO()
@@ -272,5 +194,49 @@ public class CheepRepositoryTests
         
         //Assert
         Assert.Equal(typeof(CheepDTO), cheepDTO.GetType());
+    }
+    
+    [Fact]
+    public async Task TestGetCheepsFollowedByAuthor()
+    {
+        //Arrange
+        await using var connection = new SqliteConnection("Filename=:memory:");
+        await connection.OpenAsync();
+        var builder = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(connection);
+        
+        
+        await using var context = new ApplicationDbContext(builder.Options);
+        await context.Database.EnsureCreatedAsync();
+        await DbInitializer.SeedTestDatabase(context);
+
+        var repository = new CheepRepository(context);
+
+        var author = context.Authors.First(a => a.UserName.Equals("Jacqualine Gilcoine"));
+        var follows = author.Follows = new List<string>()
+        {
+            "Roger Histand",
+            "Luanna Muro",
+            "Wendell Ballan",
+            "Nathan Sirmon",
+        };
+
+        var authors = new List<string>()
+        {
+            "Jacqualine Gilcoine",
+            "Roger Histand",
+            "Luanna Muro",
+            "Wendell Ballan",
+            "Nathan Sirmon",
+        };
+        
+        
+        //Act
+        var cheepers = await repository.GetCheepsFollowedByAuthor(0, author.UserName, follows);
+        
+        //Assert
+        foreach (var cheep in cheepers)
+        {
+            Assert.Contains(cheep.Author, authors);
+        }
     }
 }

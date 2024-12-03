@@ -1,5 +1,3 @@
-using System.Net.Security;
-using System.Runtime.InteropServices.JavaScript;
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Data.DTO;
@@ -147,7 +145,6 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     /// <param name="you">The author that wants to follow another author.</param>
     /// <param name="me">The author to follow</param>
-    // to avoid ambiguity and confusion, 'you' is the user 'me' wants to follow
     public async Task AddFollows(string you, string me)
     {
         var authorDto = await GetAuthorByName(you);
@@ -194,11 +191,12 @@ public class AuthorRepository : IAuthorRepository
         return author.Follows != null && author.Follows.Contains(you);
     }
 
+    
     /// <summary>
-    /// 
+    /// Returns a list of authors that a given author follows.
     /// </summary>
     /// <param name="authorName"></param>
-    /// <returns></returns>
+    /// <returns>List of authors names</returns>
     public async Task<List<string>> GetFollowed(string authorName)
     {
         var author = await _context.Authors
