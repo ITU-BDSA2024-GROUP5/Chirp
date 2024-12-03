@@ -24,7 +24,7 @@ public class CheepRepository : ICheepRepository
     /// </summary>
     /// <param name="page">Page number to read from.</param>
     /// <returns>List of CheepDTO</returns>
-    public async Task<List<CheepDTO>> Read(int page)
+    public async Task<List<CheepDTO>?> Read(int page)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
@@ -47,7 +47,7 @@ public class CheepRepository : ICheepRepository
     /// <param name="page">Page number to read from.</param>
     /// <param name="author">Author to read cheeps by.</param>
     /// <returns></returns>
-    public async Task<List<CheepDTO>> ReadByAuthor(int page, string author)
+    public async Task<List<CheepDTO>?> ReadByAuthor(int page, string author)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
@@ -92,7 +92,7 @@ public class CheepRepository : ICheepRepository
     /// <param name="page"></param>
     /// <param name="email"></param>
     /// <returns></returns>
-    public async Task<List<CheepDTO>> ReadByEmail(int page, string email)
+    public async Task<List<CheepDTO>?> ReadByEmail(int page, string email)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
@@ -114,7 +114,7 @@ public class CheepRepository : ICheepRepository
     /// </summary>
     /// <param name="author">The author to read cheeps by</param>
     /// <returns>List of CheepDTO</returns>
-    public async Task<List<CheepDTO>> ReadAllCheeps(string author)
+    public async Task<List<CheepDTO>?> ReadAllCheeps(string author)
     {
         var query = _context.Cheeps
             .Select(cheep => cheep)
@@ -127,7 +127,7 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
     
-    public async Task<List<CheepDTO>> ReadAllCheeps()
+    public async Task<List<CheepDTO>?> ReadAllCheeps()
     {
         var query = _context.Cheeps
             .Select(cheep => cheep)
@@ -170,7 +170,7 @@ public class CheepRepository : ICheepRepository
     /// </summary>
     /// <param name="author"></param>
     /// <returns>List with CheepDTO's from a given user</returns>
-    public async Task<List<CheepDTO>> GetCheepsByAuthor(string author)
+    public async Task<List<CheepDTO>?> GetCheepsByAuthor(string author)
     {
         var auth = _context.Users.FirstOrDefault(a => a.UserName == author);
         if (auth == null) return new List<CheepDTO>();
@@ -188,7 +188,7 @@ public class CheepRepository : ICheepRepository
     /// <param name="author">The author to read cheeps by</param>
     /// <param name="authors">List of authors that the author follows</param>
     /// <returns></returns>
-    public async Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
+    public async Task<List<CheepDTO>?> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
     {
         var cheepsQuery = _context.Cheeps
             .Include(c => c.Author)
@@ -206,7 +206,7 @@ public class CheepRepository : ICheepRepository
     /// </summary>
     /// <param name="cheeps"></param>
     /// <returns></returns>
-    public static List<CheepDTO> WrapInDTO(List<Cheep> cheeps)
+    public static List<CheepDTO>? WrapInDTO(List<Cheep> cheeps)
     {
         var list = new List<CheepDTO>();
         foreach (var cheep in cheeps)
@@ -224,7 +224,7 @@ public class CheepRepository : ICheepRepository
     /**
      * This method is used to sort and divide all the cheeps registered into 32 per page on the user's timeline.
      */
-    public async Task<List<CheepDTO>> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32)
+    public async Task<List<CheepDTO>?> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32)
     {
         var cheeps = await ReadAllCheeps(author);
         return cheeps.OrderByDescending(c => c.TimeStamp).Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -233,7 +233,7 @@ public class CheepRepository : ICheepRepository
     /**
      * This method is used to sort and divide all the cheeps registered into 32 per page on the public timeline.
      */
-    public async Task<List<CheepDTO>> GetPaginatedResult(int page, int pageSize = 32)
+    public async Task<List<CheepDTO>?> GetPaginatedResult(int page, int pageSize = 32)
     {
         var cheeps = await ReadAllCheeps();
         return cheeps.OrderByDescending(c => c.TimeStamp)

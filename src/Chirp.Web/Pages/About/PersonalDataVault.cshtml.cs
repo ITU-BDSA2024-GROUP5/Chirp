@@ -13,9 +13,7 @@ namespace Chirp.Web.Pages.About
     public class PersonalDataVaultModel(ApplicationDbContext context,
     UserManager<Author> userManager, IChirpService chirpService) : PageModel
     {
-        private readonly ILogger<PersonalDataVaultModel> _logger;
-
-        public string Username { get; private set; }
+        public string? Username { get; private set; }
 
         public string CheepButtonText { get; set; } = "Show Cheeps";
 
@@ -24,13 +22,13 @@ namespace Chirp.Web.Pages.About
         public string FollowerButtonText { get; set; } = "Show Followed";
 
         public string FollowerButtonFunction { get; set; } = "ShowFollowed";
-        public static List<CheepDTO> Cheeps { get; private set; }
+        public static List<CheepDTO>? Cheeps { get; private set; }
 
-        public static List<string> Followed { get; private set; }
+        public static List<string>? Followed { get; private set; }
 
         public static Author? user { get; private set; }
 
-        public List<PersonalDataItem> PersonalDataItems { get; private set; }
+        public List<PersonalDataItem>? PersonalDataItems { get; private set; }
 
         public async void OnGet(string username)
         {
@@ -43,19 +41,19 @@ namespace Chirp.Web.Pages.About
             
             PersonalDataItems = new List<PersonalDataItem>
             {
-                new PersonalDataItem { Key = "Name", Value = user.UserName},
-                new PersonalDataItem { Key = "Email", Value = user.Email },
+                new PersonalDataItem { Key = "Name", Value = user?.UserName},
+                new PersonalDataItem { Key = "Email", Value = user?.Email },
             };
-            if (user.PhoneNumber != null)
+            if (user?.PhoneNumber != null)
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = "Phone Number", Value = user.PhoneNumber });
             }   
-            if (Cheeps.Count > 0)
+            if (Cheeps != null && Cheeps.Count > 0)
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = "Latest Cheep", Value = Cheeps[0].Text });
             }
 
-            if(Followed.Count > 0)
+            if(Followed != null && Followed.Count > 0)
             {
                  PersonalDataItems.Add(new PersonalDataItem { Key = "Latest followed", Value = string.Join(", ", Followed) });
             }
@@ -64,78 +62,82 @@ namespace Chirp.Web.Pages.About
             
         }
 
-        public async Task<IActionResult> OnPostShowCheeps()
+        public Task<IActionResult> OnPostShowCheeps()
         {
             PersonalDataItems = new List<PersonalDataItem>();
             Username = user.UserName;
-            if(Cheeps.Count == 0)
+            if(Cheeps != null && Cheeps.Count == 0)
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = "No cheeps to show", Value = "" });
                 CheepButtonText = "Go back";
                 CheepButtonFunction = "GoBack";
 
-                return Page();
+                return Task.FromResult<IActionResult>(Page());
             }
-            foreach (var cheep in Cheeps)
-            {
-                PersonalDataItems.Add(new PersonalDataItem { Key = cheep.TimeStamp, Value = cheep.Text });
-            }
-            
+
+            if (Cheeps != null)
+                foreach (var cheep in Cheeps)
+                {
+                    PersonalDataItems.Add(new PersonalDataItem { Key = cheep.TimeStamp, Value = cheep.Text });
+                }
+
             CheepButtonText = "Go back";
             CheepButtonFunction = "GoBack";
 
-            return Page();
+            return Task.FromResult<IActionResult>(Page());
         }
 
-        public async Task<IActionResult> OnPostShowFollowed()
+        public Task<IActionResult> OnPostShowFollowed()
         {
             PersonalDataItems = new List<PersonalDataItem>();
             Username = user.UserName;
-            if(Followed.Count == 0)
+            if(Followed != null && Followed.Count == 0)
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = "No followed people to show", Value = "" });
                 FollowerButtonText = "Go back";
                 FollowerButtonFunction = "GoBack";
 
-                return Page();
+                return Task.FromResult<IActionResult>(Page());
             }
-            foreach (var follower in Followed)
-            {
-                PersonalDataItems.Add(new PersonalDataItem { Key = follower, Value = "" });
-            }
-            
+
+            if (Followed != null)
+                foreach (var follower in Followed)
+                {
+                    PersonalDataItems.Add(new PersonalDataItem { Key = follower, Value = "" });
+                }
+
             FollowerButtonText = "Go back";
             FollowerButtonFunction = "GoBack";
 
-            return Page();
+            return Task.FromResult<IActionResult>(Page());
         }
 
-        public async Task<IActionResult> OnPostGoBack()
+        public Task<IActionResult> OnPostGoBack()
         {
            var username = User.Identity?.Name;
             if (string.IsNullOrEmpty(username))
             {
                 // Handle the case where the user is not authenticated
-                return RedirectToPage("/Index");
+                return Task.FromResult<IActionResult>(RedirectToPage("/Index"));
             }
 
-            return Redirect($"/About/PersonalDataVault/{username}"); 
+            return Task.FromResult<IActionResult>(Redirect($"/About/PersonalDataVault/{username}")); 
         }
 
         //Function for downloading data as a CSV file
-        public async Task<IActionResult> OnPostDownloadData()
+        public Task<IActionResult> OnPostDownloadData()
         {
             var csv = new StringBuilder();
             csv.AppendLine("Timestamp,Text");
             
 
-            csv.AppendLine($"Name,{user.UserName}");
-            csv.AppendLine($"Email,{user.Email}");
-            if (user.PhoneNumber != null)
+            csv.AppendLine($"Name,{user?.UserName}");
+            csv.AppendLine($"Email,{user?.Email}");
+            if (user?.PhoneNumber != null)
             {
                 csv.AppendLine($"Phone Number,{user.PhoneNumber}");
             }
-            if(Cheeps.Count > 0)
+            if(Cheeps != null && Cheeps.Count > 0)
             {
                 foreach (var cheep in Cheeps)
                 {
@@ -143,7 +145,7 @@ namespace Chirp.Web.Pages.About
                 }
             }
 
-            if(Followed.Count > 0)
+            if(Followed != null && Followed.Count > 0)
             {
                 foreach (var follower in Followed)
                 {
@@ -152,13 +154,13 @@ namespace Chirp.Web.Pages.About
             }
 
 
-            return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", $"{user.UserName}_data.csv");
+            return Task.FromResult<IActionResult>(File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", $"{user?.UserName}_data.csv"));
         }
 
 
-        public async Task<IActionResult> OnPostDeleteData()
+        public Task<IActionResult> OnPostDeleteData()
         {
-            return Redirect($"/Identity/Account/Manage/DeletePersonalData");
+            return Task.FromResult<IActionResult>(Redirect($"/Identity/Account/Manage/DeletePersonalData"));
         }
 
         public async Task FetchCheeps(string author)
@@ -174,8 +176,8 @@ namespace Chirp.Web.Pages.About
 
         public class PersonalDataItem
         {
-            public string Key { get; set; }
-            public string Value { get; set; }
+            public string? Key { get; set; }
+            public string? Value { get; set; }
         }
     }
 }

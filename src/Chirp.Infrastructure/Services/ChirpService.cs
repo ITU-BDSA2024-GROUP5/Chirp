@@ -115,12 +115,12 @@ public class ChirpService : IChirpService
     /// </summary>
     /// <param name="author">The author to read cheeps by</param>
     /// <returns>List of CheepDTO</returns>
-    public Task<List<CheepDTO>> ReadAllCheeps(string author)
+    public Task<List<CheepDTO>?> ReadAllCheeps(string author)
     {
         return _cheepRepository.ReadAllCheeps(author);
     }
     
-    public Task<List<CheepDTO>> ReadAllCheeps()
+    public Task<List<CheepDTO>?> ReadAllCheeps()
     {
         return _cheepRepository.ReadAllCheeps();
     }
@@ -131,7 +131,7 @@ public class ChirpService : IChirpService
     /// </summary>
     /// <param name="page">Page number to read from.</param>
     /// <returns>List of CheepDTO</returns>
-    public Task<List<CheepDTO>> Read(int page)
+    public Task<List<CheepDTO>?> Read(int page)
     {
         return _cheepRepository.Read(page);
     }
@@ -144,7 +144,7 @@ public class ChirpService : IChirpService
     /// <param name="author">Author to read cheeps by.</param>
     /// <returns></returns>
      
-    public async Task<List<CheepDTO>> ReadByAuthor(int page, string author)
+    public async Task<List<CheepDTO>?> ReadByAuthor(int page, string author)
     {
         return await _cheepRepository.ReadByAuthor(page, author);
     }
@@ -154,7 +154,7 @@ public class ChirpService : IChirpService
     /// </summary>
     /// <param name="author"></param>
     /// <returns></returns>
-    public Task<List<string>> GetFollowed(string author)
+    public Task<List<string>?> GetFollowed(string author)
     {
         return _authorRepository.GetFollowed(author);
     }
@@ -167,12 +167,12 @@ public class ChirpService : IChirpService
     /// <param name="author">The author to read cheeps by</param>
     /// <param name="authors">List of authors that the author follows</param>
     /// <returns></returns>
-    public Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
+    public Task<List<CheepDTO>?> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
     {
         return _cheepRepository.GetCheepsFollowedByAuthor(page, author, authors);
     }
     
-    public Task<List<CheepDTO>> GetPaginatedResult(int page, int pageSize = 32)
+    public Task<List<CheepDTO>?> GetPaginatedResult(int page, int pageSize = 32)
     {
         return _cheepRepository.GetPaginatedResult(page, pageSize);
     }
@@ -185,12 +185,12 @@ public class ChirpService : IChirpService
     {
         return _cheepRepository.GetCount();
     }
-    public Task<List<CheepDTO>> GetCheepsByAuthor(string author)
+    public Task<List<CheepDTO>?> GetCheepsByAuthor(string author)
     {
         return _cheepRepository.GetCheepsByAuthor(author);
     }
 
-    public Task<List<CheepDTO>> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32)
+    public Task<List<CheepDTO>?> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32)
     {
         return _cheepRepository.GetPaginatedResultByAuthor(page, author, pageSize);
     }

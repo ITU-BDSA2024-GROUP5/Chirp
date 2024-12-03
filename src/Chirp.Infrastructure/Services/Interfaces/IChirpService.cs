@@ -15,15 +15,15 @@ public interface IChirpService
     public Task<bool> ContainsFollower(string you, string me);
     public Task AddFollows(string you, string me);
     public Task RemoveFollows(string you, string me);
-    public Task<List<CheepDTO>> ReadAllCheeps(string author);
-    public Task<List<CheepDTO>> Read(int page);
-    public Task<List<CheepDTO>> ReadByAuthor(int page, string author);
-    public Task<List<CheepDTO>> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors);
-    public Task<List<string>> GetFollowed(string author);
-    public Task<List<CheepDTO>> GetPaginatedResult(int page, int pageSize = 32);
+    public Task<List<CheepDTO>?> ReadAllCheeps(string author);
+    public Task<List<CheepDTO>?> Read(int page);
+    public Task<List<CheepDTO>?> ReadByAuthor(int page, string author);
+    public Task<List<CheepDTO>?> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors);
+    public Task<List<string>?> GetFollowed(string author);
+    public Task<List<CheepDTO>?> GetPaginatedResult(int page, int pageSize = 32);
     public Task<int> GetCount();
-    public Task<List<CheepDTO>> ReadAllCheeps();
+    public Task<List<CheepDTO>?> ReadAllCheeps();
     public Task<int> GetCheepsCountByFollows(string author, List<string>? authors);
-    public Task<List<CheepDTO>> GetCheepsByAuthor(string author);
-    public Task<List<CheepDTO>> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32);
+    public Task<List<CheepDTO>?> GetCheepsByAuthor(string author);
+    public Task<List<CheepDTO>?> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32);
 }

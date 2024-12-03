@@ -197,7 +197,7 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     /// <param name="authorName"></param>
     /// <returns>List of authors names</returns>
-    public async Task<List<string>> GetFollowed(string authorName)
+    public async Task<List<string>?> GetFollowed(string authorName)
     {
         var author = await _context.Authors
             .FirstAsync(a => a.UserName == authorName);
