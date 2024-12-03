@@ -120,6 +120,11 @@ public class ChirpService : IChirpService
         return _cheepRepository.ReadAllCheeps(author);
     }
     
+    public Task<List<CheepDTO>> ReadAllCheeps()
+    {
+        return _cheepRepository.ReadAllCheeps();
+    }
+    
     
     /// <summary>
     /// Reads 32 cheeps from the database, starting from the page number provided.
