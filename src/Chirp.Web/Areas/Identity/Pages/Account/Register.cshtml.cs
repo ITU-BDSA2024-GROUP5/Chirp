@@ -1,8 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 using Chirp.Core.DataModels;
-using Chirp.Infrastructure;
 using Chirp.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -31,28 +28,28 @@ public class Register : PageModel
         _chirpService = chirpService;
     }
     [BindProperty]
-    public InputModel Input { get; set; }
-    public string ReturnUrl { get; set; }
-    public IList<AuthenticationScheme> ExternalLogins { get; set; }
+    public required InputModel Input { get; set; }
+    public required string ReturnUrl { get; set; }
+    public required IList<AuthenticationScheme> ExternalLogins { get; set; }
     public class InputModel
     {
         [Required]
         [StringLength(20, MinimumLength = 1, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
-        public string UserName { get; set; }
+        public required string UserName { get; set; }
           
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
-        public string Email { get; set; }
+        public required string Email { get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
-        public string Password { get; set; }
+        public required string Password { get; set; }
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        public required string ConfirmPassword { get; set; }
     }
     
     

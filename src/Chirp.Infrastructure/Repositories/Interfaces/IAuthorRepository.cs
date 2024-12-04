@@ -7,8 +7,8 @@ using Chirp.Infrastructure.Data.DTO;
 /// </summary>
 public interface IAuthorRepository
 {
-    public Task<AuthorDTO?> GetAuthorByName(string author);
-    public Task<AuthorDTO?> GetAuthorByEmail(string email);
+    public Task<AuthorDto?> GetAuthorByName(string author);
+    public Task<AuthorDto?> GetAuthorByEmail(string email);
     public Task<int> GetHighestAuthorId();
     public Task<List<string>?> GetFollowed(string author);
     public Task<Author?> GetAuthorByNameEntity(string author);

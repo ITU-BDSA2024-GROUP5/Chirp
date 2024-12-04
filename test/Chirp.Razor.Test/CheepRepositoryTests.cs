@@ -174,6 +174,7 @@ public class CheepRepositoryTests
             AuthorId = 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
+            Follows = new List<string>(),
         };
         
         var newCheep = new Cheep()
@@ -189,11 +190,11 @@ public class CheepRepositoryTests
         list.Add(newCheep);
         
         //Act
-        var dtoList = CheepRepository.WrapInDTO(list);
+        var dtoList = CheepRepository.WrapInDto(list);
         var cheepDTO = dtoList.First();
         
         //Assert
-        Assert.Equal(typeof(CheepDTO), cheepDTO.GetType());
+        Assert.Equal(typeof(CheepDto), cheepDTO.GetType());
     }
     
     [Fact]
@@ -234,6 +235,8 @@ public class CheepRepositoryTests
         var cheepers = await repository.GetCheepsFollowedByAuthor(0, author.UserName, follows);
         
         //Assert
+        Assert.NotNull(author);
+        Assert.NotEmpty(cheepers);
         foreach (var cheep in cheepers)
         {
             Assert.Contains(cheep.Author, authors);

@@ -22,7 +22,7 @@ namespace Chirp.Web.Pages.About
         public string FollowerButtonText { get; set; } = "Show Followed";
 
         public string FollowerButtonFunction { get; set; } = "ShowFollowed";
-        public static List<CheepDTO>? Cheeps { get; private set; }
+        public static List<CheepDto>? Cheeps { get; private set; }
 
         public static List<string>? Followed { get; private set; }
 
