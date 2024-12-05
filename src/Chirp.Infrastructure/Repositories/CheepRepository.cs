@@ -70,7 +70,7 @@ public class CheepRepository : ICheepRepository
     /// <param name="page">Page number to read from</param>
     /// <param name="author">Author to read cheeps by</param>
     /// <returns>List of Cheeps</returns>
-    private async Task<List<Cheep>> ReadByAuthorEntity(int page, string author)
+    public async Task<List<Cheep>?> ReadByAuthorEntity(int page, string author)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
@@ -228,13 +228,19 @@ public class CheepRepository : ICheepRepository
      */
     public async Task<List<CheepDto>?> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32)
     {
-        var cheeps = await ReadAllCheeps(author);
-        if (cheeps != null)
-        {
-            return cheeps.OrderByDescending(c => c.TimeStamp).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-        }
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)
+            .Where(cheep => cheep.Author.UserName == author)
+            .OrderByDescending(cheep => cheep.TimeStamp)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize);
+        
+        var result = await query.ToListAsync();
+        
+        var cheeps = WrapInDto(result);
 
-        return null;
+        return cheeps;
     }
     
     /**
@@ -242,16 +248,18 @@ public class CheepRepository : ICheepRepository
      */
     public async Task<List<CheepDto>?> GetPaginatedResult(int page, int pageSize = 32)
     {
-        var cheeps = await ReadAllCheeps();
-        if (cheeps != null)
-        {
-            return cheeps.OrderByDescending(c => c.TimeStamp)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-        }
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)
+            .OrderByDescending(cheep => cheep.TimeStamp)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize);
+        
+        var result = await query.ToListAsync();
+        
+        var cheeps = WrapInDto(result);
 
-        return null;
+        return cheeps;
     }
 
     public async Task<int> GetCheepsCountByFollows(string author, List<string>? authors)

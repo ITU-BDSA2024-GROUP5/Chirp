@@ -1,3 +1,4 @@
+using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
 
 namespace Chirp.Infrastructure.Services.Interfaces;
@@ -18,6 +19,7 @@ public interface IChirpService
     public Task<List<CheepDto>?> ReadAllCheeps(string author);
     public Task<List<CheepDto>?> Read(int page);
     public Task<List<CheepDto>?> ReadByAuthor(int page, string author);
+    public Task<List<Cheep>?> ReadByAuthorEntity(int page, string author);
     public Task<List<CheepDto>?> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors);
     public Task<List<string>?> GetFollowed(string author);
     public Task<List<CheepDto>?> GetPaginatedResult(int page, int pageSize = 32);

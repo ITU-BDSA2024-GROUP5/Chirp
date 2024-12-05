@@ -50,21 +50,20 @@ public class UserTimelineModel : PageModel
         {
             ModelState.AddModelError(string.Empty, "you must authenticate first");
         }
-        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
-        await _chirpService.CreateCheep(author.Name, Text);
+
+        if (User.Identity != null && User.Identity.Name != null)
+        {
+            var author = await _chirpService.GetAuthorByName(User.Identity.Name);
+            await _chirpService.CreateCheep(author.Name, Text);
         
-        await FetchCheeps(author.Name);
-        
-        return RedirectToPage(author);
+            await FetchCheeps(author.Name);
+        }
+        return RedirectToPage();
     }
     
     public async Task<List<CheepDto>?> FetchCheeps(string author)
     {
-        Cheeps = await _chirpService.ReadByAuthor(CurrentPage, author);
-        Cheeps = Cheeps
-            .OrderBy(c => DateTime.Parse(c.TimeStamp).Date) // Parse and sort by DateTime
-            .ToList();
-        return Cheeps;
+        return Cheeps = await _chirpService.ReadByAuthor(CurrentPage, author);
     }
     
     

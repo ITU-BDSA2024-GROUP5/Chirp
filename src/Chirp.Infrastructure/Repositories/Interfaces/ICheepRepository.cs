@@ -9,6 +9,7 @@ public interface ICheepRepository
 {
     public Task<List<CheepDto>?> Read(int page);
     public Task<List<CheepDto>?> ReadByAuthor(int page, string author);
+    public Task<List<Cheep>?> ReadByAuthorEntity(int page, string author);
     public Task<List<CheepDto>?> ReadAllCheeps(string author);
     public Task<List<CheepDto>?> ReadAllCheeps();
     public Task<int> GetHighestCheepId();
