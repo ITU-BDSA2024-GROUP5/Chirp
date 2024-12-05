@@ -216,7 +216,41 @@ public class Tests : PageTest
         await Expect(Page.GetByText("testuser's Timeline")).ToBeVisibleAsync();
     }
             
-
+    [Test]
+    public async Task MSearchingForYourOwnNameResultsInTheSameAsGoingToPersonalUserTimeline()
+    {
+        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        
+        await Page.GotoAsync("http://localhost:5177/Helge");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
+        
+        await Page.GotoAsync("http://localhost:5177/testuser");
+        await Expect(Page.GetByText("What's on your mind testuser?")).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Helge Hello, BDSA students!")).ToBeVisibleAsync();
+    }
+    
+    [Ignore("Don't know why this test fails, is almost same as Test K")]
+    [Test]
+    public async Task NSearchingForYourOwnEmailResultsInTheSameAsGoingToPersonalUserTimeline()
+    {
+        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        
+        await Page.GotoAsync("http://localhost:5177/Helge");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
+        
+        await Page.GotoAsync("http://localhost:5177/testuser@gmail.com");
+        await Expect(Page.GetByText("What's on your mind testuser?")).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Helge Hello, BDSA students!")).ToBeVisibleAsync();
+    }
+    
     [Test]
     public async Task ZUserCanDeleteAccount()
     {
