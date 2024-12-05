@@ -54,9 +54,12 @@ public class UserTimelineModel : PageModel
         if (User.Identity != null && User.Identity.Name != null)
         {
             var author = await _chirpService.GetAuthorByName(User.Identity.Name);
-            await _chirpService.CreateCheep(author.Name, Text);
-        
-            await FetchCheeps(author.Name);
+            if (author != null)
+            {
+                await _chirpService.CreateCheep(author.Name, Text);
+                await FetchCheeps(author.Name);
+            }
+            
         }
         return RedirectToPage();
     }

@@ -194,7 +194,7 @@ public class CheepRepository : ICheepRepository
     {
         var cheepsQuery = _context.Cheeps
             .Include(c => c.Author)
-            .Where(c => c.Author.UserName != null && (c.Author.UserName == author || (authors != null && authors.Contains(c.Author.UserName))))
+            .Where(c => c.Author.UserName == author || (authors != null && authors.Contains(c.Author.UserName)))
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
             .Take(32);
@@ -208,7 +208,7 @@ public class CheepRepository : ICheepRepository
     /// </summary>
     /// <param name="cheeps"></param>
     /// <returns></returns>
-    public static List<CheepDto>? WrapInDto(List<Cheep> cheeps)
+    public static List<CheepDto> WrapInDto(List<Cheep> cheeps)
     {
         var list = new List<CheepDto>();
         foreach (var cheep in cheeps)

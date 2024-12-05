@@ -146,6 +146,8 @@ public class AuthorRepository : IAuthorRepository
     {
         var authorDto = await GetAuthorByName(you);
         
+        if (authorDto == null) return;
+        
         var author = _context.Authors.First(a => a.UserName == authorDto.Name);
         
         author.Follows.Add(me);
@@ -161,6 +163,9 @@ public class AuthorRepository : IAuthorRepository
     public async Task RemoveFollows(string you, string me)
     {
         var authordto = await GetAuthorByName(you);
+        
+        if (authordto == null) return;
+        
         var author = _context.Authors.First(a => a.UserName == authordto.Name);
 
         author.Follows.Remove(me);

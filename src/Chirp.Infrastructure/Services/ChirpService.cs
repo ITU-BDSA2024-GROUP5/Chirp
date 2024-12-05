@@ -28,6 +28,7 @@ public class ChirpService : IChirpService
     {
         var author = await GetAuthorByName(name);
 
+        if (author == null) return;
         var intendedAuthorName = await _authorRepository.GetAuthorByNameEntity(author.Name); // fix? repositories should only return dtos
         
         var cheep = new Cheep()
