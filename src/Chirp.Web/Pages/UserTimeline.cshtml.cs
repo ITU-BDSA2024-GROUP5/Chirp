@@ -98,28 +98,44 @@ public class UserTimelineModel : PageModel
     {
         if (author.Equals("Oauth.styles.css")) return;
         
-        AuthorDto? createdAuthor;
         if (author.Contains('@'))
         {
-            createdAuthor = await _chirpService.GetAuthorByEmail(author);
-            
-            if (createdAuthor == null)
-            {
-                ModelState.AddModelError(string.Empty, "Author not found");
-                return;
-            }
-            
-            Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
+            await SearchByEmail(author);
+        }
 
-            if (User.Identity?.Name == createdAuthor.Name)
-            {
-                Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
-                Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
-            }
+        await SearchByName(author);
+    }
+
+    /// <summary>
+    /// Handles fetching cheeps by author mail.
+    /// </summary>
+    /// <param name="author">Author email to fetch cheeps by.</param>
+    private async Task SearchByEmail(string author)
+    {
+        AuthorDto? createdAuthor = await _chirpService.GetAuthorByEmail(author);
+            
+        if (createdAuthor == null)
+        {
+            ModelState.AddModelError(string.Empty, "Author not found");
             return;
         }
-        
-        createdAuthor = await _chirpService.GetAuthorByName(author);
+            
+        Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
+
+        if (User.Identity?.Name == createdAuthor.Name)
+        {
+            Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
+            Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+        }
+    }
+    
+    /// <summary>
+    /// Handles fetching cheeps by author name.
+    /// </summary>
+    /// <param name="author">Author name to et cheeps by.</param>
+    private async Task SearchByName(string author)
+    {
+        AuthorDto? createdAuthor = await _chirpService.GetAuthorByName(author);
 
         if (createdAuthor == null)
         {
@@ -145,7 +161,6 @@ public class UserTimelineModel : PageModel
         if (cheepDtos != null)
             Count = cheepDtos.Count;
     }
-    
     
     /// <summary>
     /// Gets the page number from the query string.
