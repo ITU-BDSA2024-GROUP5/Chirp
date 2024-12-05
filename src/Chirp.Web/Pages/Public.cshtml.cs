@@ -41,19 +41,25 @@ public class PublicModel : PageModel
         if (!ModelState.IsValid)
         {
             ModelState.AddModelError(string.Empty, "you made an oopsie");
-            return Page();
+            return RedirectToPage();
         }
         
         if (User.Identity == null)
         {
             ModelState.AddModelError(string.Empty, "you must authenticate first");
-            return Page();
+            return RedirectToPage();
         }
         
         if (Text.Length > 160)
         {
             ModelState.AddModelError(string.Empty, "Cheep is too long");
-            return Page();
+            return RedirectToPage();
+        }
+        
+        if (Text.Length < 1)
+        {
+            ModelState.AddModelError(string.Empty, "Cheep is too short");
+            return RedirectToPage();
         }
 
         if (User.Identity != null && User.Identity.Name != null)
