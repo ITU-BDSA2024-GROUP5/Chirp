@@ -23,30 +23,30 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     /// <param name="authorName"></param>
     /// <returns>AuthorDTO</returns>
-    public async Task<AuthorDTO?> GetAuthorByName(string authorName)
+    public async Task<AuthorDto?> GetAuthorByName(string authorName)
     {
         var query = _context.Authors
             .Select(a => a)
             .Where(a => a.UserName == authorName);
         var result = await query.FirstOrDefaultAsync();
-        
+
         if (result == null) return null;
         
-        var author = WrapInDTO(result);
+        var author = WrapInDto(result);
         return author;
     }
     
     /// <summary>
     /// Returns an author entity and not an AuthorDTO. This could be fixed.
     /// </summary>
-    /// <param name="author">The author to find by name</param>
+    /// <param name="authorName">The author to find by name</param>
     /// <returns>Author entity</returns>
-    public async Task<Author?> GetAuthorByNameEntity(string authorName)
+    public async Task<Author> GetAuthorByNameEntity(string authorName)
     {
         var query = _context.Authors
             .Select(a => a)
             .Where(a => a.UserName == authorName);
-        var result = await query.FirstOrDefaultAsync();
+        var result = await query.FirstAsync();
         
         return result;
     }
@@ -56,16 +56,16 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>
-    public async Task<AuthorDTO?> GetAuthorByEmail(string email)
+    public async Task<AuthorDto?> GetAuthorByEmail(string email)
     {
         var query = _context.Authors
             .Select(a => a)
-            .Where(a => a.Email == email);
+            .Where(a => a.Email != null && a.Email.Equals(email));
         var result = await query.FirstOrDefaultAsync();
-
+        
         if (result == null) return null;
         
-        var author = WrapInDTO(result);
+        var author = WrapInDto(result);
         return author;
     }
 
@@ -104,7 +104,7 @@ public class AuthorRepository : IAuthorRepository
     /// <returns></returns>
     public async Task WriteAuthor(Author author)
     {
-        var queryResult = await _context.Authors.AddAsync(author);
+        await _context.Authors.AddAsync(author);
         await _context.SaveChangesAsync();
     }
 
@@ -113,18 +113,22 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     /// <param name="author"></param>
     /// <returns></returns>
-    private static AuthorDTO WrapInDTO(Author author)
+    private static AuthorDto? WrapInDto(Author author)
     {
-        var authorDto = new AuthorDTO(author.UserName, author.Email);
-        
-        if(author.Follows == null) return authorDto;
+        AuthorDto authorDto;
 
-        foreach (var item in author.Follows)
+        if (author.UserName != null && author.Email != null)
         {
-            authorDto.Follows.Add(item);
+            authorDto = new AuthorDto()
+            {
+                Name = author.UserName,
+                Email = author.Email,
+                Follows = author.Follows
+            };
+            return authorDto;
         }
-        
-        return authorDto;
+
+        return null;
     }
 
     /// <summary>
@@ -137,7 +141,6 @@ public class AuthorRepository : IAuthorRepository
         var author = await _context.Authors
             .FirstAsync(a => a.UserName == me);
         
-        if (author.Follows == null) return new List<string>();
         return author.Follows;
     }
     /// <summary>
@@ -148,13 +151,11 @@ public class AuthorRepository : IAuthorRepository
     public async Task AddFollows(string you, string me)
     {
         var authorDto = await GetAuthorByName(you);
+        
         if (authorDto == null) return;
         
         var author = _context.Authors.First(a => a.UserName == authorDto.Name);
-        if (author.Follows == null)
-        {
-            author.Follows = new List<string>();
-        }
+        
         author.Follows.Add(me);
         await _context.SaveChangesAsync();
     }
@@ -168,12 +169,11 @@ public class AuthorRepository : IAuthorRepository
     public async Task RemoveFollows(string you, string me)
     {
         var authordto = await GetAuthorByName(you);
+        
         if (authordto == null) return;
+        
         var author = _context.Authors.First(a => a.UserName == authordto.Name);
-        if (author.Follows == null)
-        {
-            author.Follows = new List<string>();
-        }
+
         author.Follows.Remove(me);
         await _context.SaveChangesAsync();
     }
@@ -188,7 +188,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var author = await _context.Authors
             .FirstAsync(a => a.UserName == me);
-        return author.Follows != null && author.Follows.Contains(you);
+        return author.Follows.Contains(you);
     }
 
     

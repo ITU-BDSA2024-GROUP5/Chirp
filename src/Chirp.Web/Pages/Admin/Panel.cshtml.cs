@@ -23,7 +23,7 @@ public class AdminModel(
     IWebHostEnvironment env)
     : PageModel
 {
-    public ICollection<Author> Users { get; set; }
+    public required ICollection<Author> Users { get; set; }
     
     
     
@@ -65,7 +65,7 @@ public class AdminModel(
     
     [BindProperty]
     [Required]
-    public string selectedUserID { get; set; }
+    public required string? SelectedUserId { get; set; }
     
     /// <summary>
     /// Deletes a user from the database.
@@ -73,17 +73,20 @@ public class AdminModel(
     /// <returns></returns>
     public async Task<ActionResult> OnPostDeleteUser()
     {
-        Console.WriteLine("hallo "+selectedUserID);
-        var user = await userManager.FindByIdAsync(selectedUserID);
-        if (user != null)
-        { 
-            var result = await userManager.DeleteAsync(user);
-            if (result.Succeeded)
-            {
-                var authorCheeps = context.Cheeps.ToList().Where(c => c.AuthorId.ToString().Equals(user.Id));
-                context.Cheeps.RemoveRange(authorCheeps);
+        if (SelectedUserId != null)
+        {
+            var user = await userManager.FindByIdAsync(SelectedUserId);
+            if (user != null)
+            { 
+                var result = await userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    var authorCheeps = context.Cheeps.ToList().Where(c => c.AuthorId.ToString().Equals(user.Id));
+                    context.Cheeps.RemoveRange(authorCheeps);
+                }
             }
         }
+
         return RedirectToPage();
     }
 }

@@ -24,7 +24,7 @@ public class CheepRepository : ICheepRepository
     /// </summary>
     /// <param name="page">Page number to read from.</param>
     /// <returns>List of CheepDTO</returns>
-    public async Task<List<CheepDTO>?> Read(int page)
+    public async Task<List<CheepDto>?> Read(int page)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
@@ -36,7 +36,7 @@ public class CheepRepository : ICheepRepository
 
         // Execute the query and store the results
         var result = await query.ToListAsync();
-        var cheeps = WrapInDTO(result);
+        var cheeps = WrapInDto(result);
         return cheeps;
     }
 
@@ -47,7 +47,7 @@ public class CheepRepository : ICheepRepository
     /// <param name="page">Page number to read from.</param>
     /// <param name="author">Author to read cheeps by.</param>
     /// <returns></returns>
-    public async Task<List<CheepDTO>?> ReadByAuthor(int page, string author)
+    public async Task<List<CheepDto>?> ReadByAuthor(int page, string author)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
@@ -59,7 +59,7 @@ public class CheepRepository : ICheepRepository
             .Take(32);
         // Execute the query and store the results
         var result = await query.ToListAsync();
-        var cheeps = WrapInDTO(result);
+        var cheeps = WrapInDto(result);
         return cheeps;
     }
     
@@ -70,7 +70,7 @@ public class CheepRepository : ICheepRepository
     /// <param name="page">Page number to read from</param>
     /// <param name="author">Author to read cheeps by</param>
     /// <returns>List of Cheeps</returns>
-    private async Task<List<Cheep>> ReadByAuthorEntity(int page, string author)
+    public async Task<List<Cheep>?> ReadByAuthorEntity(int page, string author)
     {
         // Define the query - with our setup, EF Core translates this to an SQLite query in the background
         var query = _context.Cheeps
@@ -86,35 +86,11 @@ public class CheepRepository : ICheepRepository
     }
     
     /// <summary>
-    /// Reads 32 cheeps from the database, starting from the page number provided, by a specific author.
-    /// Finds the author by email.
-    /// </summary>
-    /// <param name="page"></param>
-    /// <param name="email"></param>
-    /// <returns></returns>
-    public async Task<List<CheepDTO>?> ReadByEmail(int page, string email)
-    {
-        // Define the query - with our setup, EF Core translates this to an SQLite query in the background
-        var query = _context.Cheeps
-            .Select(cheep => cheep)
-            .Include(c => c.Author)
-            .Where(cheep => cheep.Author.Email == email)
-            .OrderByDescending(cheep => cheep.TimeStamp)
-            .Skip((page - 1) * 32)
-            .Take(32);
-        // Execute the query and store the results
-        var result = await query.ToListAsync();
-        var cheeps = WrapInDTO(result);
-        return cheeps;
-    }
-    
-    
-    /// <summary>
     /// Reads all cheeps by a specific author.
     /// </summary>
     /// <param name="author">The author to read cheeps by</param>
     /// <returns>List of CheepDTO</returns>
-    public async Task<List<CheepDTO>?> ReadAllCheeps(string author)
+    public async Task<List<CheepDto>?> ReadAllCheeps(string author)
     {
         var query = _context.Cheeps
             .Select(cheep => cheep)
@@ -123,23 +99,11 @@ public class CheepRepository : ICheepRepository
             .OrderByDescending(cheep => cheep.TimeStamp);
         // Execute the query and store the results
         var result = await query.ToListAsync();
-        var cheeps = WrapInDTO(result);
+        var cheeps = WrapInDto(result);
         return cheeps;
     }
     
-    public async Task<List<CheepDTO>?> ReadAllCheeps()
-    {
-        var query = _context.Cheeps
-            .Select(cheep => cheep)
-            .Include(c => c.Author)  
-            .OrderByDescending(cheep => cheep.TimeStamp);
-        
-        var result = await query.ToListAsync();
-        
-        var cheeps = WrapInDTO(result);
-
-        return cheeps;
-    }
+    
 
     /// <summary>
     /// Function for finding the highest CheepId in the database.
@@ -170,13 +134,18 @@ public class CheepRepository : ICheepRepository
     /// </summary>
     /// <param name="author"></param>
     /// <returns>List with CheepDTO's from a given user</returns>
-    public async Task<List<CheepDTO>?> GetCheepsByAuthor(string author)
+    public async Task<List<CheepDto>?> GetCheepsByAuthor(string author)
     {
-        var auth = _context.Users.FirstOrDefault(a => a.UserName == author);
-        if (auth == null) return new List<CheepDTO>();
-        if (auth.UserName == null) return new List<CheepDTO>();
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)
+            .Where(cheep => cheep.Author.UserName == author)
+            .OrderByDescending(cheep => cheep.TimeStamp);
         
-        var cheeps = await ReadAllCheeps(auth.UserName);
+        var result = await query.ToListAsync();
+        
+        var cheeps = WrapInDto(result);
+
         return cheeps;
     }
 
@@ -188,17 +157,17 @@ public class CheepRepository : ICheepRepository
     /// <param name="author">The author to read cheeps by</param>
     /// <param name="authors">List of authors that the author follows</param>
     /// <returns></returns>
-    public async Task<List<CheepDTO>?> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
+    public async Task<List<CheepDto>?> GetCheepsFollowedByAuthor(int page, string author, List<string>? authors)
     {
         var cheepsQuery = _context.Cheeps
             .Include(c => c.Author)
-            .Where(c => c.Author.UserName == author || (authors != null && authors.Contains(c.Author.UserName)))
+            .Where(c => c.Author.UserName != null && (c.Author.UserName == author || (authors != null && authors.Contains(c.Author.UserName))))
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
             .Take(32);
 
         var cheeps = await cheepsQuery.ToListAsync();
-        return WrapInDTO(cheeps);
+        return WrapInDto(cheeps);
     }
 
     /// <summary>
@@ -206,17 +175,18 @@ public class CheepRepository : ICheepRepository
     /// </summary>
     /// <param name="cheeps"></param>
     /// <returns></returns>
-    public static List<CheepDTO>? WrapInDTO(List<Cheep> cheeps)
+    public static List<CheepDto> WrapInDto(List<Cheep> cheeps)
     {
-        var list = new List<CheepDTO>();
+        var list = new List<CheepDto>();
         foreach (var cheep in cheeps)
         {
-            list.Add(new CheepDTO
-            {
-                Text = cheep.Text,
-                Author = cheep.Author.UserName,
-                TimeStamp = cheep.TimeStamp.ToString("R")
-            });
+            if (cheep.Author.UserName != null)
+                list.Add(new CheepDto
+                {
+                    Text = cheep.Text,
+                    Author = cheep.Author.UserName,
+                    TimeStamp = cheep.TimeStamp.ToString("R")
+                });
         }
         return list;
     }
@@ -224,22 +194,40 @@ public class CheepRepository : ICheepRepository
     /**
      * This method is used to sort and divide all the cheeps registered into 32 per page on the user's timeline.
      */
-    public async Task<List<CheepDTO>?> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32)
+    public async Task<List<CheepDto>?> GetPaginatedResultByAuthor(int page, string author, int pageSize = 32)
     {
-        var cheeps = await ReadAllCheeps(author);
-        return cheeps.OrderByDescending(c => c.TimeStamp).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)
+            .Where(cheep => cheep.Author.UserName == author)
+            .OrderByDescending(cheep => cheep.TimeStamp)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize);
+        
+        var result = await query.ToListAsync();
+        
+        var cheeps = WrapInDto(result);
+
+        return cheeps;
     }
     
     /**
      * This method is used to sort and divide all the cheeps registered into 32 per page on the public timeline.
      */
-    public async Task<List<CheepDTO>?> GetPaginatedResult(int page, int pageSize = 32)
+    public async Task<List<CheepDto>?> GetPaginatedResult(int page, int pageSize = 32)
     {
-        var cheeps = await ReadAllCheeps();
-        return cheeps.OrderByDescending(c => c.TimeStamp)
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)
+            .OrderByDescending(cheep => cheep.TimeStamp)
             .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+            .Take(pageSize);
+        
+        var result = await query.ToListAsync();
+        
+        var cheeps = WrapInDto(result);
+
+        return cheeps;
     }
 
     public async Task<int> GetCheepsCountByFollows(string author, List<string>? authors)

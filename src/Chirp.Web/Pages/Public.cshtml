@@ -86,36 +86,39 @@
         <em> You can't cheep that! Cheep is empty! </em>
 
         <div style="display: none">
-            @Model.FetchCheeps()
+            @(_ = Model.FetchCheeps())
         </div>
 
         <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps)
+            @if (Model.Cheeps != null)
             {
-                <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author">
-                    <li>
-                        <div style="display: flex; align-items: normal;">
-                            <p>
-                                <strong>
-                                    <a href="/@cheep.Author">@cheep.Author</a>
-                                </strong>
-                                @cheep.Text
-                                <small>&mdash; @cheep.TimeStamp</small>
-                                @if (SignInManager.IsSignedIn(User))
-                                {
-                                    if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
+                foreach (var cheep in Model.Cheeps)
+                {
+                    <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author">
+                        <li>
+                            <div style="display: flex; align-items: normal;">
+                                <p>
+                                    <strong>
+                                        <a href="/@cheep.Author">@cheep.Author</a>
+                                    </strong>
+                                    @cheep.Text
+                                    <small>&mdash; @cheep.TimeStamp</small>
+                                    @if (SignInManager.IsSignedIn(User))
                                     {
-                                        var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
-                                        var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
-                                        <button class="followbutton" type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px">
-                                            @(follows ? "Unfollow" : "Follow")
-                                        </button>
+                                        if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
+                                        {
+                                            var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
+                                            var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
+                                            <button class="followbutton" type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px">
+                                                @(follows ? "Unfollow" : "Follow")
+                                            </button>
+                                        }
                                     }
-                                }
-                            </p>
-                        </div>
-                    </li>
-                </form>
+                                </p>
+                            </div>
+                        </li>
+                    </form>
+                }
             }
         </ul>
 
@@ -135,7 +138,11 @@
             @for (var i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
             {
             <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a asp-page="/Public" asp-route-currentpage="@i" class="page-link">@i</a>
+
+                @{
+                    var i1 = i;
+                }
+                <a asp-page="/Public" asp-route-currentpage="@i1" class="page-link">@i1</a>
             </li>
             }
             <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">

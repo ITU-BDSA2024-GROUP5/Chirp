@@ -30,12 +30,12 @@ public class ExternalLoginModel : PageModel
         _chirpService = chirpService;
     }
 
-    public string LoginProvider { get; set; }
+    public string? LoginProvider { get; set; }
 
-    public string ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 
     [TempData]
-    public string ErrorMessage { get; set; }
+    public string? ErrorMessage { get; set; }
 
     public IActionResult OnGetAsync()
     {
@@ -49,7 +49,7 @@ public class ExternalLoginModel : PageModel
     /// <param name="provider"></param>
     /// <param name="returnUrl"></param>
     /// <returns>ChallengeResult</returns>
-    public IActionResult OnPost(string provider, string returnUrl = null)
+    public IActionResult OnPost(string provider, string? returnUrl = null)
     {
         // Request a redirect to the external login provider.
         var redirectUrl = Url.Page("./ExternalLogin", pageHandler: "Callback", values: new { returnUrl });
@@ -66,7 +66,7 @@ public class ExternalLoginModel : PageModel
     /// <param name="returnUrl"></param>
     /// <param name="remoteError"></param>
     /// <returns></returns>
-    public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
+    public async Task<IActionResult> OnGetCallbackAsync(string? returnUrl = null, string? remoteError = null)
     {
         if (remoteError != null)
         {
@@ -81,16 +81,17 @@ public class ExternalLoginModel : PageModel
         }
         
         // Check if user already exists with the same email
-        var useremail = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value;
-        var userfound = await _userManager.FindByEmailAsync(useremail);
-        if (userfound != null)
+        var userEmail = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+        var userFound = await _userManager.FindByEmailAsync(userEmail);
+        if (userFound != null)
         {
             // add the github login to the existing user
-            var userresult = await _userManager.AddLoginAsync(userfound, info);
+            await _userManager.AddLoginAsync(userFound, info);
             var props = new AuthenticationProperties();
-            props.StoreTokens(info.AuthenticationTokens);
+            if (info.AuthenticationTokens != null)
+                props.StoreTokens(info.AuthenticationTokens);
             // sign in the user and redirect to the public page
-            await _signInManager.SignInAsync(userfound, props, info.LoginProvider);
+            await _signInManager.SignInAsync(userFound, props, info.LoginProvider);
             return LocalRedirect("/Public");
         }
         
@@ -99,13 +100,15 @@ public class ExternalLoginModel : PageModel
         {   
             var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
             var props = new AuthenticationProperties();
-            props.StoreTokens(info.AuthenticationTokens);
-            await _signInManager.SignInAsync(user, props, info.LoginProvider);
+            if (info.AuthenticationTokens != null)
+                props.StoreTokens(info.AuthenticationTokens);
+            if (user != null)
+                await _signInManager.SignInAsync(user, props, info.LoginProvider);
             foreach (var claim in info.Principal.Claims)
             {
                 Console.WriteLine(claim);
             }
-            _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
+            _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity?.Name, info.LoginProvider);
             return LocalRedirect("/Public");
         }
         if (result.IsLockedOut)
@@ -138,10 +141,11 @@ public class ExternalLoginModel : PageModel
             
             var user = new Author
             {
-                UserName = info.Principal.Identity.Name,
-                Email = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value,
+                UserName = info.Principal.Identity?.Name,
+                Email = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email).Value,
                 Cheeps = new List<Cheep>(),
-                AuthorId = await _chirpService.GetHighestAuthorId() + 1
+                AuthorId = await _chirpService.GetHighestAuthorId() + 1,
+                Follows = new List<string>()
             };
 
             var result = await _userManager.CreateAsync(user);
@@ -151,7 +155,8 @@ public class ExternalLoginModel : PageModel
                 if (result.Succeeded)
                 {
                     var props = new AuthenticationProperties();
-                    props.StoreTokens(info.AuthenticationTokens);
+                    if (info.AuthenticationTokens != null)
+                        props.StoreTokens(info.AuthenticationTokens);
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);

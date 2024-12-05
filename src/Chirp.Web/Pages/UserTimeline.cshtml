@@ -8,17 +8,17 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
-    var routeName = HttpContext.GetRouteValue("author");
+    var routeName = HttpContext.GetRouteValue("author")?.ToString();
 }
 
 <div>
     @if (SignInManager.IsSignedIn(User) && routeName != null)
     {
-        @if (routeName.ToString().Contains('@'))
+        if (routeName.Contains('@'))
         {
-            routeName = ChirpService.GetAuthorByEmail(routeName.ToString()).Result.Name;
-        }
-        @if (routeName.Equals(User.Identity.Name))
+            routeName = ChirpService.GetAuthorByEmail(routeName).Result?.Name;
+        } 
+        if (routeName != null && routeName.Equals(User.Identity?.Name))
         {
             <div class="cheepbox">
                 @if (User.Identity != null)
@@ -45,7 +45,7 @@
                 @if(User.Identity?.Name != null && !User.Identity.Name.Equals(routeName))
                 {
                     var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
-                    var follows =  user?.Follows != null && user.Follows.Contains(routeName); 
+                    var follows =  user?.Follows != null && routeName != null && user.Follows.Contains(routeName); 
                     <button class="followbutton" style="font-size: 20px" name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                         @(follows ? "Unfollow" : "Follow")
                     </button>
@@ -58,7 +58,7 @@
     {
         @if (SignInManager.IsSignedIn(User))
         {
-            if (User.Identity.Name.Equals(routeName))
+            if (User.Identity != null && User.Identity.Name != null && User.Identity.Name.Equals(routeName))
             {
                 <ul id="messagelist" class="cheeps">
                     @foreach (var cheep in @Model.Cheeps)
@@ -80,7 +80,10 @@
             else
             {
                 <div style="display: none">
-                    @Model.FetchCheeps(@routeName.ToString())
+                    @if (routeName != null)
+                    {
+                        @(_ = Model.FetchCheeps(routeName))
+                    }
                 </div>
         
                 <ul id="messagelist" class="cheeps">
@@ -102,7 +105,10 @@
         else
         {
             <div style="display: none">
-                @Model.FetchCheeps(@routeName.ToString())
+                @if (routeName != null)
+                {
+                    @(_ = Model.FetchCheeps(routeName))
+                }
             </div>
         
             <ul id="messagelist" class="cheeps">
@@ -126,22 +132,28 @@
         <em>You can't cheep that! Cheep is empty!</em>
         
         <div style="display: none">
-            @Model.FetchCheeps(@routeName.ToString())
-            
+            @if (routeName != null)
+            {
+                @(_ = Model.FetchCheeps(routeName))
+            }
+
         </div>
         {
             <ul id="messagelist" class="cheeps">
-                @foreach (var cheep in Model.Cheeps)
+                @if (Model.Cheeps != null)
                 {
-                    <li>
-                        <p>
-                            <strong>
-                                <a href="/@cheep.Author">@cheep.Author</a>
-                            </strong>
-                            @cheep.Text
-                            <small>&mdash; @cheep.TimeStamp</small>
-                        </p>
-                    </li>
+                    foreach (var cheep in Model.Cheeps)
+                    {
+                        <li>
+                            <p>
+                                <strong>
+                                    <a href="/@cheep.Author">@cheep.Author</a>
+                                </strong>
+                                @cheep.Text
+                                <small>&mdash; @cheep.TimeStamp</small>
+                            </p>
+                        </li>
+                    }
                 }
             </ul>
         }
@@ -160,7 +172,11 @@
             @for (var i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
             {
             <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a asp-page="" asp-route-author="@routeName" asp-route-currentpage="@i" class="page-link">@i</a>
+
+                @{
+                    var i1 = i;
+                }
+                <a asp-page="" asp-route-author="@routeName" asp-route-currentpage="@i1" class="page-link">@i1</a>
             </li>
             }
             <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">

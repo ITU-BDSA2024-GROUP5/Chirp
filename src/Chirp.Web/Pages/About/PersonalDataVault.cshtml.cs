@@ -1,5 +1,4 @@
 using Chirp.Core.DataModels;
-using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,8 +9,10 @@ using Chirp.Infrastructure.Services.Interfaces;
 
 namespace Chirp.Web.Pages.About
 {
-    public class PersonalDataVaultModel(ApplicationDbContext context,
-    UserManager<Author> userManager, IChirpService chirpService) : PageModel
+    public class PersonalDataVaultModel(
+        UserManager<Author> userManager,
+        IChirpService chirpService
+        ) : PageModel
     {
         public string? Username { get; private set; }
 
@@ -22,7 +23,7 @@ namespace Chirp.Web.Pages.About
         public string FollowerButtonText { get; set; } = "Show Followed";
 
         public string FollowerButtonFunction { get; set; } = "ShowFollowed";
-        public static List<CheepDTO>? Cheeps { get; private set; }
+        public static List<CheepDto>? Cheeps { get; private set; }
 
         public static List<string>? Followed { get; private set; }
 
@@ -65,7 +66,7 @@ namespace Chirp.Web.Pages.About
         public Task<IActionResult> OnPostShowCheeps()
         {
             PersonalDataItems = new List<PersonalDataItem>();
-            Username = user.UserName;
+            Username = user?.UserName;
             if(Cheeps != null && Cheeps.Count == 0)
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = "No cheeps to show", Value = "" });
@@ -90,7 +91,7 @@ namespace Chirp.Web.Pages.About
         public Task<IActionResult> OnPostShowFollowed()
         {
             PersonalDataItems = new List<PersonalDataItem>();
-            Username = user.UserName;
+            Username = user?.UserName;
             if(Followed != null && Followed.Count == 0)
             {
                 PersonalDataItems.Add(new PersonalDataItem { Key = "No followed people to show", Value = "" });

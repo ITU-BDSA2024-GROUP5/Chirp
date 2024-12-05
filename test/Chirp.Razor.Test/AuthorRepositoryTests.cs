@@ -59,6 +59,7 @@ public class AuthorRepositoryTests
             AuthorId = await aRepository.GetHighestAuthorId() + 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
+            Follows = new List<string>(),
         };
         
         //Act
@@ -93,6 +94,7 @@ public class AuthorRepositoryTests
             AuthorId = await aRepository.GetHighestAuthorId() + 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
+            Follows = new List<string>(),
         };
         
         //Act
@@ -125,6 +127,7 @@ public class AuthorRepositoryTests
             AuthorId = await aRepository.GetHighestAuthorId() + 1,
             Email = "TestAuthor@gmail.com",
             Cheeps = new List<Cheep>(),
+            Follows = new List<string>(),
         };
         
         //Act

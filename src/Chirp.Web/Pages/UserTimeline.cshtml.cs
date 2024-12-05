@@ -19,7 +19,7 @@ public class UserTimelineModel : PageModel
     [Required]
     [StringLength(160,ErrorMessage = "Maximum length is 160 characters.")]
     public string Text { get; set; }
-    public required List<CheepDTO>? Cheeps { get; set; }
+    public required List<CheepDto>? Cheeps { get; set; }
     
     private readonly IChirpService _chirpService;
     public int Count { get; set; }
@@ -50,21 +50,23 @@ public class UserTimelineModel : PageModel
         {
             ModelState.AddModelError(string.Empty, "you must authenticate first");
         }
-        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
-        await _chirpService.CreateCheep(author.Name, Text);
-        
-        await FetchCheeps(author.Name);
-        
-        return RedirectToPage(author);
+
+        if (User.Identity != null && User.Identity.Name != null)
+        {
+            var author = await _chirpService.GetAuthorByName(User.Identity.Name);
+            if (author != null)
+            {
+                await _chirpService.CreateCheep(author.Name, Text);
+                await FetchCheeps(author.Name);
+            }
+            
+        }
+        return RedirectToPage();
     }
     
-    public async Task<List<CheepDTO>?> FetchCheeps(string author)
+    public async Task FetchCheeps(string author)
     {
         Cheeps = await _chirpService.ReadByAuthor(CurrentPage, author);
-        Cheeps = Cheeps
-            .OrderBy(c => DateTime.Parse(c.TimeStamp).Date) // Parse and sort by DateTime
-            .ToList();
-        return Cheeps;
     }
     
     
@@ -80,17 +82,7 @@ public class UserTimelineModel : PageModel
         {
             await TaskHandlerAsync(author);
         }
-        var tmpAuthor = await _chirpService.GetAuthorByName(author);
-        if (User.Identity != null && User.Identity.Name == author)
-        {
-            Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, author, tmpAuthor.Follows);
-            Count = await _chirpService.GetCheepsCountByFollows(author, tmpAuthor.Follows);
-            return Page();
-        }
         
-        Cheeps = await _chirpService.GetPaginatedResultByAuthor(CurrentPage, author, PageSize);
-       
-        Count = _chirpService.GetCheepsByAuthor(author).Result.Count;
         return Page();
     }
 
@@ -104,15 +96,46 @@ public class UserTimelineModel : PageModel
     /// <param name="author"></param>
     public async Task TaskHandlerAsync(string author)
     {
-        AuthorDTO createdAuthor;
+        if (author.Equals("Oauth.styles.css")) return;
+        
         if (author.Contains('@'))
         {
-            createdAuthor = await _chirpService.GetAuthorByEmail(author);
+            await SearchByEmail(author);
         }
-        else
+
+        await SearchByName(author);
+    }
+
+    /// <summary>
+    /// Handles fetching cheeps by author mail.
+    /// </summary>
+    /// <param name="author">Author email to fetch cheeps by.</param>
+    private async Task SearchByEmail(string author)
+    {
+        AuthorDto? createdAuthor = await _chirpService.GetAuthorByEmail(author);
+            
+        if (createdAuthor == null)
         {
-            createdAuthor = await _chirpService.GetAuthorByName(author);
+            ModelState.AddModelError(string.Empty, "Author not found");
+            return;
         }
+            
+        Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
+
+        if (User.Identity?.Name == createdAuthor.Name)
+        {
+            Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
+            Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+        }
+    }
+    
+    /// <summary>
+    /// Handles fetching cheeps by author name.
+    /// </summary>
+    /// <param name="author">Author name to et cheeps by.</param>
+    private async Task SearchByName(string author)
+    {
+        AuthorDto? createdAuthor = await _chirpService.GetAuthorByName(author);
 
         if (createdAuthor == null)
         {
@@ -123,13 +146,21 @@ public class UserTimelineModel : PageModel
         if (createdAuthor.Follows.IsNullOrEmpty())
         {
             Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
+            return;
         }
-        else
+        
+        if (User.Identity != null && User.Identity.Name == createdAuthor.Name)
         {   
             Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
+            Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+            return;
         }
+        
+        Cheeps = await _chirpService.GetPaginatedResultByAuthor(CurrentPage, createdAuthor.Name, PageSize);
+        var cheepDtos = _chirpService.GetCheepsByAuthor(createdAuthor.Name).Result;
+        if (cheepDtos != null)
+            Count = cheepDtos.Count;
     }
-    
     
     /// <summary>
     /// Gets the page number from the query string.
@@ -156,17 +187,20 @@ public class UserTimelineModel : PageModel
     /// <returns>Page reload</returns>
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
+        if (User.Identity != null && User.Identity.Name != null)
+        {
+            var author = await _chirpService.GetAuthorByName(User.Identity.Name);
         
-        var IsFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
+            var isFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
 
-        if (IsFollowing)
-        {
-            await _chirpService.RemoveFollows(author.Name, authorToFollow);
-        }
-        else
-        {
-            await _chirpService.AddFollows(author.Name, authorToFollow);
+            if (isFollowing && author != null)
+            {
+                await _chirpService.RemoveFollows(author.Name, authorToFollow);
+            }
+            else if (author != null)
+            {
+                await _chirpService.AddFollows(author.Name, authorToFollow);
+            }
         }
 
         return RedirectToPage();
