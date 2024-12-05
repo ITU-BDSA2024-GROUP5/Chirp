@@ -29,7 +29,7 @@ public class Register : PageModel
     }
     [BindProperty]
     public required InputModel Input { get; set; }
-    public required string ReturnUrl { get; set; }
+    public required string? ReturnUrl { get; set; }
     public required IList<AuthenticationScheme> ExternalLogins { get; set; }
     public class InputModel
     {
@@ -57,7 +57,7 @@ public class Register : PageModel
     /// Get all external login methods to display on register page.
     /// </summary>
     /// <param name="returnUrl"></param>
-    public async Task OnGetAsync(string returnUrl = null)
+    public async Task OnGetAsync(string? returnUrl = null)
     {
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -70,7 +70,7 @@ public class Register : PageModel
     /// </summary>
     /// <param name="returnUrl"></param>
     /// <returns></returns>
-    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -105,7 +105,7 @@ public class Register : PageModel
             {
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                 {
-                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
                 }
                 else
                 {
