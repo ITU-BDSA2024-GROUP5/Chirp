@@ -26,6 +26,7 @@ public class ChirpService : IChirpService
     /// <param name="text">Cheep text</param>
     public async Task CreateCheep(string name, string text)
     {
+        if (text.Length > 160) return;
         var author = await GetAuthorByName(name);
 
         if (author == null) return;

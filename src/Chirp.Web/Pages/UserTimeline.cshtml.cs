@@ -50,6 +50,12 @@ public class UserTimelineModel : PageModel
         {
             ModelState.AddModelError(string.Empty, "you must authenticate first");
         }
+        
+        if (Text.Length > 160)
+        {
+            ModelState.AddModelError(string.Empty, "Cheep is too long");
+            return Page();
+        }
 
         if (User.Identity != null && User.Identity.Name != null)
         {

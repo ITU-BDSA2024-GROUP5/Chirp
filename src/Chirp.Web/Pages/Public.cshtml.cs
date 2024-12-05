@@ -43,6 +43,18 @@ public class PublicModel : PageModel
             ModelState.AddModelError(string.Empty, "you made an oopsie");
             return Page();
         }
+        
+        if (User.Identity == null)
+        {
+            ModelState.AddModelError(string.Empty, "you must authenticate first");
+            return Page();
+        }
+        
+        if (Text.Length > 160)
+        {
+            ModelState.AddModelError(string.Empty, "Cheep is too long");
+            return Page();
+        }
 
         if (User.Identity != null && User.Identity.Name != null)
         {
