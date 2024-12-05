@@ -43,13 +43,15 @@ public class PublicModel : PageModel
             ModelState.AddModelError(string.Empty, "you made an oopsie");
             return Page();
         }
+
+        if (User.Identity != null && User.Identity.Name != null)
+        {
+            var author = await _chirpService.GetAuthorByName(User.Identity.Name);
+            await _chirpService.CreateCheep(author.Name, Text);
+            await FetchCheeps(author.Name);
+        }
         
-        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
-        await _chirpService.CreateCheep(author.Name, Text);
-        
-        await FetchCheeps(author.Name);
-        
-        return RedirectToPage(author);
+        return RedirectToPage();
     }
     
     
@@ -72,20 +74,24 @@ public class PublicModel : PageModel
     /// <returns>Page reload</returns>
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
-        
-        var IsFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
 
-        if (IsFollowing)
+        if (User.Identity != null && User.Identity.Name != null)
         {
-            await _chirpService.RemoveFollows(author.Name, authorToFollow);
-        }
-        else
-        {
-            await _chirpService.AddFollows(author.Name, authorToFollow);
-        }
+            var author = await _chirpService.GetAuthorByName(User.Identity.Name);
         
-        IsFollowing = !IsFollowing;
+            var IsFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
+            
+            if (IsFollowing)
+            {
+                await _chirpService.RemoveFollows(author.Name, authorToFollow);
+            }
+            else
+            {
+                await _chirpService.AddFollows(author.Name, authorToFollow);
+            }
+        
+            IsFollowing = !IsFollowing;
+        }
         
         return RedirectToPage();
     }

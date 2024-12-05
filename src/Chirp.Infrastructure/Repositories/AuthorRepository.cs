@@ -29,7 +29,7 @@ public class AuthorRepository : IAuthorRepository
             .Select(a => a)
             .Where(a => a.UserName == authorName);
         var result = await query.FirstOrDefaultAsync();
-        
+
         if (result == null) return null;
         
         var author = WrapInDto(result);
@@ -41,12 +41,12 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     /// <param name="authorName">The author to find by name</param>
     /// <returns>Author entity</returns>
-    public async Task<Author?> GetAuthorByNameEntity(string authorName)
+    public async Task<Author> GetAuthorByNameEntity(string authorName)
     {
         var query = _context.Authors
             .Select(a => a)
             .Where(a => a.UserName == authorName);
-        var result = await query.FirstOrDefaultAsync();
+        var result = await query.FirstAsync();
         
         return result;
     }
@@ -56,14 +56,12 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>
-    public async Task<AuthorDto?> GetAuthorByEmail(string email)
+    public async Task<AuthorDto> GetAuthorByEmail(string email)
     {
         var query = _context.Authors
             .Select(a => a)
-            .Where(a => a.Email == email);
-        var result = await query.FirstOrDefaultAsync();
-
-        if (result == null) return null;
+            .Where(a => a.Email.Equals(email));
+        var result = await query.FirstAsync();
         
         var author = WrapInDto(result);
         return author;
@@ -145,7 +143,6 @@ public class AuthorRepository : IAuthorRepository
     public async Task AddFollows(string you, string me)
     {
         var authorDto = await GetAuthorByName(you);
-        if (authorDto == null) return;
         
         var author = _context.Authors.First(a => a.UserName == authorDto.Name);
         
@@ -162,7 +159,6 @@ public class AuthorRepository : IAuthorRepository
     public async Task RemoveFollows(string you, string me)
     {
         var authordto = await GetAuthorByName(you);
-        if (authordto == null) return;
         var author = _context.Authors.First(a => a.UserName == authordto.Name);
 
         author.Follows.Remove(me);

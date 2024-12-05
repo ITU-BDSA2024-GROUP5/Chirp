@@ -141,7 +141,8 @@ public class ExternalLoginModel : PageModel
                 UserName = info.Principal.Identity.Name,
                 Email = info.Principal.Claims.First(c => c.Type == ClaimTypes.Email)?.Value,
                 Cheeps = new List<Cheep>(),
-                AuthorId = await _chirpService.GetHighestAuthorId() + 1
+                AuthorId = await _chirpService.GetHighestAuthorId() + 1,
+                Follows = new List<string>()
             };
 
             var result = await _userManager.CreateAsync(user);

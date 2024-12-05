@@ -27,11 +27,8 @@ public class ChirpService : IChirpService
     public async Task CreateCheep(string name, string text)
     {
         var author = await GetAuthorByName(name);
-        if (author == null) return;
-        if (author.Name == null) return; 
 
         var intendedAuthorName = await _authorRepository.GetAuthorByNameEntity(author.Name); // fix? repositories should only return dtos
-        if (intendedAuthorName == null) return;
         
         var cheep = new Cheep()
         {
@@ -61,7 +58,7 @@ public class ChirpService : IChirpService
     /// </summary>
     /// <param name="email">Email to find author by</param>
     /// <returns>AuthorDTO</returns>
-    public async Task<AuthorDto?> GetAuthorByEmail(string email)
+    public async Task<AuthorDto> GetAuthorByEmail(string email)
     {
         return await _authorRepository.GetAuthorByEmail(email);
     }

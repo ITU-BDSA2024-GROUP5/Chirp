@@ -80,7 +80,17 @@ public class UserTimelineModel : PageModel
         {
             await TaskHandlerAsync(author);
         }
-        var tmpAuthor = await _chirpService.GetAuthorByName(author);
+
+        AuthorDto tmpAuthor;
+        if (author.Contains('@'))
+        {
+            tmpAuthor = await _chirpService.GetAuthorByEmail(author);
+        }
+        else
+        {
+            tmpAuthor = await _chirpService.GetAuthorByName(author);
+        }
+        
         if (User.Identity != null && User.Identity.Name == author)
         {
             Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, author, tmpAuthor.Follows);
@@ -111,6 +121,7 @@ public class UserTimelineModel : PageModel
         }
         else
         {
+            
             createdAuthor = await _chirpService.GetAuthorByName(author);
         }
 
