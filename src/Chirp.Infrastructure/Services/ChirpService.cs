@@ -58,7 +58,7 @@ public class ChirpService : IChirpService
     /// </summary>
     /// <param name="email">Email to find author by</param>
     /// <returns>AuthorDTO</returns>
-    public async Task<AuthorDto> GetAuthorByEmail(string email)
+    public async Task<AuthorDto?> GetAuthorByEmail(string email)
     {
         return await _authorRepository.GetAuthorByEmail(email);
     }

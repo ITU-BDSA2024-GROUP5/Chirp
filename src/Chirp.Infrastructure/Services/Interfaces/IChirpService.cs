@@ -10,7 +10,7 @@ public interface IChirpService
 {
     public Task CreateCheep(string name, string text);
     public Task<AuthorDto?> GetAuthorByName(string author);
-    public Task<AuthorDto> GetAuthorByEmail(string email);
+    public Task<AuthorDto?> GetAuthorByEmail(string email);
     public Task<int> GetHighestAuthorId();
     public Task<bool> ContainsFollower(string you, string me);
     public Task AddFollows(string you, string me);

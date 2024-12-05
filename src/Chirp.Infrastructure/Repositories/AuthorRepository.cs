@@ -56,12 +56,14 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>
-    public async Task<AuthorDto> GetAuthorByEmail(string email)
+    public async Task<AuthorDto?> GetAuthorByEmail(string email)
     {
         var query = _context.Authors
             .Select(a => a)
             .Where(a => a.Email.Equals(email));
-        var result = await query.FirstAsync();
+        var result = await query.FirstOrDefaultAsync();
+        
+        if (result == null) return null;
         
         var author = WrapInDto(result);
         return author;
