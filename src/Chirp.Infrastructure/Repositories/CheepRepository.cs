@@ -86,30 +86,6 @@ public class CheepRepository : ICheepRepository
     }
     
     /// <summary>
-    /// Reads 32 cheeps from the database, starting from the page number provided, by a specific author.
-    /// Finds the author by email.
-    /// </summary>
-    /// <param name="page"></param>
-    /// <param name="email"></param>
-    /// <returns></returns>
-    public async Task<List<CheepDto>?> ReadByEmail(int page, string email)
-    {
-        // Define the query - with our setup, EF Core translates this to an SQLite query in the background
-        var query = _context.Cheeps
-            .Select(cheep => cheep)
-            .Include(c => c.Author)
-            .Where(cheep => cheep.Author.Email == email)
-            .OrderByDescending(cheep => cheep.TimeStamp)
-            .Skip((page - 1) * 32)
-            .Take(32);
-        // Execute the query and store the results
-        var result = await query.ToListAsync();
-        var cheeps = WrapInDto(result);
-        return cheeps;
-    }
-    
-    
-    /// <summary>
     /// Reads all cheeps by a specific author.
     /// </summary>
     /// <param name="author">The author to read cheeps by</param>
@@ -127,19 +103,7 @@ public class CheepRepository : ICheepRepository
         return cheeps;
     }
     
-    public async Task<List<CheepDto>?> ReadAllCheeps()
-    {
-        var query = _context.Cheeps
-            .Select(cheep => cheep)
-            .Include(c => c.Author)  
-            .OrderByDescending(cheep => cheep.TimeStamp);
-        
-        var result = await query.ToListAsync();
-        
-        var cheeps = WrapInDto(result);
-
-        return cheeps;
-    }
+    
 
     /// <summary>
     /// Function for finding the highest CheepId in the database.

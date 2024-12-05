@@ -118,11 +118,6 @@ public class ChirpService : IChirpService
         return _cheepRepository.ReadAllCheeps(author);
     }
     
-    public Task<List<CheepDto>?> ReadAllCheeps()
-    {
-        return _cheepRepository.ReadAllCheeps();
-    }
-    
     
     /// <summary>
     /// Reads 32 cheeps from the database, starting from the page number provided.
@@ -146,16 +141,6 @@ public class ChirpService : IChirpService
         return await _cheepRepository.ReadByAuthor(page, author);
     }
     
-    /// <summary>
-    /// Reads 32 cheeps from the database, starting from the page number provided, by a specific author.
-    /// </summary>
-    /// <param name="page">Page number to read from.</param>
-    /// <param name="author">Author to read cheeps by.</param>
-    /// <returns></returns>
-    public async Task<List<Cheep>?> ReadByAuthorEntity(int page, string author)
-    {
-        return await _cheepRepository.ReadByAuthorEntity(page, author);
-    }
 
     /// <summary>
     /// Gets a list of followers for a specific author.
