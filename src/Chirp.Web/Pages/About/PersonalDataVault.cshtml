@@ -16,13 +16,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.PersonalDataItems)
+    @if (Model.PersonalDataItems != null)
+    {
+        foreach (var item in Model.PersonalDataItems)
         {
             <tr>
                 <td>@item.Key</td>
                 <td>@item.Value</td>
             </tr>
         }
+    }
+   
     </tbody>
 </table>
 

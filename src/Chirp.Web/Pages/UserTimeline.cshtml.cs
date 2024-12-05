@@ -64,9 +64,9 @@ public class UserTimelineModel : PageModel
         return RedirectToPage();
     }
     
-    public async Task<List<CheepDto>?> FetchCheeps(string author)
+    public async Task FetchCheeps(string author)
     {
-        return Cheeps = await _chirpService.ReadByAuthor(CurrentPage, author);
+        Cheeps = await _chirpService.ReadByAuthor(CurrentPage, author);
     }
     
     

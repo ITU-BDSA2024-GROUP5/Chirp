@@ -60,7 +60,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var query = _context.Authors
             .Select(a => a)
-            .Where(a => a.Email.Equals(email));
+            .Where(a => a.Email != null && a.Email.Equals(email));
         var result = await query.FirstOrDefaultAsync();
         
         if (result == null) return null;
@@ -113,16 +113,22 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     /// <param name="author"></param>
     /// <returns></returns>
-    private static AuthorDto WrapInDto(Author author)
+    private static AuthorDto? WrapInDto(Author author)
     {
-        var authorDto = new AuthorDto()
+        AuthorDto authorDto;
+
+        if (author.UserName != null && author.Email != null)
         {
-            Name = author.UserName,
-            Email = author.Email,
-            Follows = author.Follows
-        };
-        
-        return authorDto;
+            authorDto = new AuthorDto()
+            {
+                Name = author.UserName,
+                Email = author.Email,
+                Follows = author.Follows
+            };
+            return authorDto;
+        }
+
+        return null;
     }
 
     /// <summary>

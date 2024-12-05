@@ -172,13 +172,16 @@ public class CheepRepository : ICheepRepository
     /// <returns>List with CheepDTO's from a given user</returns>
     public async Task<List<CheepDto>?> GetCheepsByAuthor(string author)
     {
-        var auth = _context.Users.FirstOrDefault(a => a.UserName == author);
+        var query = _context.Cheeps
+            .Select(cheep => cheep)
+            .Include(c => c.Author)
+            .Where(cheep => cheep.Author.UserName == author)
+            .OrderByDescending(cheep => cheep.TimeStamp);
+        
+        var result = await query.ToListAsync();
+        
+        var cheeps = WrapInDto(result);
 
-        if (auth == null) return null;
-        
-        var cheeps = await ReadAllCheeps(auth.UserName);
-        
-        if (cheeps == null) return null;
         return cheeps;
     }
 
@@ -194,7 +197,7 @@ public class CheepRepository : ICheepRepository
     {
         var cheepsQuery = _context.Cheeps
             .Include(c => c.Author)
-            .Where(c => c.Author.UserName == author || (authors != null && authors.Contains(c.Author.UserName)))
+            .Where(c => c.Author.UserName != null && (c.Author.UserName == author || (authors != null && authors.Contains(c.Author.UserName))))
             .OrderByDescending(c => c.TimeStamp)
             .Skip((page - 1) * 32)
             .Take(32);
@@ -213,12 +216,13 @@ public class CheepRepository : ICheepRepository
         var list = new List<CheepDto>();
         foreach (var cheep in cheeps)
         {
-            list.Add(new CheepDto
-            {
-                Text = cheep.Text,
-                Author = cheep.Author.UserName,
-                TimeStamp = cheep.TimeStamp.ToString("R")
-            });
+            if (cheep.Author.UserName != null)
+                list.Add(new CheepDto
+                {
+                    Text = cheep.Text,
+                    Author = cheep.Author.UserName,
+                    TimeStamp = cheep.TimeStamp.ToString("R")
+                });
         }
         return list;
     }

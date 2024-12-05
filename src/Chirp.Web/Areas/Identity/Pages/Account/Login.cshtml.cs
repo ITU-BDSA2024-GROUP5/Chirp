@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Chirp.Core.DataModels;
-using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,23 +20,23 @@ public class LoginModel : PageModel
         _logger = logger;
     }
     [BindProperty]
-    public InputModel Input { get; set; }   
-    public IList<AuthenticationScheme> ExternalLogins { get; set; }      
-    public string ReturnUrl { get; set; }
+    public InputModel? Input { get; set; }   
+    public IList<AuthenticationScheme>? ExternalLogins { get; set; }      
+    public string? ReturnUrl { get; set; }
     [TempData]
-    public string ErrorMessage { get; set; }
+    public string? ErrorMessage { get; set; }
     public class InputModel
     {
         [Required]
         [EmailAddress]
-        public string Email { get; set; }           
+        public string? Email { get; set; }           
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
-    public async Task OnGetAsync(string returnUrl = null)
+    public async Task OnGetAsync(string? returnUrl = null)
     {
         if (!string.IsNullOrEmpty(ErrorMessage))
         {
@@ -55,7 +54,7 @@ public class LoginModel : PageModel
     /// </summary>
     /// <param name="returnUrl"></param>
     /// <returns></returns>
-    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -63,12 +62,16 @@ public class LoginModel : PageModel
         {
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            SignInResult result = null;
-            var user = await _userManager.FindByEmailAsync(Input.Email);
-            if (user != null)
+            SignInResult? result = null;
+            if (Input?.Email != null)
             {
-                result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user != null && user.UserName != null)
+                {
+                    if (Input.Password != null)
+                        result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe,
+                            lockoutOnFailure: false);
+                }
             }
 
             if (result != null)
@@ -80,7 +83,7 @@ public class LoginModel : PageModel
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input?.RememberMe });
                 }
                 if (result.IsLockedOut)
                 {
