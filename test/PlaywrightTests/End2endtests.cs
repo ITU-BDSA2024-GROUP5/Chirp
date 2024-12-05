@@ -4,7 +4,7 @@ using Microsoft.Playwright.NUnit;
 
 namespace PlaywrightTests;
 
-// Test can be generated with the help of pwsh bin/Debug/net8.0/playwright.ps1 codegen https://localhost:5177/
+// Test can be generated with the help of pwsh bin/Debug/net8.0/playwright.ps1 codegen http://localhost:5177/
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
@@ -200,6 +200,20 @@ public class Tests : PageTest
         await Page.GetByRole(AriaRole.Button, new() { Name = "Go Back" }).ClickAsync();
         
         await Expect(Page.GetByText("Show Followed")).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task KUserCanSearchByEmail()
+    {
+        await Page.GotoAsync("http://localhost:5177/testuser@gmail.com");
+        await Expect(Page.GetByText("testuser")).ToBeVisibleAsync();
+    }
+    
+    [Test]
+    public async Task LUserCanSearchByUsername()
+    {
+        await Page.GotoAsync("http://localhost:5177/testuser");
+        await Expect(Page.GetByText("testuser's Timeline")).ToBeVisibleAsync();
     }
             
 
