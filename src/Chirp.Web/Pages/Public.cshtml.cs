@@ -47,8 +47,12 @@ public class PublicModel : PageModel
         if (User.Identity != null && User.Identity.Name != null)
         {
             var author = await _chirpService.GetAuthorByName(User.Identity.Name);
-            await _chirpService.CreateCheep(author.Name, Text);
-            await FetchCheeps(author.Name);
+            if (author != null)
+            {
+                await _chirpService.CreateCheep(author.Name, Text);
+                await FetchCheeps(author.Name);
+            }
+           
         }
         
         return RedirectToPage();
@@ -74,25 +78,22 @@ public class PublicModel : PageModel
     /// <returns>Page reload</returns>
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-
         if (User.Identity != null && User.Identity.Name != null)
         {
             var author = await _chirpService.GetAuthorByName(User.Identity.Name);
         
-            var IsFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
-            
-            if (IsFollowing)
+            var isFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
+
+            if (isFollowing && author != null)
             {
                 await _chirpService.RemoveFollows(author.Name, authorToFollow);
             }
-            else
+            else if (author != null)
             {
                 await _chirpService.AddFollows(author.Name, authorToFollow);
             }
-        
-            IsFollowing = !IsFollowing;
         }
-        
+
         return RedirectToPage();
     }
     

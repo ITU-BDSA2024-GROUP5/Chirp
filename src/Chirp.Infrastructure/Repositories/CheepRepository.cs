@@ -173,10 +173,12 @@ public class CheepRepository : ICheepRepository
     public async Task<List<CheepDto>?> GetCheepsByAuthor(string author)
     {
         var auth = _context.Users.FirstOrDefault(a => a.UserName == author);
-        if (auth == null) return new List<CheepDto>();
-        if (auth.UserName == null) return new List<CheepDto>();
+
+        if (auth == null) return null;
         
         var cheeps = await ReadAllCheeps(auth.UserName);
+        
+        if (cheeps == null) return null;
         return cheeps;
     }
 

@@ -139,7 +139,9 @@ public class UserTimelineModel : PageModel
         }
         
         Cheeps = await _chirpService.GetPaginatedResultByAuthor(CurrentPage, createdAuthor.Name, PageSize);
-        Count = _chirpService.GetCheepsByAuthor(createdAuthor.Name).Result.Count;
+        var cheepDtos = _chirpService.GetCheepsByAuthor(createdAuthor.Name).Result;
+        if (cheepDtos != null)
+            Count = cheepDtos.Count;
     }
     
     
@@ -168,17 +170,20 @@ public class UserTimelineModel : PageModel
     /// <returns>Page reload</returns>
     public async Task<IActionResult> OnPostToggleFollow(string authorToFollow)
     {
-        var author = await _chirpService.GetAuthorByName(User.Identity.Name);
+        if (User.Identity != null && User.Identity.Name != null)
+        {
+            var author = await _chirpService.GetAuthorByName(User.Identity.Name);
         
-        var IsFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
+            var isFollowing = await _chirpService.ContainsFollower(authorToFollow, User.Identity.Name);
 
-        if (IsFollowing)
-        {
-            await _chirpService.RemoveFollows(author.Name, authorToFollow);
-        }
-        else
-        {
-            await _chirpService.AddFollows(author.Name, authorToFollow);
+            if (isFollowing && author != null)
+            {
+                await _chirpService.RemoveFollows(author.Name, authorToFollow);
+            }
+            else if (author != null)
+            {
+                await _chirpService.AddFollows(author.Name, authorToFollow);
+            }
         }
 
         return RedirectToPage();
