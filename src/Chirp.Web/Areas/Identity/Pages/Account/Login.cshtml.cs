@@ -20,7 +20,7 @@ public class LoginModel : PageModel
         _logger = logger;
     }
     [BindProperty]
-    public InputModel? Input { get; set; }   
+    public required InputModel Input { get; set; }   
     public IList<AuthenticationScheme>? ExternalLogins { get; set; }      
     public string? ReturnUrl { get; set; }
     [TempData]
@@ -63,7 +63,7 @@ public class LoginModel : PageModel
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
             SignInResult? result = null;
-            if (Input?.Email != null)
+            if (Input.Email != null)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (user != null && user.UserName != null)
@@ -83,7 +83,7 @@ public class LoginModel : PageModel
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input?.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
                 }
                 if (result.IsLockedOut)
                 {

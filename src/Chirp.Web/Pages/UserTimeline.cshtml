@@ -8,17 +8,17 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
-    var routeName = HttpContext.GetRouteValue("author");
+    var routeName = HttpContext.GetRouteValue("author")?.ToString();
 }
 
 <div>
     @if (SignInManager.IsSignedIn(User) && routeName != null)
     {
-        if (routeName.ToString().Contains('@'))
+        if (routeName.Contains('@'))
         {
-            routeName = ChirpService.GetAuthorByEmail(routeName.ToString()).Result.Name;
+            routeName = ChirpService.GetAuthorByEmail(routeName).Result?.Name;
         } 
-        if (routeName.Equals(User.Identity.Name))
+        if (routeName != null && routeName.Equals(User.Identity?.Name))
         {
             <div class="cheepbox">
                 @if (User.Identity != null)
@@ -45,7 +45,7 @@
                 @if(User.Identity?.Name != null && !User.Identity.Name.Equals(routeName))
                 {
                     var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
-                    var follows =  user?.Follows != null && user.Follows.Contains(routeName); 
+                    var follows =  user?.Follows != null && routeName != null && user.Follows.Contains(routeName); 
                     <button class="followbutton" style="font-size: 20px" name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                         @(follows ? "Unfollow" : "Follow")
                     </button>
@@ -80,7 +80,10 @@
             else
             {
                 <div style="display: none">
-                    @(_ = Model.FetchCheeps(@routeName.ToString()))
+                    @if (routeName != null)
+                    {
+                        @(_ = Model.FetchCheeps(routeName))
+                    }
                 </div>
         
                 <ul id="messagelist" class="cheeps">
@@ -102,7 +105,10 @@
         else
         {
             <div style="display: none">
-                @(_ = Model.FetchCheeps(@routeName.ToString()))
+                @if (routeName != null)
+                {
+                    @(_ = Model.FetchCheeps(routeName))
+                }
             </div>
         
             <ul id="messagelist" class="cheeps">
@@ -126,7 +132,10 @@
         <em>You can't cheep that! Cheep is empty!</em>
         
         <div style="display: none">
-            @(_ = Model.FetchCheeps(@routeName.ToString()))
+            @if (routeName != null)
+            {
+                @(_ = Model.FetchCheeps(routeName))
+            }
 
         </div>
         {
