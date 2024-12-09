@@ -42,19 +42,22 @@ public class UserTimelineModel : PageModel
     {
         if (!ModelState.IsValid)
         {
-            ModelState.AddModelError(string.Empty, "you made an oopsie");
+            Cheeps = await _chirpService.GetPaginatedResult(CurrentPage, PageSize);
+            Count = await _chirpService.GetCount();
+            ModelState.AddModelError(string.Empty, "Cheep cannot be empty!");
             return Page();
         }
 
         if (User.Identity == null)
         {
             ModelState.AddModelError(string.Empty, "you must authenticate first");
+            return RedirectToPage();
         }
         
         if (Text.Length > 160)
         {
             ModelState.AddModelError(string.Empty, "Cheep is too long");
-            return Page();
+            return RedirectToPage();
         }
 
         if (User.Identity != null && User.Identity.Name != null)
