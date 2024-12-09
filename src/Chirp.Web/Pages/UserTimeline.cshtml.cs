@@ -92,6 +92,18 @@ public class UserTimelineModel : PageModel
             await TaskHandlerAsync(author);
         }
         
+        var tmpAuthor = await _chirpService.GetAuthorByName(author);
+        if (User.Identity != null && User.Identity.Name == author)
+        {
+            Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, author, tmpAuthor?.Follows);
+            Count = await _chirpService.GetCheepsCountByFollows(author, tmpAuthor?.Follows);
+            return Page();
+        }
+        
+        Cheeps = await _chirpService.GetPaginatedResultByAuthor(CurrentPage, author, PageSize);
+        var cheepDtos = _chirpService.GetCheepsByAuthor(author).Result;
+        if (cheepDtos != null)
+            Count = cheepDtos.Count;
         return Page();
     }
 
@@ -162,13 +174,7 @@ public class UserTimelineModel : PageModel
         {   
             Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
             Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
-            return;
         }
-        
-        Cheeps = await _chirpService.GetPaginatedResultByAuthor(CurrentPage, createdAuthor.Name, PageSize);
-        var cheepDtos = _chirpService.GetCheepsByAuthor(createdAuthor.Name).Result;
-        if (cheepDtos != null)
-            Count = cheepDtos.Count;
     }
     
     /// <summary>
