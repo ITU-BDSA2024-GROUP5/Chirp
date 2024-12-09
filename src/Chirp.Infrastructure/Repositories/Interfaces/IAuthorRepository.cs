@@ -1,6 +1,7 @@
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
 
+namespace Chirp.Infrastructure.Repositories.Interfaces;
 
 /// <summary>
 /// Interface for the AuthorRepository. Contains methods to interact with the Authors table.

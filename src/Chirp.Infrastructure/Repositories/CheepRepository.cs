@@ -1,6 +1,7 @@
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Data.DTO;
+using Chirp.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Repositories;
