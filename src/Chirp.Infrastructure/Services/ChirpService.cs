@@ -1,5 +1,6 @@
 using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
+using Chirp.Infrastructure.Repositories.Interfaces;
 using Chirp.Infrastructure.Services.Interfaces;
 
 namespace Chirp.Infrastructure.Services;

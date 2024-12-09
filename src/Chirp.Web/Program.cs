@@ -6,6 +6,7 @@ using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Services;
 using Chirp.Infrastructure.Repositories;
+using Chirp.Infrastructure.Repositories.Interfaces;
 using Chirp.Infrastructure.Services.Interfaces;
 using Microsoft.Extensions.Options;
 
