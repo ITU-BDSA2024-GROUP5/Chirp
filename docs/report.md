@@ -64,7 +64,7 @@ If the message box is empty, a warning will be displayed.
 ![Figure 3: Follow another user](images/followactivity.svg)
 This diagram shows what occurs once a user tries to follow another user.
 If user isn't logged in, they will be redirected to the login page. Otherwise,
-depending whether the user already follows someone else, either 'Unfollow' or 'Follow'
+whether the user already follows someone else or not, either 'Follow' or 'Unfollow'
 will be displayed.
 
 ![Figure 4: User viewing their timeline](images/loginactivity.svg)
@@ -75,7 +75,7 @@ must be logged in before being able to do so.
 If a user wishes to delete their data, this user activity sequence would be a typical
 scenario.
 
-## Sequence of functionality/calls trough _Chirp!_ <a name="sequence"></a>
+## Sequence of functionality/calls through _Chirp!_ <a name="sequence"></a>
 
 # Process <a name="process"></a>
 
