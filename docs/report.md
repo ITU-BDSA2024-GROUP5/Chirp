@@ -1,3 +1,4 @@
+
 ---
 title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group `<no>`
@@ -37,11 +38,41 @@ _Chirp!_ Project Report
 
 ## Domain model <a name="domain"></a>
 
-Here comes a description of our domain model.
-
-![Illustration of the _Chirp!_ data model as UML class diagram.](docs/images/domain_model.png)
+![Illustration of the _Chirp!_ data model as UML class diagram.](images/Chirp.Core.png)
+<br>
+The Chirp application actively utilizes an onion architecture to promote a clear separation of concern.
+The onion has many layers but the core of it is Chirp.Core, where the domain model resides. 
+The domain model is relatively simple and represents authors and cheeps.
+The author model extends an IdentityUser from Asp.Net Core Identity to make it work seamlessly 
+with the rest of the Asp.Net Core ecosystem. 
 
 ## Architecture — In the small <a name="architecture"></a>
+
+![Illustration of onion architechture.](images/Onion.png)
+<br>
+As previously mentioned the onion architecture has many layers, but so far we have only covered the core. The rest of the layers are categorized as
+Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure layer. 
+
+The infrastructure layer can be further broken down in three sublayers. Starting from the inside and moving out
+there is a ApplicationDbContext that extends an IdentityDbContext to make it work seamlessly with the rest of the Asp.Net Core ecosystem.
+The purpose of the ApplicationDbContext is to provide a way to interact with the entities in the database.
+
+The next layer is the repository layer that interacts with the ApplicationDbContext by implementing methods to extract specific data from the database. 
+To comply with the repository pattern there are two repositories, the author repository and the cheep repository that both
+interact with their respective entities in the database.
+
+To interact with both author and cheep entities in a simple manner, a chirp service is implemented that uses the two repositories.
+The service combines the two repositories by implementing identical methods that call the repository methods.
+Another purpose of the service is also make development easier by providing only a single point of access to the database, to be injected.
+
+Both repositories and the service implement respective interfaces to enable dependency injection and make the code more testable.
+
+The last layer of the infrastructure layer is the data transfer object layer. The data transfer objects serve the purpose of only
+providing the necessary data to not expose the entire domain model to the user as there can be sensitive or unnecessary data.
+
+The web layer is the outermost layer and is responsible for handling the frontend portion of the chirp application 
+by providing a user interface.
+
 
 ## Architecture of deployed application <a name="deployed"></a>
 

@@ -92,18 +92,18 @@ public class UserTimelineModel : PageModel
             await TaskHandlerAsync(author);
         }
         
-        var tmpAuthor = await _chirpService.GetAuthorByName(author);
-        if (User.Identity != null && User.Identity.Name == author)
-        {
-            Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, author, tmpAuthor?.Follows);
-            Count = await _chirpService.GetCheepsCountByFollows(author, tmpAuthor?.Follows);
-            return Page();
-        }
-        
-        Cheeps = await _chirpService.GetPaginatedResultByAuthor(CurrentPage, author, PageSize);
-        var cheepDtos = _chirpService.GetCheepsByAuthor(author).Result;
-        if (cheepDtos != null)
-            Count = cheepDtos.Count;
+        // var tmpAuthor = await _chirpService.GetAuthorByName(author);
+        // if (User.Identity != null && User.Identity.Name == author)
+        // {
+        //     Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, author, tmpAuthor?.Follows);
+        //     Count = await _chirpService.GetCheepsCountByFollows(author, tmpAuthor?.Follows);
+        //     return Page();
+        // }
+        //
+        // Cheeps = await _chirpService.GetPaginatedResultByAuthor(CurrentPage, author, PageSize);
+        // var cheepDtos = _chirpService.GetCheepsByAuthor(author).Result;
+        // if (cheepDtos != null)
+        //     Count = cheepDtos.Count;
         return Page();
     }
 
@@ -122,6 +122,7 @@ public class UserTimelineModel : PageModel
         if (author.Contains('@'))
         {
             await SearchByEmail(author);
+            return;
         }
 
         await SearchByName(author);
@@ -134,19 +135,38 @@ public class UserTimelineModel : PageModel
     private async Task SearchByEmail(string author)
     {
         AuthorDto? createdAuthor = await _chirpService.GetAuthorByEmail(author);
-            
+
         if (createdAuthor == null)
         {
             ModelState.AddModelError(string.Empty, "Author not found");
             return;
         }
-            
-        Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
-
-        if (User.Identity?.Name == createdAuthor.Name)
-        {
+        
+        // if (createdAuthor.Follows.IsNullOrEmpty())
+        // {
+        //     Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
+        //     return;
+        // }
+        
+        if (User.Identity != null && User.Identity.Name == createdAuthor.Name)
+        {   
             Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
-            Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+            if (createdAuthor.Follows.IsNullOrEmpty())
+            {
+                var cheepDtos = _chirpService.ReadAllCheeps(createdAuthor.Name).Result;
+                if (cheepDtos != null)
+                    Count = cheepDtos.Count;
+            }
+            else
+            {
+                Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+
+            }
+        }
+        else
+        {
+            Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
+            if (Cheeps != null) Count = Cheeps.Count;
         }
     }
     
@@ -164,16 +184,33 @@ public class UserTimelineModel : PageModel
             return;
         }
         
-        if (createdAuthor.Follows.IsNullOrEmpty())
-        {
-            Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
-            return;
-        }
+        // if (createdAuthor.Follows.IsNullOrEmpty())
+        // {
+        //     Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
+        //     return;
+        // }
         
         if (User.Identity != null && User.Identity.Name == createdAuthor.Name)
         {   
             Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
-            Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+            if (createdAuthor.Follows.IsNullOrEmpty())
+            {
+                var cheepDtos = _chirpService.ReadAllCheeps(createdAuthor.Name).Result;
+                if (cheepDtos != null)
+                    Count = cheepDtos.Count;
+            }
+            else
+            {
+                Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+
+            }
+        }
+        else
+        {
+            Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
+            var cheepDtos = _chirpService.ReadAllCheeps(createdAuthor.Name).Result;
+            if (cheepDtos != null)
+                Count = cheepDtos.Count;
         }
     }
     

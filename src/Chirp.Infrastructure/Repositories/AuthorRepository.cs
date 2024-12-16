@@ -28,7 +28,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var query = _context.Authors
             .Select(a => a)
-            .Where(a => a.UserName == authorName);
+            .Where(a => a.UserName != null && a.UserName.ToLower() == authorName.ToLower());
         var result = await query.FirstOrDefaultAsync();
 
         if (result == null) return null;
@@ -157,7 +157,7 @@ public class AuthorRepository : IAuthorRepository
         
         var author = _context.Authors.First(a => a.UserName == authorDto.Name);
         
-        author.Follows.Add(me);
+        author.Follows.Add(me.ToLower());
         await _context.SaveChangesAsync();
     }
     
@@ -175,7 +175,7 @@ public class AuthorRepository : IAuthorRepository
         
         var author = _context.Authors.First(a => a.UserName == authordto.Name);
 
-        author.Follows.Remove(me);
+        author.Follows.Remove(me.ToLower());
         await _context.SaveChangesAsync();
     }
 
@@ -189,7 +189,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var author = await _context.Authors
             .FirstAsync(a => a.UserName == me);
-        return author.Follows.Contains(you);
+        return author.Follows.Contains(you.ToLower());
     }
 
     

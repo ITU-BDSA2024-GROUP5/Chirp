@@ -212,7 +212,7 @@ public class AuthorRepositoryTests
         
         //Assert
         Assert.NotEmpty(authorfollows);
-        Assert.Contains("Roger Histand", authorfollows);
+        Assert.Contains("roger histand", authorfollows);
     }
     
     [Fact]
@@ -248,7 +248,7 @@ public class AuthorRepositoryTests
         var authorfollows = await aRepository.GetFollowed("Test Author");
         
         //Assert
-        Assert.DoesNotContain("Roger Histand", authorfollows);
+        Assert.DoesNotContain("Roger histand", authorfollows);
         Assert.Contains("Luanna Muro", authorfollows);
     }
 }

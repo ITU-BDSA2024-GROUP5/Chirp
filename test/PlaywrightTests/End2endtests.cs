@@ -206,7 +206,7 @@ public class Tests : PageTest
     public async Task KUserCanSearchByEmail()
     {
         await Page.GotoAsync("http://localhost:5177/testuser@gmail.com");
-        await Expect(Page.GetByText("testuser")).ToBeVisibleAsync();
+        await Expect(Page.GetByText("testuser's Timeline")).ToBeVisibleAsync();
     }
     
     [Test]
