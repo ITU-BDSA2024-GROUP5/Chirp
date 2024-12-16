@@ -143,7 +143,7 @@ public class PublicModel : PageModel
     public async Task<bool> DoesFollow(string follower)
     {
         var user = await _chirpService.GetAuthorByName(User.Identity!.Name!);
-        return user!.Follows.Contains(follower.ToLower());
+        return await _chirpService.ContainsFollower(follower.ToLower(), user!.Name);
     }
 
     /// <summary>
