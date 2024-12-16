@@ -151,7 +151,17 @@ public class UserTimelineModel : PageModel
         if (User.Identity != null && User.Identity.Name == createdAuthor.Name)
         {   
             Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
-            Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+            if (createdAuthor.Follows.IsNullOrEmpty())
+            {
+                var cheepDtos = _chirpService.ReadAllCheeps(createdAuthor.Name).Result;
+                if (cheepDtos != null)
+                    Count = cheepDtos.Count;
+            }
+            else
+            {
+                Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+
+            }
         }
         else
         {
@@ -183,14 +193,24 @@ public class UserTimelineModel : PageModel
         if (User.Identity != null && User.Identity.Name == createdAuthor.Name)
         {   
             Cheeps = await _chirpService.GetCheepsFollowedByAuthor(CurrentPage, createdAuthor.Name, createdAuthor.Follows);
-            Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+            if (createdAuthor.Follows.IsNullOrEmpty())
+            {
+                var cheepDtos = _chirpService.ReadAllCheeps(createdAuthor.Name).Result;
+                if (cheepDtos != null)
+                    Count = cheepDtos.Count;
+            }
+            else
+            {
+                Count = await _chirpService.GetCheepsCountByFollows(author, createdAuthor.Follows);
+
+            }
         }
         else
         {
             Cheeps = await _chirpService.ReadByAuthor(CurrentPage, createdAuthor.Name);
             var cheepDtos = _chirpService.ReadAllCheeps(createdAuthor.Name).Result;
             if (cheepDtos != null)
-                Count = cheepDtos.Count();
+                Count = cheepDtos.Count;
         }
     }
     

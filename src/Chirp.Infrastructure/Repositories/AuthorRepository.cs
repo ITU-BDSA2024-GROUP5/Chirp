@@ -189,7 +189,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var author = await _context.Authors
             .FirstAsync(a => a.UserName == me);
-        return author.Follows.Contains(you);
+        return author.Follows.Contains(you.ToLower());
     }
 
     

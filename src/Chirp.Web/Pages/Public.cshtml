@@ -52,7 +52,7 @@
                                     @if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author))
                                     {
                                         var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
-                                        var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author);
+                                        var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author.ToLower());
                                         <button class="followbutton" type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px">
                                             @(follows ? "Unfollow" : "Follow")
                                         </button>
