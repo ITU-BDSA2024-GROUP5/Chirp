@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Chirp.Core.DataModels;
 using Chirp.Infrastructure.Data.DTO;
 using Chirp.Infrastructure.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.IdentityModel.Tokens;
@@ -26,10 +28,13 @@ public class UserTimelineModel : PageModel
     public int PageSize { get; set; } = 32;
     public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
     [BindProperty(SupportsGet = true)] public int CurrentPage { get; set; } = 1;
+    private readonly SignInManager<Author> _signInManager;
 
-    public UserTimelineModel(IChirpService chirpService)
+
+    public UserTimelineModel(IChirpService chirpService, SignInManager<Author> signInManager)
     {
         _chirpService = chirpService;
+        _signInManager = signInManager;
         Text = string.Empty;
     }
     
@@ -212,6 +217,25 @@ public class UserTimelineModel : PageModel
             if (cheepDtos != null)
                 Count = cheepDtos.Count;
         }
+    }
+    /// <summary>
+    /// Checks whether there is a user signed in.
+    /// </summary>
+    /// <returns>True, if _signInManager found a user</returns>
+    public bool IsSignedIn()
+    {
+        return _signInManager.IsSignedIn(User);
+    }
+    
+    /// <summary>
+    /// Checks whether current user follows another user.
+    /// </summary>
+    /// <param name="follower"> The person the user would like to follow</param>
+    /// <returns></returns>
+    public async Task<bool> DoesFollow(string follower)
+    {
+        var user = await _chirpService.GetAuthorByName(User.Identity!.Name!);
+        return user!.Follows.Contains(follower.ToLower());
     }
     
     /// <summary>
