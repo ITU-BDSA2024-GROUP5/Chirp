@@ -42,14 +42,17 @@
     <br/>
     <form method = "post" asp-page-handler = "ToggleFollow" asp-route-author = "@routeName" >
         <h2> @routeName's Timeline
-            @if (SignInManager.IsSignedIn(User))
+            @if (Model.IsSignedIn())
             {
-                @if(User.Identity?.Name != null && !User.Identity.Name.Equals(routeName))
+                if (await Model.DoesFollow(routeName!))
                 {
-                    var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
-                    var follows =  user?.Follows != null && routeName != null && user.Follows.Contains(routeName.ToLower()); 
-                    <button class="followbutton" style="font-size: 20px" name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
-                        @(follows ? "Unfollow" : "Follow")
+                    <button class="followbutton" type="submit" name="authorToFollow" value="@routeName" style="font-size: 12px">
+                        Unfollow
+                    </button>
+                } else if (!User.Identity!.Name!.Equals(routeName))
+                {
+                    <button class="followbutton" type="submit" name="authorToFollow" value="@routeName" style="font-size: 12px">
+                        Follow
                     </button>
                 }
             }
@@ -58,7 +61,7 @@
 
     @if (Model.Cheeps!=null)
     {
-        @if (SignInManager.IsSignedIn(User))
+        @if (Model.IsSignedIn())
         {
             if (User.Identity != null && User.Identity.Name != null && User.Identity.Name.Equals(routeName))
             {
