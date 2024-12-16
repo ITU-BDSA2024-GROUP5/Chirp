@@ -9,16 +9,16 @@
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author")?.ToString();
+    if (routeName != null && routeName.Contains('@'))
+    {
+        routeName = ChirpService.GetAuthorByEmail(routeName).Result?.Name;
+    } 
 }
 
 <div>
     @if (SignInManager.IsSignedIn(User) && routeName != null)
     {
-        if (routeName.Contains('@'))
-        {
-            routeName = ChirpService.GetAuthorByEmail(routeName).Result?.Name;
-        } 
-        if (routeName != null && routeName.Equals(User.Identity?.Name))
+        if (routeName.Equals(User.Identity?.Name))
         {
             <div class="cheepbox">
                 @if (User.Identity != null)
@@ -46,7 +46,7 @@
                 @if(User.Identity?.Name != null && !User.Identity.Name.Equals(routeName))
                 {
                     var user = ChirpService.GetAuthorByName(User.Identity.Name).Result;
-                    var follows =  user?.Follows != null && routeName != null && user.Follows.Contains(routeName); 
+                    var follows =  user?.Follows != null && routeName != null && user.Follows.Contains(routeName.ToLower()); 
                     <button class="followbutton" style="font-size: 20px" name = "authorToFollow" value = "@routeName" style = "font-size: 12px" >
                         @(follows ? "Unfollow" : "Follow")
                     </button>
@@ -81,10 +81,10 @@
             else
             {
                 <div style="display: none">
-                    @if (routeName != null)
-                    {
-                        @(_ = Model.FetchCheeps(routeName))
-                    }
+                    @* @if (routeName != null) *@
+                    @* { *@
+                    @*     @(_ = Model.FetchCheeps(routeName)) *@
+                    @* } *@
                 </div>
         
                 <ul id="messagelist" class="cheeps">
@@ -106,9 +106,13 @@
         else
         {
             <div style="display: none">
-                @if (routeName != null)
+                @* @if (routeName != null) *@
+                @* { *@
+                @*     @(_ = Model.FetchCheeps(routeName)) *@
+                @* } *@
+                @if (routeName != null && routeName.Contains('@'))
                 {
-                    @(_ = Model.FetchCheeps(routeName))
+                    routeName = ChirpService.GetAuthorByEmail(routeName).Result?.Name;
                 }
             </div>
         
@@ -128,37 +132,38 @@
             </ul>
         }
     }
-    else if(Model.Cheeps==null)
-    {
-        <em>You can't cheep that! Cheep is empty!</em>
-        
-        <div style="display: none">
-            @if (routeName != null)
-            {
-                @(_ = Model.FetchCheeps(routeName))
-            }
-
-        </div>
-        {
-            <ul id="messagelist" class="cheeps">
-                @if (Model.Cheeps != null)
-                {
-                    foreach (var cheep in Model.Cheeps)
-                    {
-                        <li>
-                            <p>
-                                <strong>
-                                    <a href="/@cheep.Author">@cheep.Author</a>
-                                </strong>
-                                @cheep.Text
-                                <small>&mdash; @cheep.TimeStamp</small>
-                            </p>
-                        </li>
-                    }
-                }
-            </ul>
-        }
-    }else{
+    @* else if(Model.Cheeps==null) *@
+    @* { *@
+    @*     <em>You can't cheep that! Cheep is empty!</em> *@
+    @*      *@
+    @*     <div style="display: none"> *@
+    @*         @if (routeName != null) *@
+    @*         { *@
+    @*             @(_ = Model.FetchCheeps(routeName)) *@
+    @*         } *@
+    @* *@
+    @*     </div> *@
+    @*     { *@
+    @*         <ul id="messagelist" class="cheeps"> *@
+    @*             @if (Model.Cheeps != null) *@
+    @*             { *@
+    @*                 foreach (var cheep in Model.Cheeps) *@
+    @*                 { *@
+    @*                     <li> *@
+    @*                         <p> *@
+    @*                             <strong> *@
+    @*                                 <a href="/@cheep.Author">@cheep.Author</a> *@
+    @*                             </strong> *@
+    @*                             @cheep.Text *@
+    @*                             <small>&mdash; @cheep.TimeStamp</small> *@
+    @*                         </p> *@
+    @*                     </li> *@
+    @*                 } *@
+    @*             } *@
+    @*         </ul> *@
+    @*     } *@
+    @* } *@
+    else{
         <em>There are no cheeps so far.</em>
         
     }
