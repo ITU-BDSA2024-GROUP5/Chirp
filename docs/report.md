@@ -40,7 +40,7 @@ _Chirp!_ Project Report
 
 Here comes a description of our domain model.
 
-![Illustration of the _Chirp!_ data model as UML class diagram.](images/domain_model.png)
+![Illustration of the _Chirp!_ data model as UML class diagram.](images/chirp.core.png)
 
 ## Architecture — In the small <a name="architecture"></a>
 
