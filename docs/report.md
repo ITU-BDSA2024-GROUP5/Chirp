@@ -38,13 +38,15 @@ _Chirp!_ Project Report
 
 ## Domain model <a name="domain"></a>
 
-Here comes a description of our domain model.
-
-![Illustration of the _Chirp!_ data model as UML class diagram.](images/chirp.core.png)
+![Illustration of the _Chirp!_ data model as UML class diagram.](images/Chirp.Core.png)
+The Chirp application actively utilizes an onion architecture to promote a clear separation of concern.
+The onion has many layers but the core of it is the domain model that models authors and cheeps.
+The author model extends an IdentityUser from Asp.Net Core Identity to make it work seamlessly 
+with the rest of the Asp.Net Core ecosystem. The cheep model is a simple model that represents a cheep.
 
 ## Architecture — In the small <a name="architecture"></a>
 
-![Illustration of onion architechture.](images/Onion-Architecture.png)
+![Illustration of onion architechture.](images/Onion.png)
 
 ## Architecture of deployed application <a name="deployed"></a>
 
