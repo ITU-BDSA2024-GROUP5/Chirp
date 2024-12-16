@@ -44,7 +44,7 @@ Here comes a description of our domain model.
 
 ## Architecture — In the small <a name="architecture"></a>
 
-![Illustration of onion architechture.](docs/images/Onion-Architecture.svg)
+![Illustration of onion architechture.](docs/images/Onion-Architecture.png)
 
 ## Architecture of deployed application <a name="deployed"></a>
 
