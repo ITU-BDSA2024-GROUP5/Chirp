@@ -125,6 +125,34 @@ When all problems have their respective issue tickets, the group will subdivide 
 
 ## How to make _Chirp!_ work locally <a name="localchirp"></a>
 
+### Compiled
+1. Access [our release page](https://github.com/ITU-BDSA2024-GROUP5/Chirp/releases "Title"). 
+2. Download the zip containing the compiled version of the program corresponding to the system you want it to run on. 
+3. Unzip the zip file into a given directory / %unzippedcontentdir%
+
+    #### UNIX-based systems
+    4. Open up terminal and run the following
+    5. 
+        ```
+        cd %unzippedcontentdir%/publish/%systemarchitecture%
+        ./Chirp.Web
+        ```
+    #### Windows
+    4. Open up CMD and run the following
+    5. 
+        ```
+        cd %unzippedcontentdir%/publish/win-x64
+        Chirp.Web.exe
+        ```
+
+6. The terminal/cmd should now show the following: Now listening on: http://localhost:5000
+7. Accessing your localhost on the given port should now give you access to the local running instance of the web-app
+
+### Source code
+
+
+
+
 ## How to run test suite locally <a name="localtest"></a>
 a
 
