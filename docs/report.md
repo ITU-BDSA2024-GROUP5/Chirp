@@ -114,6 +114,13 @@ scenario.
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
 
+### build_and_test
+This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
+Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
+If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
+
+ 
+
 ## Team work <a name="teamwork"></a>
 
 NEED IMAGE 
