@@ -86,6 +86,13 @@ by providing a user interface.
 
 ## Team work <a name="teamwork"></a>
 
+NEED IMAGE 
+
+
+The process "from issue to solution" starts after all members having attended that weeks lecture. After a lecture the group will find a room to sit and organize themselves, here a few group members start identifying and then quantifying this weeks problems by creating issue tickets. 
+
+
+
 ## How to make _Chirp!_ work locally <a name="localchirp"></a>
 
 ## How to run test suite locally <a name="localtest"></a>
