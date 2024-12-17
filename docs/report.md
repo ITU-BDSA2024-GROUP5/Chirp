@@ -173,10 +173,9 @@ dotnet user-secrets set "authentication:github:clientSecret" "YOURCLIENTSECRET"
 
 
 ## How to run test suite locally <a name="localtest"></a>
-a
+
 
 # Ethics <a name="ethics"></a>
-
 ## License <a name="license"></a>
 <br>
 The license chosen for the program is the MIT license due to its simplicity and flexibility. The license is short and transparent, making it easy to understand. It has minimal restrictions and allows for both commercial and non-commercial use. Anyone wanting to use the source code are allowed to use it for their purposes but as it is, meaning that the source code is delivered as is without any warranty and that we the developers do not hold any liability .
