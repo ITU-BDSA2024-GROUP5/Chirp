@@ -118,5 +118,8 @@ An example from development would be using ChatGPT to research how to implement 
 
 In terms of helpfulness, LLMs have been used in cases where advice and guidance was needed and not when looking for a direct solution.
 The benefits of using LLMs are comparable to asking a TA for help in understanding a certain topic or troubleshooting. 
+When presented with an incorrect or false response, it is simply dismissed and heeded as bad advice.
+
+Generally, the use of LLMs have sped up the development by enabling individual work by giving benefits similar to peer-programming. 
 </p>
 
