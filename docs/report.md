@@ -119,6 +119,10 @@ This workflow builds and tests the code on push and pull-requests on the master 
 Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
 If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
 
+### master_bdsagroup5chirprazor2024
+This workflow is triggered on push at master branch. When triggered it creates a build with the release configuration.
+Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
+The deploy job deploys the application to the Production env with the webapp url.
  
 
 ## Team work <a name="teamwork"></a>
