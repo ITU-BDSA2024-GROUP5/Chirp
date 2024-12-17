@@ -137,7 +137,7 @@
         <mxCell id="4euarY74Lfna2DTe539m-127" value="Program" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="4euarY74Lfna2DTe539m-111" vertex="1">
           <mxGeometry x="150" y="91" width="160" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="4euarY74Lfna2DTe539m-128" value="+Email: string&lt;br&gt;+UserName: string" style="align=left;strokeColor=#36393d;fillColor=#f9f7ed;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="4euarY74Lfna2DTe539m-127" vertex="1">
+        <mxCell id="4euarY74Lfna2DTe539m-128" value="+Main(args: string[])" style="align=left;strokeColor=#36393d;fillColor=#f9f7ed;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="4euarY74Lfna2DTe539m-127" vertex="1">
           <mxGeometry y="50" width="160" height="70" as="geometry" />
         </mxCell>
         <mxCell id="4euarY74Lfna2DTe539m-133" value="Pages" style="swimlane;whiteSpace=wrap;html=1;" parent="4euarY74Lfna2DTe539m-111" vertex="1">
