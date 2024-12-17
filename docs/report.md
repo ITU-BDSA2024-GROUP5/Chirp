@@ -120,10 +120,21 @@ Then it runs all tests made, but before running the tests it installs the test-f
 If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
 
 ### master_bdsagroup5chirprazor2024
-This workflow is triggered on push at master branch. When triggered it creates a build with the release configuration.
+This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
 Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
 The deploy job deploys the application to the Production env with the webapp url.
- 
+
+
+### release.yml
+Triggered when adding the following tag on push:
+- "v*.*.*"
+ The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
+ If that succeeds it proceeds with the workflow by publishing the following project files:
+    1. src/Chirp.Core/Chirp.Core.csproj
+    2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
+    3. src/Chirp.Web/Chirp.Web.csproj
+With the following release configurations: linux-x64, win-x64, osx-x64 and osx-arm64 with an corresponding output folder for it and zipping it.
+The release then include those zip-files and the source code
 
 ## Team work <a name="teamwork"></a>
 
