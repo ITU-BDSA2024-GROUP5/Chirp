@@ -19,7 +19,7 @@
 <div>
     @if (SignInManager.IsSignedIn(User) && routeName != null)
     {
-        if (routeName.Equals(User.Identity?.Name))
+        if (routeName.ToLower().Equals(User.Identity?.Name?.ToLower()))
         {
             <div class="cheepbox">
                 @if (User.Identity != null)
@@ -44,17 +44,21 @@
         <h2> @routeName's Timeline
             @if (Model.IsSignedIn())
             {
-                if (await Model.DoesFollow(routeName!))
+                if (await Model.DoesFollow(routeName!.ToLower()))
                 {
                     <button class="followbutton" type="submit" name="authorToFollow" value="@routeName" style="font-size: 12px">
                         Unfollow
                     </button>
-                } else if (!User.Identity!.Name!.Equals(routeName))
+                } else if (!User.Identity!.Name!.ToLower().Equals(routeName.ToLower()))
                 {
                     <button class="followbutton" type="submit" name="authorToFollow" value="@routeName" style="font-size: 12px">
                         Follow
                     </button>
                 }
+            }
+            else
+            {
+                <button class="followbutton" style="font-size: 12px" onclick="event.preventDefault(); window.location.href='/Identity/Account/Login';">Follow</button>
             }
         </h2>
     </form>
@@ -63,7 +67,7 @@
     {
         @if (Model.IsSignedIn())
         {
-            if (User.Identity != null && User.Identity.Name != null && User.Identity.Name.Equals(routeName))
+            if (User.Identity != null && User.Identity.Name != null && User.Identity.Name.ToLower().Equals(routeName?.ToLower()))
             {
                 <ul id="messagelist" class="cheeps">
                     @foreach (var cheep in @Model.Cheeps)

@@ -86,48 +86,6 @@
 
         </ul>
     }
-    @* else if (Model.Cheeps == null) *@
-    @* { *@
-    @*     <em> You can't cheep that! Cheep is empty! </em> *@
-    @* *@
-    @*     <div style="display: none"> *@
-    @*         @(_ = Model.FetchCheeps()) *@
-    @*     </div> *@
-    @* *@
-    @*     <ul id="messagelist" class="cheeps"> *@
-    @*         @if (Model.Cheeps != null) *@
-    @*         { *@
-    @*             foreach (var cheep in Model.Cheeps) *@
-    @*             { *@
-    @*                 <form method="post" asp-page-handler="ToggleFollow" asp-route-author="@cheep.Author"> *@
-    @*                     <li> *@
-    @*                         <div style="display: flex; align-items: normal;"> *@
-    @*                             <p> *@
-    @*                                 <strong> *@
-    @*                                     <a href="/@cheep.Author">@cheep.Author</a> *@
-    @*                                 </strong> *@
-    @*                                 @cheep.Text *@
-    @*                                 <small>&mdash; @cheep.TimeStamp</small> *@
-    @*                                 @if (SignInManager.IsSignedIn(User)) *@
-    @*                                 { *@
-    @*                                     if (User.Identity?.Name != null && !User.Identity.Name.Equals(cheep.Author)) *@
-    @*                                     { *@
-    @*                                         var user = ChirpService.GetAuthorByName(User.Identity.Name).Result; *@
-    @*                                         var follows = user?.Follows != null && user.Follows.Contains(@cheep.Author); *@
-    @*                                         <button class="followbutton" type="submit" name="authorToFollow" value="@cheep.Author" style="font-size: 12px"> *@
-    @*                                             @(follows ? "Unfollow" : "Follow") *@
-    @*                                         </button> *@
-    @*                                     } *@
-    @*                                 } *@
-    @*                             </p> *@
-    @*                         </div> *@
-    @*                     </li> *@
-    @*                 </form> *@
-    @*             } *@
-    @*         } *@
-    @*     </ul> *@
-    @* *@
-    @* } *@
     else
     {
         <em>There are no cheeps so far.</em>
