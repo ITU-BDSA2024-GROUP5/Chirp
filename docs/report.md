@@ -125,7 +125,7 @@ When all problems have their respective issue tickets, the group will subdivide 
 
 ## How to make _Chirp!_ work locally <a name="localchirp"></a>
 
-### Compiled
+### Running from Compiled
 1. Access [our release page](https://github.com/ITU-BDSA2024-GROUP5/Chirp/releases "Title"). 
 2. Download the zip containing the compiled version of the program corresponding to the system you want it to run on. 
 3. Unzip the zip file into a given directory / %unzippedcontentdir%
@@ -148,7 +148,26 @@ When all problems have their respective issue tickets, the group will subdivide 
 6. The terminal/cmd should now show the following: Now listening on: http://localhost:5000
 7. Accessing your localhost on the given port should now give you access to the local running instance of the web-app
 
-### Source code
+### Running from Source code
+1. Pull the source code from github, can be done by opening terminal/cmd and typing the following
+```
+git pull https://github.com/ITU-BDSA2024-GROUP5/Chirp.git
+```
+2. Navigate to the project directory and run
+```
+cd Chirp/src/Chirp.Web
+dotnet run
+```
+3. By default the terminal should now show - Now listening on: http://localhost:5177
+
+If not follow the following steps.
+1. Run ```dotnet dev-certs https --trust```
+2. Set user secrets by
+```
+dotnet user-secrets init
+dotnet user-secrets set "authentication:github:clientId" "YOURCLIENTID"
+dotnet user-secrets set "authentication:github:clientSecret" "YOURCLIENTSECRET"
+```
 
 
 
