@@ -79,8 +79,36 @@ by providing a user interface.
 ![Illustration of onion architechture.](images/sysarch.svg)
 
 ## User activities <a name="useractivities"></a>
+This section illustrates typical scenarios that the user may go through when using our *Chirp!* application.
+This goes for both unauthorised and authorised users, in which both cases have been included.
+The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
 
-## Sequence of functionality/calls trough _Chirp!_ <a name="sequence"></a>
+![Figure 1: User Registration](images/registeractivity.svg)
+This diagram illustrates the registration of a user.
+When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. 
+In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed
+will inform the user about said missing criteria.
+
+![Figure 2: Typing a 'cheep'](images/typecheepactivity.svg)
+This diagram displays the sequence of user activity, if the user
+wishes to type a cheep.
+If the message box is empty, a warning will be displayed.
+
+![Figure 3: Follow another user](images/followactivity.svg)
+This diagram shows what occurs once a user tries to follow another user.
+If user isn't logged in, they will be redirected to the login page. Otherwise,
+whether the user already follows someone else or not, either 'Follow' or 'Unfollow'
+will be displayed.
+
+![Figure 4: User viewing their timeline](images/loginactivity.svg)
+This diagram simply views the sequence if a user wishes to view their own page. User
+must be logged in before being able to do so.
+
+![Figure 5: User deleting their data](images/deleteuseractivity.svg)
+If a user wishes to delete their data, this user activity sequence would be a typical
+scenario.
+
+## Sequence of functionality/calls through _Chirp!_ <a name="sequence"></a>
 
 # Process <a name="process"></a>
 
