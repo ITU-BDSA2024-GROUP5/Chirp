@@ -110,5 +110,5 @@ public class Program
             AspNetCoreEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
         });
         await app.RunAsync();
-  }
+    }
 }
