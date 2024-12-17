@@ -76,6 +76,7 @@ by providing a user interface.
 
 
 ## Architecture of deployed application <a name="deployed"></a>
+![Illustration of onion architechture.](images/sysarch.svg)
 
 ## User activities <a name="useractivities"></a>
 
