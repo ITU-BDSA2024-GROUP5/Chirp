@@ -110,11 +110,8 @@ The license chosen for the program is the MIT license due to its simplicity and 
 <p>
 LLMs have been used in a limited capacity in the development of Chirp.
 CoPilot, as an integrated feature in Rider and GitHub, have mainly been used in code generation/assistance by cutting down the time spent on writing generic code. 
-
 Occasionally, LLMs has been used for bug fixes. This is usually done by giving ChatGPT a block of code along with the prompt "Please fix" to identify simple syntax errors, 
-which may have been hard to spot.
-
-Aside from directly in-code, LLM has been used in research as a substitute for search engines and documentation. 
+which may have been hard to spot. Aside from directly in-code, LLM has been used in research as a substitute for search engines and documentation. 
 An example from development would be using ChatGPT to research how to implement "Identity Core".
 
 In terms of helpfulness, LLMs have been used in cases where advice and guidance was needed and not when looking for a direct solution.
