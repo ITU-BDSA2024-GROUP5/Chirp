@@ -74,7 +74,9 @@ The web layer is the outermost layer and is responsible for handling the fronten
 by providing a user interface.
 
 
+
 ## Architecture of deployed application <a name="deployed"></a>
+![Illustration of onion architechture.](images/sysarch.svg)
 
 ## User activities <a name="useractivities"></a>
 
@@ -105,3 +107,17 @@ a
 The license chosen for the program is the MIT license due to its simplicity and flexibility. The license is short and transparent, making it easy to understand. It has minimal restrictions and allows for both commercial and non-commercial use. Anyone wanting to use the source code are allowed to use it for their purposes but as it is, meaning that the source code is delivered as is without any warranty and that we the developers do not hold any liability .
 
 ## LLMs, ChatGPT, CoPilot, and others <a name="chatgpt"></a>
+<p>
+LLMs have been used in a limited capacity in the development of Chirp.
+CoPilot, as an integrated feature in Rider and GitHub, have mainly been used in code generation/assistance by cutting down the time spent on writing generic code. 
+Occasionally, LLMs has been used for bug fixes. This is usually done by giving ChatGPT a block of code along with the prompt "Please fix" to identify simple syntax errors, 
+which may have been hard to spot. Aside from directly in-code, LLM has been used in research as a substitute for search engines and documentation. 
+An example from development would be using ChatGPT to research how to implement "Identity Core".
+
+In terms of helpfulness, LLMs have been used in cases where advice and guidance was needed and not when looking for a direct solution.
+The benefits of using LLMs are comparable to asking a TA for help in understanding a certain topic or troubleshooting. 
+When presented with an incorrect or false response, it is simply dismissed and heeded as bad advice.
+
+Generally, the use of LLMs have sped up the development by enabling individual work by giving benefits similar to peer-programming. 
+</p>
+
