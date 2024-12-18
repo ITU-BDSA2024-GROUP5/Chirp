@@ -88,20 +88,43 @@ As illustrated the user send requests and gets responses to the azure server thr
 The real deployment uses the https-protocol which ensures that the vulnerable user data found in the responses are encrypted with a tls-certificate.
 
 ## User activities {#useractivities}
-
 This section illustrates typical scenarios that the user may go through when using our ```Chirp!``` application.
 This goes for both unauthorised and authorised users, in which both cases have been included.
 The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
+&nbsp;
 
-![This diagram illustrates the registration of a user. When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed will inform the user about said missing criteria.](images/UserActivities/registeractivity.svg){width=50% height=65%}
+### Register
 
-![This diagram displays the sequence of user activity, if the user wishes to type a cheep.If the message box is empty, a warning will be displayed.](images/UserActivities/typecheepactivity.svg){width=50% height=65%}
+![CAP](images/UserActivities/registeractivity.svg){width=auto; height=60%}
+\newline
+This diagram illustrates the registration of a user. When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed will inform the user about said missing criteria.
+&nbsp;
 
-![This diagram shows what occurs once a user tries to follow another user. If user isn't logged in, they will be redirected to the login page. Otherwise, whether the user already follows someone else or not, either 'Follow' or 'Unfollow' will be displayed.](images/UserActivities/followactivity.svg){width=50% height=65%}
+### Submit cheep
 
-![This diagram simply views the sequence if a user wishes to view their own page. User must be logged in before being able to do so.](images/UserActivities/loginactivity.svg){width=50% height=65%}
-   
-![If a user wishes to delete their data, this user activity sequence would be a typical scenario.](images/UserActivities/deleteuseractivity.svg){width=50% height=65%}
+![CAP](images/UserActivities/typecheepactivity.svg){width=auto; height=60%}
+\newline
+This diagram displays the sequence of user activity, if the user wishes to type a cheep.If the message box is empty, a warning will be displayed.
+&nbsp;
+
+
+### Follow
+![CAP](images/UserActivities/followactivity.svg){width=auto; height=60%}
+\newline
+This diagram shows what occurs once a user tries to follow another user. If user isn't logged in, they will be redirected to the login page. Otherwise, whether the user already follows someone else or not, either 'Follow' or 'Unfollow' will be displayed.
+&nbsp;
+
+### User login
+![CAP](images/UserActivities/loginactivity.svg){width=auto; height=60%}
+\newline
+This diagram simply views the sequence if a user wishes to view their own page. User must be logged in before being able to do so.
+&nbsp;
+
+### Delete account
+![CAP](images/UserActivities/deleteuseractivity.svg){width=auto; height=60%}
+\newline
+If a user wishes to delete their data, this user activity sequence would be a typical scenario.
+&nbsp;
 
 \newpage
 
@@ -113,80 +136,107 @@ that show how the system works, and how each entity interacts with each other. T
 visualise the 'behind-the-scenes' of a user-request to the final rendered webpage shown to the user.
 
 We have chosen to illustrate the following sequences:
-
-1. when a user registers a new account, and login
-2. when a user accesses the Public Page
-3. when a user accesses their own private timeline
-4. when a user follows someone else
-5. when a user types a cheep
-6. when a user deletes their account
+    1. when a user registers a new account, and login
+    2. when a user accesses the Public Page
+    3. when a user accesses their own private timeline
+    4. when a user types a cheep
+    5. when a user deletes their account
+    6. when a user follows someone else 
 
 The diagrams are shown below:
 
-![This diagram shows the flow from when a user starts the application and wants to register a new account. After registering,
-the user logs in to their newly registered account.](images/Sequence/RegisterLogin.svg)
+### Public Page
+![](images/Sequence/PublicPage.svg){width=auto; height=60%} 
+\newline
+This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.
+&nbsp;
 
-![This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.](images/Sequence/PublicPage.svg)
+### Public Page
+![](images/Sequence/MyTimeline.svg){width=auto; height=60%} 
+\newline
+This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when a user is logged in (as shown in the diagram).
+&nbsp;
 
-![This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
-a user is logged in (as shown in the diagram).](images/Sequence/MyTimeline.svg)
+### Type cheep
+![](images/Sequence/TypeCheep.svg){width=auto; height=60%} 
+\newline
+This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only available when a user is logged in (as illustrated in the diagram).
+&nbsp;
 
-![This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
-available when a user is logged in (as illustrated in the diagram).](images/Sequence/Type%20Cheep.svg)
+### Delete account
+![](images/Sequence/DeleteMyAccount.svg){width=auto; height=60%} 
+\newline
+This diagram shows the interaction between the entities when a user decides to delete their account.
+&nbsp;
 
-![This diagram views how the user accesses the public page, and chooses to follow and unfollow
-another user from said page. ](images/follow%20diagram.png)
+### Follow diagram
+![](images/followdiagram.png){width=auto; height=60%}
+\newline
+This diagram views how the user accesses the public page, and chooses to follow and unfollow another user from said page. 
+&nbsp;
 
-![This diagram shows the interaction between the entities when a user decides to delete their account.](images/Sequence/DeleteMyAccount.svg)
-                             
-\newpage  
+### Register
+![](images/Sequence/RegisterLogin.svg){width=auto; height=60%} 
+\newline
+This diagram shows the flow from when a user starts the application and wants to register a new account. After registering, the user logs in to their newly registered account.
+&nbsp;
+ 
+\newpage
 
+\newpage
 # Process <a name="process"></a>
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
-![Build and test solution](images/workflow/build-and-test.svg)
 
 ### build_and_test
+![Build and test solution](images/workflow/build-and-test.svg)
+\newline
 This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
 Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
 If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
-
-![Deploy solution](images/workflow/deploy.svg)
+&nbsp;
 
 ### master_bdsagroup5chirprazor2024
+![Deploy solution](images/workflow/deploy.svg)
+\newline
 This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
 Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
 The deploy job deploys the application to the Production env with the webapp url.
+&nbsp;
 
-![Create release on GitHub](images/workflow/release.svg)
+
 
 ### release.yml
+![Create release on GitHub](images/workflow/release.svg)
+\newline
 Triggered when adding the following tag on push:
-
 ```- v*.*.* ```
  The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
  If that succeeds it proceeds with the workflow by publishing the following project files:
-1. src/Chirp.Core/Chirp.Core.csproj
-2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
-3. src/Chirp.Web/Chirp.Web.csproj
+ 
+    1. src/Chirp.Core/Chirp.Core.csproj
+    2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
+    3. src/Chirp.Web/Chirp.Web.csproj
 
 With the following release configurations: linux-x64, win-x64, osx-x64 and osx-arm64 with an corresponding output folder for it and zipping it.
 The release then include those zip-files and the source code
-
+&nbsp;
 
 ## Team work <a name="teamwork"></a>
 Below is the project board for group 5.
 The uncompleted tasks are:
-1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
-2. As a developer i want to documents all my functions to assure future developers understand the code
+
+    1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
+    2. As a developer i want to documents all my functions to assure future developers understand the code
 
 All other features have been completed, this solution for Chirp should not be missing any features or functionality.
-
+\newline
 ![Project board](images/projectboard.PNG)
-
+&nbsp;
 Below is a flowchart modeling of how teamwork has been conducted in group 5.
-
-![Flowchart diagram of teamwork](images/teamwork.png)
+\newline
+![Flowchart diagram of teamwork](images/teamwork.png){width=auto; height=60%}
+&nbsp;
 
 The process "from issue to solution" starts after all members having attended any weeks lecture. Shortly after that lecture the group will find a room to sit and organize themselves, here a few group members start identifying and then quantifying this weeks problems by creating issue tickets. 
 When all problems have their respective issue tickets, the group will subdivide itself and create smaller groups where individuals work together to solve the specific issue(s). A new branch will be created where all work for the feature/fix will be deposited. Whenever a specific issue is solved, its respective branch may be merged into main and their issue will be closed. If an issue is not solved during that day, individuals will work from home to solve/close the issue, or if needed, the group will meet again before the next weeks lecture (when new issues will be added).
