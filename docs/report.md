@@ -88,7 +88,7 @@ As illustrated above, the user sends requests to the Azure server and receives r
 The production deployment uses the HTTPS-protocol, which ensures vulnerable user data in the responses are encrypted with a TLS-certificate.
 &nbsp;
 
-## User activities <a name="useractivities"></a
+## User activities <a name="useractivities"></a>
 This section illustrates typical scenarios that the user may go through when using our *Chirp!* application.
 This includes cases for both unauthorised and authorised users.
 The illustrations are shown as sequences of activities in the format of UML Activity Diagrams.
