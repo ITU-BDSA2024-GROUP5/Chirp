@@ -13,9 +13,9 @@ _Chirp!_ Project Report
 - Markus Sværke Staael <msvs@itu.dk>
 - Patrick Shen <pash@itu.dk>
 - Frederik Terp <fter@itu.dk>
-- Nicky Ye <niye@itu.dk>
-- mariuslarsen <coml@itu.dk>
-- salj <salj@itu.dk>
+- Nicky Chengde Ye <niye@itu.dk>
+- Marius Cornelius Wisniewski Larsen <coml@itu.dk>
+- Sara Ziad Al-Janabi <salj@itu.dk>
 <div style="page-break-after: always;"></div>
 
 # Table of Contents
@@ -142,6 +142,7 @@ Triggered when adding the following tag on push:
     3. src/Chirp.Web/Chirp.Web.csproj
 With the following release configurations: linux-x64, win-x64, osx-x64 and osx-arm64 with an corresponding output folder for it and zipping it.
 The release then include those zip-files and the source code
+
 
 ## Team work <a name="teamwork"></a>
 
