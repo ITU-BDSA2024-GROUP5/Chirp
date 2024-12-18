@@ -79,8 +79,8 @@ by providing a user interface.
 ![Illustration of onion architechture.](images/sysarch.svg)
 
 ## User activities <a name="useractivities"></a>
-<br>
-This section illustrates typical scenarios that the user may go through when using our *Chirp!* application.
+
+This section illustrates typical scenarios that the user may go through when using our ```Chirp!``` application.
 This goes for both unauthorised and authorised users, in which both cases have been included.
 The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
 
