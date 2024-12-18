@@ -282,7 +282,7 @@ there is 2 ways to run the test suite
 - manually running the commands
   1. Run ``` dotnet run --project src/Chirp.Web & ``` to start it as a background process so it doesn't block the command prompt
   2. Run ``` pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install-deps```
-  3. Run ````pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install```
+  3. Run ```pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install```
   4. Run ``` dotnet test ```
   5. Run ``` kill -9 $(lsof -t -i tcp:5177) ``` to kill the background process running the website
 ### Mac
@@ -292,7 +292,7 @@ there is 2 ways to run the test suite
 - manually running the commands
   1. Run ``` dotnet run --project src/Chirp.Web & ``` to start it as a background process so it doesn't block the command prompt
   2. Run ``` pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install-deps```
-  3. Run ````pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install```
+  3. Run ```pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install```
   4. Run ``` dotnet test ```
   5. Run ``` kill -9 $(lsof -t -i tcp:5177) ``` to kill the background process running the website
 # Ethics <a name="ethics"></a>
