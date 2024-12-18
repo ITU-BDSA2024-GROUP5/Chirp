@@ -19,20 +19,20 @@ _Chirp!_ Project Report
 <div style="page-break-after: always;"></div>
 
 # Table of Contents
-1. [Design and Architecture of _Chirp!_](#design)
-2. [Domain Model](#domain)
-3. [Architecture - In the small](#architecture)
-4. [Architecture of deployed application](#deployed)
-5. [User activities](#useractivities)
-6. [Sequence of functionality/calls through _Chirp!_](#sequence)
+1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
+2. [Domain Model](#domain-model)
+3. [Architecture - In the small](#architecture--in-the-small)
+4. [Architecture of deployed application](#architecture-of-deployed-application)
+5. [User activities](#user-activities)
+6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
 7. [Process](#process)
-8. [Build, test, release and deployment](#buildtest)
-9. [Team work](#teamwork)
-10. [How to make _Chirp!_ work locally](#localchirp)
-11. [How to run test suite locally](#localtest)
+8. [Build, test, release and deployment](#build-test-release-and-deployment)
+9. [Team work](#team-work)
+10. [How to make _Chirp!_ work locally](#how-to-make-chirp-work-locally)
+11. [How to run test suite locally](#how-to-run-test-suite-locally)
 12. [Ethics](#ethics)
 13. [License](#license)
-14. [LLMs, ChatGPT, CoPilot, and others](#chatgpt)
+14. [LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
 
 # Design and Architecture of _Chirp!_ <a name="design"></a>
 
@@ -65,7 +65,7 @@ To interact with both author and cheep entities in a simple manner, a chirp serv
 The service combines the two repositories by implementing identical methods that call the repository methods.
 Another purpose of the service is also make development easier by providing only a single point of access to the database, to be injected.
 
-Both repositories and the service implement respective interfaces to enable dependency injection and make the code more testable.
+Both repositories and the service implement respective interfaces to enable dependency injection, which makes it easier to test for functionality and coverage. 
 
 The last layer of the infrastructure layer is the data transfer object layer. The data transfer objects serve the purpose of only
 providing the necessary data to not expose the entire domain model to the user as there can be sensitive or unnecessary data.
