@@ -38,7 +38,7 @@ _Chirp!_ Project Report
 
 ## Domain model <a name="domain"></a>
 
-![Illustration of the _Chirp!_ data model as UML class diagram.](images/Chirp.Core.png)
+![Illustration of the _Chirp!_ data model as UML class diagram.](images/onion/Chirp.Core.png)
 <br>
 The Chirp application actively utilizes an onion architecture to promote a clear separation of concern.
 The onion has many layers but the core of it is Chirp.Core, where the domain model resides. 
@@ -48,7 +48,7 @@ with the rest of the Asp.Net Core ecosystem.
 
 ## Architecture — In the small <a name="architecture"></a>
 
-![Illustration of onion architechture.](images/Onion.png)
+![Illustration of onion architechture.](images/onion/Onion.png)
 <br>
 As previously mentioned the onion architecture has many layers, but so far we have only covered the core. The rest of the layers are categorized as
 Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure layer. 
