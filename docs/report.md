@@ -19,20 +19,31 @@ _Chirp!_ Project Report
 <div style="page-break-after: always;"></div>
 
 # Table of Contents
-1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
-2. [Domain Model](#domain-model)
-3. [Architecture - In the small](#architecture--in-the-small)
-4. [Architecture of deployed application](#architecture-of-deployed-application)
-5. [User activities](#user-activities)
-6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
-7. [Process](#process)
-8. [Build, test, release and deployment](#build-test-release-and-deployment)
-9. [Team work](#team-work)
-10. [How to make _Chirp!_ work locally](#how-to-make-chirp-work-locally)
-11. [How to run test suite locally](#how-to-run-test-suite-locally)
-12. [Ethics](#ethics)
-13. [License](#license)
-14. [LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
+- [_Chirp!_ Project Report](#chirp-project-report)
+- [Table of Contents](#table-of-contents)
+- [Design and Architecture of _Chirp!_ ](#design-and-architecture-of-chirp-)
+  - [Domain model ](#domain-model-)
+  - [Architecture — In the small ](#architecture--in-the-small-)
+  - [Architecture of deployed application ](#architecture-of-deployed-application-)
+  - [User activities ](#user-activities-)
+  - [Sequence of functionality/calls through _Chirp!_ ](#sequence-of-functionalitycalls-through-chirp-)
+- [Process ](#process-)
+  - [Build, test, release, and deployment ](#build-test-release-and-deployment-)
+    - [build\_and\_test](#build_and_test)
+    - [master\_bdsagroup5chirprazor2024](#master_bdsagroup5chirprazor2024)
+    - [release.yml](#releaseyml)
+  - [Team work ](#team-work-)
+  - [How to make _Chirp!_ work locally ](#how-to-make-chirp-work-locally-)
+    - [Running from Compiled](#running-from-compiled)
+    - [Running from Source code](#running-from-source-code)
+  - [How to run test suite locally ](#how-to-run-test-suite-locally-)
+    - [Prerequisites](#prerequisites)
+    - [Windows](#windows)
+    - [Linux](#linux)
+    - [Mac](#mac)
+- [Ethics ](#ethics-)
+  - [License ](#license-)
+  - [LLMs, ChatGPT, CoPilot, and others ](#llms-chatgpt-copilot-and-others-)
 
 # Design and Architecture of _Chirp!_ <a name="design"></a>
 
@@ -249,8 +260,41 @@ dotnet user-secrets set "authentication:github:clientSecret" "YOURCLIENTSECRET"
 
 
 ## How to run test suite locally <a name="localtest"></a>
+### Prerequisites
+playwright needs powershell to be installed locally
+**guide to download for linux **: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-linux?view=powershell-7.4
+** guide to download for MacOS **: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-macos?view=powershell-7.4
 
 
+### Windows
+there is 2 ways to run the test suite
+- the provided script
+  <p>to run the provided script simply click on in the file explorer</p>
+- manually running the commands
+  1. Run ``` dotnet run --project src/Chirp.Web ```
+  2. Open powershell and run ``` .\Test\PlaywrightTests\Bin\Debug\net8.0\playwright.ps1 install```
+  3. Open a new command prompt
+  4. Run ``` dotnet test ```
+### Linux 
+there is 2 ways to run the test suite
+- the provided script
+  1. run ``` cd test; ./CompileAndRunTests.sh```
+- manually running the commands
+  1. Run ``` dotnet run --project src/Chirp.Web & ``` to start it as a background process so it doesn't block the command prompt
+  2. Run ``` pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install-deps```
+  3. Run ````pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install```
+  4. Run ``` dotnet test ```
+  5. Run ``` kill -9 $(lsof -t -i tcp:5177) ``` to kill the background process running the website
+### Mac
+there is 2 ways to run the test suite
+- the provided script
+  1. run ``` cd test; ./CompileAndRunTests.sh```
+- manually running the commands
+  1. Run ``` dotnet run --project src/Chirp.Web & ``` to start it as a background process so it doesn't block the command prompt
+  2. Run ``` pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install-deps```
+  3. Run ````pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install```
+  4. Run ``` dotnet test ```
+  5. Run ``` kill -9 $(lsof -t -i tcp:5177) ``` to kill the background process running the website
 # Ethics <a name="ethics"></a>
 ## License <a name="license"></a>
 <br>
