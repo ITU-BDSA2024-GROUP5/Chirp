@@ -94,18 +94,13 @@ This includes cases for both unauthorised and authorised users.
 The illustrations are shown as sequences of activities in the format of UML Activity Diagrams.
 &nbsp;
 
-#### Register Account
+### Register Account
 ![Figure 1: User Registration](images/UserActivities/registeractivity.svg){width=auto; height=60%}
 \newline
 This diagram illustrates the registration of a user.
 When a user registers, if all criteria are fulfilled, they will be led to the e-mail confirmation page. 
 In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, a warning will be displayed
 informing the user about the missing criteria.
-&nbsp;
-
-![CAP](images/UserActivities/registeractivity.svg){width=auto; height=60%}
-\newline
-This diagram illustrates the registration of a user. When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed will inform the user about said missing criteria.
 &nbsp;
 
 ### Submit cheep
@@ -116,7 +111,7 @@ typing a cheep.
 If the message box is empty, a warning will be displayed.
 &nbsp;
 
-#### Follow User
+### Follow User
 ![CAP](images/UserActivities/followactivity.svg){width=auto; height=60%}
 \newline
 This diagram shows what occurs once a user tries to follow another user.
@@ -125,7 +120,7 @@ depending on whether the user already follows someone else or not, either 'Follo
 will be displayed.
 &nbsp;
 
-#### Private Timeline
+### Private Timeline
 ![CAP](images/UserActivities/loginactivity.svg){width=auto; height=60%}
 \newline
 This diagram shows the sequence of a user visiting their own page.
@@ -150,13 +145,13 @@ The diagrams illustrate the following sequences:
 1. when a user registers a new account, and login
 2. when a user accesses the Public Page
 3. when a user accesses their own private timeline
-4. when a user follows someone else
-5. when a user types a cheep
+4. when a user types a cheep 
+5. when a user follows someone else
 6. when a user deletes their account
 
 The diagrams are shown below:
 
-#### Register and Login
+### Register and Login
 ![Figure 1: Register-Login](images/Sequence/RegisterLogin.svg)
 This diagram shows the flow of when a user starts the application and wants to register a new account. After registering,
 the user logs in to their newly registered account.
@@ -168,28 +163,28 @@ the user logs in to their newly registered account.
 This diagram shows the flow of when a user starts the application, and then tries to access the Public Timeline-site.
 &nbsp;
 
-#### Private Timeline
+### Private Timeline
 ![](images/Sequence/MyTimeline.svg){width=auto; height=60%}
 \newline
 This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
 a user is logged in.
 &nbsp;
 
-#### Type Cheep
+### Type Cheep
 ![](images/Sequence/TypeCheep.svg){width=auto; height=60%}
 \newline
 This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
 available when a user is logged in.
 &nbsp;
 
-#### Follow User
+### Follow User
 ![](images/followdiagram.png){width=auto; height=60%}
 \newline
 This diagram illustrates how the user accesses the public page, and wants to follow or unfollow
 another user from said page.
 &nbsp;
 
-#### Delete Account
+### Delete Account
 ![](images/Sequence/DeleteMyAccount.svg){width=auto; height=60%}
 \newline
 This diagram shows the interaction between the entities, when a user decides to delete their account.
@@ -200,7 +195,6 @@ This diagram shows the interaction between the entities, when a user decides to 
 # Process <a name="process"></a>
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
-![Figure 6: Build and test solution](images/workflow/build-and-test.svg)
 
 ### build_and_test.yml
 ![Build and test solution](images/workflow/build-and-test.svg)
@@ -292,12 +286,12 @@ Whenever a specific issue is solved, its respective branch may be merged into ma
 ### Running from Source code
 1. Pull the source code from GitHub. This can be done by opening terminal/cmd and typing the following
 ```
-git pull https://github.com/ITU-BDSA2024-GROUP5/Chirp.git
+    git pull https://github.com/ITU-BDSA2024-GROUP5/Chirp.git
 ```
 2. Navigate to the project directory and run
 ```
-cd Chirp/src/Chirp.Web
-dotnet run
+    cd Chirp/src/Chirp.Web
+    dotnet run
 ```
 3. By default, the terminal should now show - Now listening on: http://localhost:5177
 
