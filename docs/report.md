@@ -98,7 +98,11 @@ When all problems have their respective issue tickets, the group will subdivide 
 ## How to make _Chirp!_ work locally <a name="localchirp"></a>
 
 ## How to run test suite locally <a name="localtest"></a>
-a
+<p>
+The test suite is seperated into two folders: Chirp.Razor.Test contains unit and integration tests, and PlayWrightTests contains end-to-end tests.
+Unit tests are made for all the methods in AuthorRepository and CheepRepository. A couple of integration tests are created in the Razor Page framework. 
+The end-to-end tests are run with PlayWright and tests the UI elements Chirp by simulating user input.
+</p>
 
 # Ethics <a name="ethics"></a>
 
