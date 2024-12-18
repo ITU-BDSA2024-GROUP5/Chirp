@@ -274,7 +274,9 @@ dotnet user-secrets set "authentication:github:clientSecret" "YOURCLIENTSECRET"
 
 
 ## How to run test suite locally <a name="localtest"></a>
-
+The test suite is seperated into two folders: Chirp.Razor.Test contains unit and integration tests, and PlayWrightTests contains end-to-end tests.
+Unit tests are made for all the methods in AuthorRepository and CheepRepository. A couple of integration tests are created in the Razor Page framework.
+The end-to-end tests are run with PlayWright and tests the UI elements Chirp by simulating user input.
 
 # Ethics <a name="ethics"></a>
 ## License <a name="license"></a>
