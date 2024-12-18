@@ -26,9 +26,9 @@ _Chirp!_ Project Report
 # Table of Contents
 1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
 2. [Domain Model](#domain-model)
-3. [Architecture - In the small](#architecture--in-the-small)
+3. [Architecture — In the small](#architecture-in-the-small)
 4. [Architecture of deployed application](#architecture-of-deployed-application)
-5. [User activities](#user-activities-useractivities)
+5. [User activities](#user-activities)
 6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
 7. [Process](#process)
 8. [Build, test, release and deployment](#build-test-release-and-deployment)
@@ -53,13 +53,14 @@ The author model extends an IdentityUser from Asp.Net Core Identity to make it w
 with the rest of the Asp.Net Core ecosystem. 
 
 \newpage
-## Architecture — In the small <a name="architecture"></a>
+## Architecture — In the small <a name="architecture-in-the-small"></a>
 
 ![Illustration of onion architechture.](images/onion/Onion.png)
 
 As previously mentioned the onion architecture has many layers, but so far we have only covered the core. The rest of the layers are categorized as
 Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure layer. 
 
+### Infrastructure Layer
 The infrastructure layer can be further broken down in three sublayers. Starting from the inside and moving out
 there is a ApplicationDbContext that extends an IdentityDbContext to make it work seamlessly with the rest of the Asp.Net Core ecosystem.
 The purpose of the ApplicationDbContext is to provide a way to interact with the entities in the database.
@@ -77,17 +78,20 @@ Both repositories and the service implement respective interfaces to enable depe
 The last layer of the infrastructure layer is the data transfer object layer. The data transfer objects serve the purpose of only
 providing the necessary data to not expose the entire domain model to the user as there can be sensitive or unnecessary data.
 
+### Web Layer
 The web layer is the outermost layer and is responsible for handling the frontend portion of the chirp application 
 by providing a user interface.
 
 
 
 ## Architecture of deployed application <a name="deployed"></a>
-![Illustration of the architecture of the deployed application with http.](images/sysarch.svg)
+![](images/sysarch.svg)
+\newline
 As illustrated the user send requests and gets responses to the azure server through the http-protocol. Multiple clients can connect to the azure server at a time. The azure server sends a http request to the chirp web app with a required cookie for the user session. The Chirp web app communicates with the database itself through sqlite3.
 The real deployment uses the https-protocol which ensures that the vulnerable user data found in the responses are encrypted with a tls-certificate.
+&nbsp;
 
-## User activities {#useractivities}
+## User activities <a name="useractivities"></a>
 This section illustrates typical scenarios that the user may go through when using our ```Chirp!``` application.
 This goes for both unauthorised and authorised users, in which both cases have been included.
 The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
@@ -183,7 +187,6 @@ This diagram shows the flow from when a user starts the application and wants to
  
 \newpage
 
-\newpage
 # Process <a name="process"></a>
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
@@ -226,8 +229,10 @@ The release then include those zip-files and the source code
 Below is the project board for group 5.
 The uncompleted tasks are:
 
-    1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
-    2. As a developer i want to documents all my functions to assure future developers understand the code
+    1. As a Developer i want to check for possible SQL injection or XSS
+        vulnerabilities so the website is as secure as it can be
+    2. As a developer i want to documents all my functions to assure
+        future developers understand the code
 
 All other features have been completed, this solution for Chirp should not be missing any features or functionality.
 \newline
