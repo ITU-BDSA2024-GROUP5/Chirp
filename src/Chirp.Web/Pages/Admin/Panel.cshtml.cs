@@ -82,6 +82,7 @@ public class AdminModel(
                 if (result.Succeeded)
                 {
                     var authorCheeps = context.Cheeps.ToList().Where(c => c.AuthorId.ToString().Equals(user.Id));
+                    context.Authors.Remove(user);
                     context.Cheeps.RemoveRange(authorCheeps);
                 }
             }
