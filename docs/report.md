@@ -87,6 +87,7 @@ The illustrations are shown as sequence of activities in the format of UML Activ
 
 ![Figure 1: User Registration](images/UserActivities/registeractivity.svg)
 <br>
+
 This diagram illustrates the registration of a user.
 When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. 
 In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed
@@ -94,12 +95,14 @@ will inform the user about said missing criteria.
 
 ![Figure 2: Typing a 'cheep'](images/UserActivities/typecheepactivity.svg)
 <br>
+
 This diagram displays the sequence of user activity, if the user
 wishes to type a cheep.
 If the message box is empty, a warning will be displayed.
 
 ![Figure 3: Follow another user](images/UserActivities/followactivity.svg)
 <br>
+
 This diagram shows what occurs once a user tries to follow another user.
 If user isn't logged in, they will be redirected to the login page. Otherwise,
 whether the user already follows someone else or not, either 'Follow' or 'Unfollow'
@@ -107,6 +110,7 @@ will be displayed.
 
 ![Figure 4: User viewing their timeline](images/UserActivities/loginactivity.svg)
 <br>
+
 This diagram simply views the sequence if a user wishes to view their own page. User
 must be logged in before being able to do so.
 
@@ -156,6 +160,7 @@ This diagram shows the interaction between the entities when a user decides to d
 ## Build, test, release, and deployment <a name="buildtest"></a>
 ![Figure 6: Build and test solution](images/workflow/build-and-test.svg)
 <br>
+
 ### build_and_test
 This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
 Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
@@ -163,6 +168,7 @@ If any of these steps fails the workflow fails and the push or pull-request on m
 
 ![Figure 7: Deploy solution](images/workflow/deploy.svg)
 <br>
+
 ### master_bdsagroup5chirprazor2024
 This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
 Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
@@ -170,11 +176,10 @@ The deploy job deploys the application to the Production env with the webapp url
 
 ![Figure 7: Create release on GitHub](images/workflow/release.svg)
 <br>
+
 ### release.yml
 Triggered when adding the following tag on push:
-<br>
-```- v*.*.* ```
- The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
+```- v*.*.* ```. The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
  If that succeeds it proceeds with the workflow by publishing the following project files:
 1. src/Chirp.Core/Chirp.Core.csproj
 2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
@@ -191,6 +196,7 @@ The uncompleted tasks are:
 2. As a developer i want to documents all my functions to assure future developers understand the code
 
 All other features have been completed, this solution for Chirp should not be missing any features or functionality.
+
 ![Figure 6: Project board](images/projectboard.PNG)
 
 Below is a flowchart modeling of how teamwork has been conducted in group 5.
@@ -204,27 +210,37 @@ When all problems have their respective issue tickets, the group will subdivide 
 ## How to make _Chirp!_ work locally <a name="localchirp"></a>
 
 ### Running from Compiled
-1. Access [our release page](https://github.com/ITU-BDSA2024-GROUP5/Chirp/releases "Title"). 
-2. Download the zip containing the compiled version of the program corresponding to the system you want it to run on. 
-3. Unzip the zip file into a given directory / %unzippedcontentdir%
 
-    #### UNIX-based systems
-    4. Open up terminal and run the following
-    5. 
-        ```
+1. Access [our release page](https://github.com/ITU-BDSA2024-GROUP5/Chirp/releases "Title"). 
+
+2. Download the zip containing the compiled version of the program corresponding to the system you want it to run on. 
+
+3. Unzip the zip file into a given directory / %unzippedcontentdir% and run
+
+    <b>UNIX-based systems</b>
+
+    3.1. Open up terminal and run the following
+    
+    3.2.
+    
         cd %unzippedcontentdir%/publish/%systemarchitecture%
         ./Chirp.Web
-        ```
-    #### Windows
-    4. Open up CMD and run the following
-    5. 
-        ```
+        
+
+    <b> Windows</b>
+
+    3.1. Open up CMD and run the following
+
+    3.2. 
+
+        
         cd %unzippedcontentdir%/publish/win-x64
         Chirp.Web.exe
-        ```
+        
 
-6. The terminal/cmd should now show the following: Now listening on: http://localhost:5000
-7. Accessing your localhost on the given port should now give you access to the local running instance of the web-app
+4. The terminal/cmd should now show the following: Now listening on: http://localhost:5000
+
+5. Accessing your localhost on the given port should now give you access to the local running instance of the web-app
 
 ### Running from Source code
 1. Pull the source code from github, can be done by opening terminal/cmd and typing the following
@@ -240,6 +256,7 @@ dotnet run
 
 If not follow the following steps.
 1. Run ```dotnet dev-certs https --trust```
+
 2. Set user secrets by
 ```
 dotnet user-secrets init
