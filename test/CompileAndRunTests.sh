@@ -13,4 +13,4 @@ dotnet test
 #pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" uninstall
 
 read -p "Press Any key to continue"
-kill $dotnet_pid
+kill -9 $(lsof -t -i tcp:5177)
