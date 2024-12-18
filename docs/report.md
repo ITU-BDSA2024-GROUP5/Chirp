@@ -76,45 +76,79 @@ by providing a user interface.
 
 
 ## Architecture of deployed application <a name="deployed"></a>
-![Illustration of onion architechture.](images/sysarch.svg)
-
+![Illustration of the architecture of the deployed application with http.](images/sysarch.svg)
+As illustrated the user send requests and gets responses to the azure server through the http-protocol. Multiple clients can connect to the azure server at a time. The azure server sends a http request to the chirp web app with a required cookie for the user session. The Chirp web app communicates with the database itself through sqlite3.
+The real deployment uses the https-protocol which ensures that the vulnerable user data found in the responses are encrypted with a tls-certificate.
 ## User activities <a name="useractivities"></a>
 
 This section illustrates typical scenarios that the user may go through when using our ```Chirp!``` application.
 This goes for both unauthorised and authorised users, in which both cases have been included.
 The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
 
-![Figure 1: User Registration](images/registeractivity.svg)
+![Figure 1: User Registration](images/UserActivities/registeractivity.svg)
 <br>
 This diagram illustrates the registration of a user.
 When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. 
 In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed
 will inform the user about said missing criteria.
 
-![Figure 2: Typing a 'cheep'](images/typecheepactivity.svg)
+![Figure 2: Typing a 'cheep'](images/UserActivities/typecheepactivity.svg)
 <br>
 This diagram displays the sequence of user activity, if the user
 wishes to type a cheep.
 If the message box is empty, a warning will be displayed.
 
-![Figure 3: Follow another user](images/followactivity.svg)
+![Figure 3: Follow another user](images/UserActivities/followactivity.svg)
 <br>
 This diagram shows what occurs once a user tries to follow another user.
 If user isn't logged in, they will be redirected to the login page. Otherwise,
 whether the user already follows someone else or not, either 'Follow' or 'Unfollow'
 will be displayed.
 
-![Figure 4: User viewing their timeline](images/loginactivity.svg)
+![Figure 4: User viewing their timeline](images/UserActivities/loginactivity.svg)
 <br>
 This diagram simply views the sequence if a user wishes to view their own page. User
 must be logged in before being able to do so.
 
-![Figure 5: User deleting their data](images/deleteuseractivity.svg)
+![Figure 5: User deleting their data](images/UserActivities/deleteuseractivity.svg)
 <br>
-If a user wishes to delete their data, this user activity sequence would be a typical
-scenario.
+If a user wishes to delete their data, this user activity sequence would be a typical scenario.
 
 ## Sequence of functionality/calls through _Chirp!_ <a name="sequence"></a>
+When running the application, there are required flows of messages and data sent back and forth all the way from
+the requests from the user to the communication between the server and ASP.NET Core. We have chosen to create UML Sequence Diagrams,
+that show how the system works, and how each entity interacts with each other. The intention of the diagrams is to
+visualise the 'behind-the-scenes' of a user-request to the final rendered webpage shown to the user.
+
+We have chosen to illustrate the following sequences:
+1. when a user registers a new account, and login
+2. when a user accesses the Public Page
+3. when a user accesses their own private timeline
+4. when a user follows someone else
+5. when a user types a cheep
+6. when a user deletes their account
+
+![Figure 1: Register-Login](images/Sequence/RegisterLogin.svg)
+This diagram shows the flow from when a user starts the application and wants to register a new account. After registering,
+the user logs in to their newly registered account.
+
+![Figure 2: PublicPage](images/Sequence/PublicPage.svg)
+This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.
+
+![Figure 3: Private-Timeline](images/Sequence/MyTimeline.svg)
+This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
+a user is logged in (as shown in the diagram).
+
+![Figure 4: Type-Cheep](images/Sequence/Type%20Cheep.svg)
+This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
+available when a user is logged in (as illustrated in the diagram).
+
+![Figure 5: Follow-User](images/follow%20diagram.png)
+This diagram views how the user accesses the public page, and chooses to follow and unfollow
+another user from said page. 
+
+![Figure 6: Delete-Account](images/Sequence/DeleteMyAccount.svg)
+This diagram shows the interaction between the entities when a user decides to delete their account.
 
 # Process <a name="process"></a>
 
