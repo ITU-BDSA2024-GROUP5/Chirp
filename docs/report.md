@@ -3,30 +3,32 @@
 title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group `5`
 author:
+
 - "Helge Pfeiffer <ropf@itu.dk>"
 - "Adrian Hoff <adho@itu.dk>"
+
 numbersections: true
-header-includes:       
-    - \usepackage{float} 
-    - \usepackage{graphicx}
+
 ---
 _Chirp!_ Project Report
 ==============
 ***ITU BDSA 2024 Group 5***
+
 - Markus Sværke Staael <msvs@itu.dk>
 - Patrick Shen <pash@itu.dk>
 - Frederik Terp <fter@itu.dk>
 - Nicky Chengde Ye <niye@itu.dk>
 - Marius Cornelius Wisniewski Larsen <coml@itu.dk>
 - Sara Ziad Al-Janabi <salj@itu.dk>
-<div style="page-break-after: always;"></div>
+
+\newpage
 
 # Table of Contents
 1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
 2. [Domain Model](#domain-model)
-3. [Architecture - In the small](#architecture)
+3. [Architecture - In the small](#architecture--in-the-small)
 4. [Architecture of deployed application](#architecture-of-deployed-application)
-5. [User activities](#useractivities)
+5. [User activities](#user-activities-useractivities)
 6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
 7. [Process](#process)
 8. [Build, test, release and deployment](#build-test-release-and-deployment)
@@ -37,6 +39,7 @@ _Chirp!_ Project Report
 13. [License](#license)
 14. [LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
 
+\newpage
 # Design and Architecture of _Chirp!_ <a name="design"></a>
 
 ## Domain model <a name="domain"></a>
@@ -49,6 +52,7 @@ The domain model is relatively simple and represents authors and cheeps.
 The author model extends an IdentityUser from Asp.Net Core Identity to make it work seamlessly 
 with the rest of the Asp.Net Core ecosystem. 
 
+\newpage
 ## Architecture — In the small <a name="architecture"></a>
 
 ![Illustration of onion architechture.](images/onion/Onion.png)
@@ -119,26 +123,20 @@ We have chosen to illustrate the following sequences:
 
 The diagrams are shown below:
 
-### Register and Login
 ![This diagram shows the flow from when a user starts the application and wants to register a new account. After registering,
 the user logs in to their newly registered account.](images/Sequence/RegisterLogin.svg)
 
-### Access Public Page
 ![This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.](images/Sequence/PublicPage.svg)
 
-### Access My Timeline
 ![This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
 a user is logged in (as shown in the diagram).](images/Sequence/MyTimeline.svg)
 
-### Type Cheep
 ![This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
 available when a user is logged in (as illustrated in the diagram).](images/Sequence/Type%20Cheep.svg)
 
-### Follow and Unfollow
 ![This diagram views how the user accesses the public page, and chooses to follow and unfollow
 another user from said page. ](images/follow%20diagram.png)
 
-### Delete My Account
 ![This diagram shows the interaction between the entities when a user decides to delete their account.](images/Sequence/DeleteMyAccount.svg)
                              
 \newpage  
