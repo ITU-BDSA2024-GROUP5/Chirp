@@ -89,15 +89,15 @@ This section illustrates typical scenarios that the user may go through when usi
 This goes for both unauthorised and authorised users, in which both cases have been included.
 The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
 
-![This diagram illustrates the registration of a user. When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed will inform the user about said missing criteria.](images/UserActivities/registeractivity.svg)
+![This diagram illustrates the registration of a user. When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed will inform the user about said missing criteria.](images/UserActivities/registeractivity.svg){width=50% height=65%}
 
-![This diagram displays the sequence of user activity, if the user wishes to type a cheep.If the message box is empty, a warning will be displayed.](images/UserActivities/typecheepactivity.svg) 
+![This diagram displays the sequence of user activity, if the user wishes to type a cheep.If the message box is empty, a warning will be displayed.](images/UserActivities/typecheepactivity.svg){width=50% height=65%}
 
-![This diagram shows what occurs once a user tries to follow another user. If user isn't logged in, they will be redirected to the login page. Otherwise, whether the user already follows someone else or not, either 'Follow' or 'Unfollow' will be displayed.](images/UserActivities/followactivity.svg)
-        
-![This diagram simply views the sequence if a user wishes to view their own page. User must be logged in before being able to do so.](images/UserActivities/loginactivity.svg)
+![This diagram shows what occurs once a user tries to follow another user. If user isn't logged in, they will be redirected to the login page. Otherwise, whether the user already follows someone else or not, either 'Follow' or 'Unfollow' will be displayed.](images/UserActivities/followactivity.svg){width=50% height=65%}
+
+![This diagram simply views the sequence if a user wishes to view their own page. User must be logged in before being able to do so.](images/UserActivities/loginactivity.svg){width=50% height=65%}
    
-![If a user wishes to delete their data, this user activity sequence would be a typical scenario.](images/UserActivities/deleteuseractivity.svg)
+![If a user wishes to delete their data, this user activity sequence would be a typical scenario.](images/UserActivities/deleteuseractivity.svg){width=50% height=65%}
 
 \newpage
 
@@ -117,20 +117,28 @@ We have chosen to illustrate the following sequences:
 5. when a user types a cheep
 6. when a user deletes their account
 
+The diagrams are shown below:
+
+### Register and Login
 ![This diagram shows the flow from when a user starts the application and wants to register a new account. After registering,
 the user logs in to their newly registered account.](images/Sequence/RegisterLogin.svg)
 
+### Access Public Page
 ![This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.](images/Sequence/PublicPage.svg)
 
+### Access My Timeline
 ![This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
 a user is logged in (as shown in the diagram).](images/Sequence/MyTimeline.svg)
 
+### Type Cheep
 ![This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
 available when a user is logged in (as illustrated in the diagram).](images/Sequence/Type%20Cheep.svg)
 
+### Follow and Unfollow
 ![This diagram views how the user accesses the public page, and chooses to follow and unfollow
 another user from said page. ](images/follow%20diagram.png)
 
+### Delete My Account
 ![This diagram shows the interaction between the entities when a user decides to delete their account.](images/Sequence/DeleteMyAccount.svg)
                              
 \newpage  
