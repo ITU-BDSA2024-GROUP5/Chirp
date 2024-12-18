@@ -121,6 +121,7 @@ that show how the system works, and how each entity interacts with each other. T
 visualise the 'behind-the-scenes' of a user-request to the final rendered webpage shown to the user.
 
 We have chosen to illustrate the following sequences:
+
 1. when a user registers a new account, and login
 2. when a user accesses the Public Page
 3. when a user accesses their own private timeline
@@ -175,9 +176,10 @@ Triggered when adding the following tag on push:
 ```- v*.*.* ```
  The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
  If that succeeds it proceeds with the workflow by publishing the following project files:
-    1. src/Chirp.Core/Chirp.Core.csproj
-    2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
-    3. src/Chirp.Web/Chirp.Web.csproj
+1. src/Chirp.Core/Chirp.Core.csproj
+2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
+3. src/Chirp.Web/Chirp.Web.csproj
+
 With the following release configurations: linux-x64, win-x64, osx-x64 and osx-arm64 with an corresponding output folder for it and zipping it.
 The release then include those zip-files and the source code
 
@@ -185,8 +187,9 @@ The release then include those zip-files and the source code
 ## Team work <a name="teamwork"></a>
 Below is the project board for group 5.
 The uncompleted tasks are:
-    1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
-    2. As a developer i want to documents all my functions to assure future developers understand the code
+1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
+2. As a developer i want to documents all my functions to assure future developers understand the code
+
 All other features have been completed,this solution for Chirp should not be missing any features or functionality.
 ![Figure 6: Project board](images/projectboard.PNG)
 
