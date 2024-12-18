@@ -4,16 +4,6 @@ title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group `5`
 author:
 
-- "Helge Pfeiffer <ropf@itu.dk>"
-- "Adrian Hoff <adho@itu.dk>"
-
-numbersections: true
-
----
-_Chirp!_ Project Report
-==============
-***ITU BDSA 2024 Group 5***
-
 - Markus Sværke Staael <msvs@itu.dk>
 - Patrick Shen <pash@itu.dk>
 - Frederik Terp <fter@itu.dk>
@@ -21,27 +11,16 @@ _Chirp!_ Project Report
 - Marius Cornelius Wisniewski Larsen <coml@itu.dk>
 - Sara Ziad Al-Janabi <salj@itu.dk>
 
-\newpage
+numbersections: true
+toc: true
+toc-depth: 4
+include-before:
+- '`\newpage{}`{=latex}'
 
-# Table of Contents
-
-1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
-2. [Domain Model](#domain-model)
-3. [Architecture — In the small](#architecture-in-the-small)
-4. [Architecture of deployed application](#architecture-of-deployed-application)
-5. [User activities](#user-activities)
-6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
-7. [Process](#process)
-8. [Build, test, release and deployment](#build-test-release-and-deployment)
-9. [Team work](#team-work)
-10. [How to make _Chirp!_ work locally](#how-to-make-chirp-work-locally)
-11. [How to run test suite locally](#how-to-run-test-suite-locally)
-12. [Ethics](#ethics)
-13. [License](#license)
-14. [LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
-
+---
 
 \newpage
+
 # Design and Architecture of _Chirp!_ <a name="design"></a>
 
 ## Domain model <a name="domain"></a>
