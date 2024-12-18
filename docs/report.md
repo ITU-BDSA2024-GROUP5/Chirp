@@ -6,6 +6,9 @@ author:
 - "Helge Pfeiffer <ropf@itu.dk>"
 - "Adrian Hoff <adho@itu.dk>"
 numbersections: true
+header-includes:       
+    - \usepackage{float} 
+    - \usepackage{graphicx}
 ---
 _Chirp!_ Project Report
 ==============
@@ -79,47 +82,27 @@ by providing a user interface.
 ![Illustration of the architecture of the deployed application with http.](images/sysarch.svg)
 As illustrated the user send requests and gets responses to the azure server through the http-protocol. Multiple clients can connect to the azure server at a time. The azure server sends a http request to the chirp web app with a required cookie for the user session. The Chirp web app communicates with the database itself through sqlite3.
 The real deployment uses the https-protocol which ensures that the vulnerable user data found in the responses are encrypted with a tls-certificate.
-## User activities <a name="useractivities"></a>
+
+## User activities {#useractivities}
 
 This section illustrates typical scenarios that the user may go through when using our ```Chirp!``` application.
 This goes for both unauthorised and authorised users, in which both cases have been included.
 The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
 
-#### Register Account
-![Figure 1: User Registration](images/UserActivities/registeractivity.svg)
+![This diagram illustrates the registration of a user. When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed will inform the user about said missing criteria.](images/UserActivities/registeractivity.svg)
 
-This diagram illustrates the registration of a user.
-When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. 
-In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed
-will inform the user about said missing criteria.
+![This diagram displays the sequence of user activity, if the user wishes to type a cheep.If the message box is empty, a warning will be displayed.](images/UserActivities/typecheepactivity.svg) 
 
-#### Type Cheep
-![Figure 2: Typing a 'cheep'](images/UserActivities/typecheepactivity.svg)
+![This diagram shows what occurs once a user tries to follow another user. If user isn't logged in, they will be redirected to the login page. Otherwise, whether the user already follows someone else or not, either 'Follow' or 'Unfollow' will be displayed.](images/UserActivities/followactivity.svg)
+        
+![This diagram simply views the sequence if a user wishes to view their own page. User must be logged in before being able to do so.](images/UserActivities/loginactivity.svg)
+   
+![If a user wishes to delete their data, this user activity sequence would be a typical scenario.](images/UserActivities/deleteuseractivity.svg)
 
-This diagram displays the sequence of user activity, if the user
-wishes to type a cheep.
-If the message box is empty, a warning will be displayed.
-
-#### Follow User
-![Figure 3: Follow another user](images/UserActivities/followactivity.svg)
-
-This diagram shows what occurs once a user tries to follow another user.
-If user isn't logged in, they will be redirected to the login page. Otherwise,
-whether the user already follows someone else or not, either 'Follow' or 'Unfollow'
-will be displayed.
-
-#### Private Timeline
-![Figure 4: User viewing their timeline](images/UserActivities/loginactivity.svg)
-
-This diagram simply views the sequence if a user wishes to view their own page. User
-must be logged in before being able to do so.
-
-#### Delete Account
-![Figure 5: User deleting their data](images/UserActivities/deleteuseractivity.svg)
-
-If a user wishes to delete their data, this user activity sequence would be a typical scenario.
+\newpage
 
 ## Sequence of functionality/calls through _Chirp!_ <a name="sequence"></a>
+
 When running the application, there are required flows of messages and data sent back and forth all the way from
 the requests from the user to the communication between the server and ASP.NET Core. We have chosen to create UML Sequence Diagrams,
 that show how the system works, and how each entity interacts with each other. The intention of the diagrams is to
@@ -134,52 +117,42 @@ We have chosen to illustrate the following sequences:
 5. when a user types a cheep
 6. when a user deletes their account
 
-#### Register and Login
-![Figure 1: Register-Login](images/Sequence/RegisterLogin.svg)
-This diagram shows the flow from when a user starts the application and wants to register a new account. After registering,
-the user logs in to their newly registered account.
+![This diagram shows the flow from when a user starts the application and wants to register a new account. After registering,
+the user logs in to their newly registered account.](images/Sequence/RegisterLogin.svg)
 
-#### View Public Page
-![Figure 2: PublicPage](images/Sequence/PublicPage.svg)
-This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.
+![This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.](images/Sequence/PublicPage.svg)
 
-#### Private Timeline
-![Figure 3: Private-Timeline](images/Sequence/MyTimeline.svg)
-This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
-a user is logged in (as shown in the diagram).
+![This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
+a user is logged in (as shown in the diagram).](images/Sequence/MyTimeline.svg)
 
-#### Type Cheep
-![Figure 4: Type-Cheep](images/Sequence/Type%20Cheep.svg)
-This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
-available when a user is logged in (as illustrated in the diagram).
+![This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
+available when a user is logged in (as illustrated in the diagram).](images/Sequence/Type%20Cheep.svg)
 
-#### Follow User
-![Figure 5: Follow-User](images/follow%20diagram.png)
-This diagram views how the user accesses the public page, and chooses to follow and unfollow
-another user from said page. 
+![This diagram views how the user accesses the public page, and chooses to follow and unfollow
+another user from said page. ](images/follow%20diagram.png)
 
-#### Delete Account
-![Figure 6: Delete-Account](images/Sequence/DeleteMyAccount.svg)
-This diagram shows the interaction between the entities when a user decides to delete their account.
+![This diagram shows the interaction between the entities when a user decides to delete their account.](images/Sequence/DeleteMyAccount.svg)
+                             
+\newpage  
 
 # Process <a name="process"></a>
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
-![Figure 6: Build and test solution](images/workflow/build-and-test.svg)
+![Build and test solution](images/workflow/build-and-test.svg)
 
 ### build_and_test
 This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
 Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
 If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
 
-![Figure 7: Deploy solution](images/workflow/deploy.svg)
+![Deploy solution](images/workflow/deploy.svg)
 
 ### master_bdsagroup5chirprazor2024
 This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
 Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
 The deploy job deploys the application to the Production env with the webapp url.
 
-![Figure 7: Create release on GitHub](images/workflow/release.svg)
+![Create release on GitHub](images/workflow/release.svg)
 
 ### release.yml
 Triggered when adding the following tag on push:
@@ -203,11 +176,11 @@ The uncompleted tasks are:
 
 All other features have been completed, this solution for Chirp should not be missing any features or functionality.
 
-![Figure 6: Project board](images/projectboard.PNG)
+![Project board](images/projectboard.PNG)
 
 Below is a flowchart modeling of how teamwork has been conducted in group 5.
 
-![Figure 7: Flowchart diagram of teamwork](images/teamwork.png)
+![Flowchart diagram of teamwork](images/teamwork.png)
 
 The process "from issue to solution" starts after all members having attended any weeks lecture. Shortly after that lecture the group will find a room to sit and organize themselves, here a few group members start identifying and then quantifying this weeks problems by creating issue tickets. 
 When all problems have their respective issue tickets, the group will subdivide itself and create smaller groups where individuals work together to solve the specific issue(s). A new branch will be created where all work for the feature/fix will be deposited. Whenever a specific issue is solved, its respective branch may be merged into main and their issue will be closed. If an issue is not solved during that day, individuals will work from home to solve/close the issue, or if needed, the group will meet again before the next weeks lecture (when new issues will be added).
