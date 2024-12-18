@@ -3,30 +3,32 @@
 title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group `5`
 author:
+
 - "Helge Pfeiffer <ropf@itu.dk>"
 - "Adrian Hoff <adho@itu.dk>"
+
 numbersections: true
-header-includes:       
-    - \usepackage{float} 
-    - \usepackage{graphicx}
+
 ---
 _Chirp!_ Project Report
 ==============
 ***ITU BDSA 2024 Group 5***
+
 - Markus Sværke Staael <msvs@itu.dk>
 - Patrick Shen <pash@itu.dk>
 - Frederik Terp <fter@itu.dk>
 - Nicky Chengde Ye <niye@itu.dk>
 - Marius Cornelius Wisniewski Larsen <coml@itu.dk>
 - Sara Ziad Al-Janabi <salj@itu.dk>
-<div style="page-break-after: always;"></div>
+
+\newpage
 
 # Table of Contents
 1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
 2. [Domain Model](#domain-model)
-3. [Architecture - In the small](#architecture)
+3. [Architecture - In the small](#architecture--in-the-small)
 4. [Architecture of deployed application](#architecture-of-deployed-application)
-5. [User activities](#useractivities)
+5. [User activities](#user-activities-useractivities)
 6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
 7. [Process](#process)
 8. [Build, test, release and deployment](#build-test-release-and-deployment)
@@ -37,6 +39,7 @@ _Chirp!_ Project Report
 13. [License](#license)
 14. [LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
 
+\newpage
 # Design and Architecture of _Chirp!_ <a name="design"></a>
 
 ## Domain model <a name="domain"></a>
@@ -49,6 +52,7 @@ The domain model is relatively simple and represents authors and cheeps.
 The author model extends an IdentityUser from Asp.Net Core Identity to make it work seamlessly 
 with the rest of the Asp.Net Core ecosystem. 
 
+\newpage
 ## Architecture — In the small <a name="architecture"></a>
 
 ![Illustration of onion architechture.](images/onion/Onion.png)
@@ -89,15 +93,25 @@ This section illustrates typical scenarios that the user may go through when usi
 This goes for both unauthorised and authorised users, in which both cases have been included.
 The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
 
-![This diagram illustrates the registration of a user. When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed will inform the user about said missing criteria.](images/UserActivities/registeractivity.svg)
+![](images/UserActivities/registeractivity.svg)
 
-![This diagram displays the sequence of user activity, if the user wishes to type a cheep.If the message box is empty, a warning will be displayed.](images/UserActivities/typecheepactivity.svg) 
+This diagram illustrates the registration of a user. When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed will inform the user about said missing criteria.
 
-![This diagram shows what occurs once a user tries to follow another user. If user isn't logged in, they will be redirected to the login page. Otherwise, whether the user already follows someone else or not, either 'Follow' or 'Unfollow' will be displayed.](images/UserActivities/followactivity.svg)
+![](images/UserActivities/typecheepactivity.svg) 
+
+This diagram displays the sequence of user activity, if the user wishes to type a cheep.If the message box is empty, a warning will be displayed.
+
+![](images/UserActivities/followactivity.svg)
+
+This diagram shows what occurs once a user tries to follow another user. If user isn't logged in, they will be redirected to the login page. Otherwise, whether the user already follows someone else or not, either 'Follow' or 'Unfollow' will be displayed.
         
-![This diagram simply views the sequence if a user wishes to view their own page. User must be logged in before being able to do so.](images/UserActivities/loginactivity.svg)
+![](images/UserActivities/loginactivity.svg)
+
+This diagram simply views the sequence if a user wishes to view their own page. User must be logged in before being able to do so.
    
-![If a user wishes to delete their data, this user activity sequence would be a typical scenario.](images/UserActivities/deleteuseractivity.svg)
+![](images/UserActivities/deleteuseractivity.svg)
+
+If a user wishes to delete their data, this user activity sequence would be a typical scenario.
 
 \newpage
 
