@@ -38,7 +38,7 @@ _Chirp!_ Project Report
 
 ## Domain model <a name="domain"></a>
 
-![Illustration of the _Chirp!_ data model as UML class diagram.](images/Chirp.Core.png)
+![Illustration of the _Chirp!_ data model as UML class diagram.](images/onion/Chirp.Core.png)
 <br>
 The Chirp application actively utilizes an onion architecture to promote a clear separation of concern.
 The onion has many layers but the core of it is Chirp.Core, where the domain model resides. 
@@ -48,7 +48,7 @@ with the rest of the Asp.Net Core ecosystem.
 
 ## Architecture — In the small <a name="architecture"></a>
 
-![Illustration of onion architechture.](images/Onion.png)
+![Illustration of onion architechture.](images/onion/Onion.png)
 <br>
 As previously mentioned the onion architecture has many layers, but so far we have only covered the core. The rest of the layers are categorized as
 Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure layer. 
@@ -119,18 +119,22 @@ scenario.
 # Process <a name="process"></a>
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
-
+![Figure 6: Build and test solution](images/workflow/build-and-test.svg)
+<br>
 ### build_and_test
 This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
 Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
 If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
 
+![Figure 7: Deploy solution](images/workflow/deploy.svg)
+<br>
 ### master_bdsagroup5chirprazor2024
 This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
 Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
 The deploy job deploys the application to the Production env with the webapp url.
 
-
+![Figure 7: Create release on GitHub](images/workflow/release.svg)
+<br>
 ### release.yml
 Triggered when adding the following tag on push:
 <br>
