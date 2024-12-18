@@ -21,9 +21,9 @@ _Chirp!_ Project Report
 # Table of Contents
 1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
 2. [Domain Model](#domain-model)
-3. [Architecture - In the small](#architecture--in-the-small)
+3. [Architecture - In the small](#architecture)
 4. [Architecture of deployed application](#architecture-of-deployed-application)
-5. [User activities](#user-activities)
+5. [User activities](#useractivities)
 6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
 7. [Process](#process)
 8. [Build, test, release and deployment](#build-test-release-and-deployment)
@@ -39,7 +39,7 @@ _Chirp!_ Project Report
 ## Domain model <a name="domain"></a>
 
 ![Illustration of the _Chirp!_ data model as UML class diagram.](images/onion/Chirp.Core.png)
-<br>
+
 The Chirp application actively utilizes an onion architecture to promote a clear separation of concern.
 The onion has many layers but the core of it is Chirp.Core, where the domain model resides. 
 The domain model is relatively simple and represents authors and cheeps.
@@ -49,7 +49,7 @@ with the rest of the Asp.Net Core ecosystem.
 ## Architecture — In the small <a name="architecture"></a>
 
 ![Illustration of onion architechture.](images/onion/Onion.png)
-<br>
+
 As previously mentioned the onion architecture has many layers, but so far we have only covered the core. The rest of the layers are categorized as
 Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure layer. 
 
@@ -85,37 +85,38 @@ This section illustrates typical scenarios that the user may go through when usi
 This goes for both unauthorised and authorised users, in which both cases have been included.
 The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
 
+#### Register Account
 ![Figure 1: User Registration](images/UserActivities/registeractivity.svg)
-<br>
 
 This diagram illustrates the registration of a user.
 When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. 
 In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed
 will inform the user about said missing criteria.
 
+#### Type Cheep
 ![Figure 2: Typing a 'cheep'](images/UserActivities/typecheepactivity.svg)
-<br>
 
 This diagram displays the sequence of user activity, if the user
 wishes to type a cheep.
 If the message box is empty, a warning will be displayed.
 
+#### Follow User
 ![Figure 3: Follow another user](images/UserActivities/followactivity.svg)
-<br>
 
 This diagram shows what occurs once a user tries to follow another user.
 If user isn't logged in, they will be redirected to the login page. Otherwise,
 whether the user already follows someone else or not, either 'Follow' or 'Unfollow'
 will be displayed.
 
+#### Private Timeline
 ![Figure 4: User viewing their timeline](images/UserActivities/loginactivity.svg)
-<br>
 
 This diagram simply views the sequence if a user wishes to view their own page. User
 must be logged in before being able to do so.
 
+#### Delete Account
 ![Figure 5: User deleting their data](images/UserActivities/deleteuseractivity.svg)
-<br>
+
 If a user wishes to delete their data, this user activity sequence would be a typical scenario.
 
 ## Sequence of functionality/calls through _Chirp!_ <a name="sequence"></a>
@@ -133,25 +134,31 @@ We have chosen to illustrate the following sequences:
 5. when a user types a cheep
 6. when a user deletes their account
 
+#### Register and Login
 ![Figure 1: Register-Login](images/Sequence/RegisterLogin.svg)
 This diagram shows the flow from when a user starts the application and wants to register a new account. After registering,
 the user logs in to their newly registered account.
 
+#### View Public Page
 ![Figure 2: PublicPage](images/Sequence/PublicPage.svg)
 This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.
 
+#### Private Timeline
 ![Figure 3: Private-Timeline](images/Sequence/MyTimeline.svg)
 This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
 a user is logged in (as shown in the diagram).
 
+#### Type Cheep
 ![Figure 4: Type-Cheep](images/Sequence/Type%20Cheep.svg)
 This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
 available when a user is logged in (as illustrated in the diagram).
 
+#### Follow User
 ![Figure 5: Follow-User](images/follow%20diagram.png)
 This diagram views how the user accesses the public page, and chooses to follow and unfollow
 another user from said page. 
 
+#### Delete Account
 ![Figure 6: Delete-Account](images/Sequence/DeleteMyAccount.svg)
 This diagram shows the interaction between the entities when a user decides to delete their account.
 
@@ -159,7 +166,6 @@ This diagram shows the interaction between the entities when a user decides to d
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
 ![Figure 6: Build and test solution](images/workflow/build-and-test.svg)
-<br>
 
 ### build_and_test
 This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
@@ -167,7 +173,6 @@ Then it runs all tests made, but before running the tests it installs the test-f
 If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
 
 ![Figure 7: Deploy solution](images/workflow/deploy.svg)
-<br>
 
 ### master_bdsagroup5chirprazor2024
 This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
@@ -175,11 +180,12 @@ Next it publishes the project  to the output folder defined after -o and uploads
 The deploy job deploys the application to the Production env with the webapp url.
 
 ![Figure 7: Create release on GitHub](images/workflow/release.svg)
-<br>
 
 ### release.yml
 Triggered when adding the following tag on push:
-```- v*.*.* ```. The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
+
+```- v*.*.* ```
+ The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
  If that succeeds it proceeds with the workflow by publishing the following project files:
 1. src/Chirp.Core/Chirp.Core.csproj
 2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
@@ -272,7 +278,7 @@ dotnet user-secrets set "authentication:github:clientSecret" "YOURCLIENTSECRET"
 
 # Ethics <a name="ethics"></a>
 ## License <a name="license"></a>
-<br>
+
 The license chosen for the program is the MIT license due to its simplicity and flexibility. The license is short and transparent, making it easy to understand. It has minimal restrictions and allows for both commercial and non-commercial use. Anyone wanting to use the source code are allowed to use it for their purposes but as it is, meaning that the source code is delivered as is without any warranty and that we the developers do not hold any liability .
 
 ## LLMs, ChatGPT, CoPilot, and others <a name="chatgpt"></a>
