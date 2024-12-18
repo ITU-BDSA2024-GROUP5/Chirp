@@ -76,8 +76,9 @@ by providing a user interface.
 
 
 ## Architecture of deployed application <a name="deployed"></a>
-![Illustration of onion architechture.](images/sysarch.svg)
-
+![Illustration of the architecture of the deployed application with http.](images/sysarch.svg)
+As illustrated the user send requests and gets responses to the azure server through the http-protocol. Multiple clients can connect to the azure server at a time. The azure server sends a http request to the chirp web app with a required cookie for the user session. The Chirp web app communicates with the database itself through sqlite3.
+The real deployment uses the https-protocol which ensures that the vulnerable user data found in the responses are encrypted with a tls-certificate.
 ## User activities <a name="useractivities"></a>
 
 This section illustrates typical scenarios that the user may go through when using our ```Chirp!``` application.
