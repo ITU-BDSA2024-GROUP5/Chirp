@@ -16,14 +16,15 @@ _Chirp!_ Project Report
 - Nicky Chengde Ye <niye@itu.dk>
 - Marius Cornelius Wisniewski Larsen <coml@itu.dk>
 - Sara Ziad Al-Janabi <salj@itu.dk>
-<div style="page-break-after: always;"></div>
+
+\newpage
 
 # Table of Contents
 1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
 2. [Domain Model](#domain-model)
-3. [Architecture - In the small](#architecture)
+3. [Architecture - In the small](#architecture--in-the-small)
 4. [Architecture of deployed application](#architecture-of-deployed-application)
-5. [User activities](#useractivities)
+5. [User activities](#user-activities-useractivities)
 6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
 7. [Process](#process)
 8. [Build, test, release and deployment](#build-test-release-and-deployment)
@@ -34,6 +35,7 @@ _Chirp!_ Project Report
 13. [License](#license)
 14. [LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
 
+\newpage
 # Design and Architecture of _Chirp!_ <a name="design"></a>
 
 ## Domain model <a name="domain"></a>
@@ -46,6 +48,7 @@ The domain model is relatively simple and represents 'Authors' and 'Cheeps'.
 The author model extends an IdentityUser from ASP.NET Core Identity to make it work seamlessly 
 with the rest of the ASP.NET Core ecosystem. 
 
+\newpage
 ## Architecture — In the small <a name="architecture"></a>
 
 ![Illustration of onion architechture.](images/onion/Onion.png)
@@ -81,6 +84,7 @@ The production deployment uses the HTTPS-protocol, which ensures vulnerable user
 This section illustrates typical scenarios that the user may go through when using our *Chirp!* application.
 This includes cases for both unauthorised and authorised users.
 The illustrations are shown as sequences of activities in the format of UML Activity Diagrams.
+&nbsp;
 
 #### Register Account
 ![Figure 1: User Registration](images/UserActivities/registeractivity.svg)
@@ -90,15 +94,21 @@ When a user registers, if all criteria are fulfilled, they will be led to the e-
 In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, a warning will be displayed
 informing the user about the missing criteria.
 
-#### Type Cheep
-![Figure 2: Typing a 'cheep'](images/UserActivities/typecheepactivity.svg)
+![CAP](images/UserActivities/registeractivity.svg){width=auto; height=60%}
+\newline
+This diagram illustrates the registration of a user. When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed will inform the user about said missing criteria.
+&nbsp;
 
+### Submit cheep
+![CAP](images/UserActivities/typecheepactivity.svg){width=auto; height=60%}
+\newline
 This diagram displays the sequence of a user
 typing a cheep.
 If the message box is empty, a warning will be displayed.
 
 #### Follow User
-![Figure 3: Follow another user](images/UserActivities/followactivity.svg)
+![CAP](images/UserActivities/followactivity.svg){width=auto; height=60%}
+\newline
 
 This diagram shows what occurs once a user tries to follow another user.
 If user isn't logged in, they will be redirected to the login page. Otherwise,
@@ -106,14 +116,19 @@ depending on whether the user already follows someone else or not, either 'Follo
 will be displayed.
 
 #### Private Timeline
-![Figure 4: User viewing their timeline](images/UserActivities/loginactivity.svg)
+![CAP](images/UserActivities/loginactivity.svg){width=auto; height=60%}
+\newline
 
 This diagram shows the sequence of a user visiting their own page.
+&nbsp;
 
-#### Delete Account
-![Figure 5: User deleting their data](images/UserActivities/deleteuseractivity.svg)
-
+### Delete account
+![CAP](images/UserActivities/deleteuseractivity.svg){width=auto; height=60%}
+\newline
 If a user wishes to delete their data, this user activity sequence would be a typical scenario.
+&nbsp;
+
+\newpage
 
 ## Sequence of functionality/calls through _Chirp!_ <a name="sequence"></a>
 When running the application, messages and data are sent back and forth from
@@ -130,80 +145,103 @@ The diagrams illustrate the following sequences:
 5. when a user types a cheep
 6. when a user deletes their account
 
+The diagrams are shown below:
+
 #### Register and Login
 ![Figure 1: Register-Login](images/Sequence/RegisterLogin.svg)
 This diagram shows the flow from when a user starts the application and wants to register a new account. After registering,
 the user logs in to their newly registered account.
 
-#### View Public Page
-![Figure 2: PublicPage](images/Sequence/PublicPage.svg)
+### Public Page
+![](images/Sequence/PublicPage.svg){width=auto; height=60%} 
+\newline
 This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.
+&nbsp;
 
 #### Private Timeline
-![Figure 3: Private-Timeline](images/Sequence/MyTimeline.svg)
+![](images/Sequence/MyTimeline.svg){width=auto; height=60%}
+\newline
 This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
 a user is logged in (as shown in the diagram).
+&nbsp;
 
 #### Type Cheep
-![Figure 4: Type-Cheep](images/Sequence/Type%20Cheep.svg)
+![](images/Sequence/TypeCheep.svg){width=auto; height=60%}
+\newline
 This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
 available when a user is logged in (as illustrated in the diagram).
+&nbsp;
 
 #### Follow User
-![Figure 5: Follow-User](images/follow%20diagram.png)
+![](images/followdiagram.png){width=auto; height=60%}
+\newline
 This diagram views how the user accesses the public page, and chooses to follow and unfollow
 another user from said page. 
 
 #### Delete Account
-![Figure 6: Delete-Account](images/Sequence/DeleteMyAccount.svg)
+![](images/Sequence/DeleteMyAccount.svg){width=auto; height=60%}
+\newline
 This diagram shows the interaction between the entities when a user decides to delete their account.
+&nbsp;
 
+\newpage
+
+\newpage
 # Process <a name="process"></a>
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
 ![Figure 6: Build and test solution](images/workflow/build-and-test.svg)
 
 ### build_and_test
+![Build and test solution](images/workflow/build-and-test.svg)
+\newline
 This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
 Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
 If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
-
-![Figure 7: Deploy solution](images/workflow/deploy.svg)
+&nbsp;
 
 ### master_bdsagroup5chirprazor2024
+![Deploy solution](images/workflow/deploy.svg)
+\newline
 This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
 Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
 The deploy job deploys the application to the Production env with the webapp url.
+&nbsp;
 
-![Figure 7: Create release on GitHub](images/workflow/release.svg)
+
 
 ### release.yml
+![Create release on GitHub](images/workflow/release.svg)
+\newline
 Triggered when adding the following tag on push:
 
 ```- v*.*.* ```
  The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
  If that succeeds it proceeds with the workflow by publishing the following project files:
-1. src/Chirp.Core/Chirp.Core.csproj
-2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
-3. src/Chirp.Web/Chirp.Web.csproj
+ 
+    1. src/Chirp.Core/Chirp.Core.csproj
+    2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
+    3. src/Chirp.Web/Chirp.Web.csproj
 
 With the following release configurations: linux-x64, win-x64, osx-x64 and osx-arm64 with an corresponding output folder for it and zipping it.
 The release then include those zip-files and the source code
-
+&nbsp;
 
 ## Team work <a name="teamwork"></a>
 Below is the project board for group 5.
 The uncompleted tasks are:
-1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
-2. As a developer i want to documents all my functions to assure future developers understand the code
+
+    1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
+    2. As a developer i want to documents all my functions to assure future developers understand the code
 
 All other features have been completed, this solution for Chirp should not be missing any features or functionality.
-
-![Figure 6: Project board](images/projectboard.PNG)
-
+\newline
+![Project board](images/projectboard.PNG)
+&nbsp;
 Below is a flowchart modeling of how teamwork has been conducted in group 5.
-
-![Figure 7: Flowchart diagram of teamwork](images/teamwork.png)
+\newline
+![Flowchart diagram of teamwork](images/teamwork.png){width=auto; height=60%}
+&nbsp;
 
 The process "from issue to solution" starts after all members having attended any weeks lecture. Shortly after that lecture the group will find a room to sit and organize themselves, here a few group members start identifying and then quantifying this weeks problems by creating issue tickets. 
 When all problems have their respective issue tickets, the group will subdivide itself and create smaller groups where individuals work together to solve the specific issue(s). A new branch will be created where all work for the feature/fix will be deposited. Whenever a specific issue is solved, its respective branch may be merged into main and their issue will be closed. If an issue is not solved during that day, individuals will work from home to solve/close the issue, or if needed, the group will meet again before the next weeks lecture (when new issues will be added).
