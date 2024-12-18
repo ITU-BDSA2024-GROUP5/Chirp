@@ -13,32 +13,32 @@ _Chirp!_ Project Report
 - Markus Sværke Staael <msvs@itu.dk>
 - Patrick Shen <pash@itu.dk>
 - Frederik Terp <fter@itu.dk>
-- Nicky Ye <niye@itu.dk>
-- mariuslarsen <coml@itu.dk>
-- salj <salj@itu.dk>
+- Nicky Chengde Ye <niye@itu.dk>
+- Marius Cornelius Wisniewski Larsen <coml@itu.dk>
+- Sara Ziad Al-Janabi <salj@itu.dk>
 <div style="page-break-after: always;"></div>
 
 # Table of Contents
-1. [Design and Architecture of _Chirp!_](#design)
-2. [Domain Model](#domain)
-3. [Architecture - In the small](#architecture)
-4. [Architecture of deployed application](#deployed)
-5. [User activities](#useractivities)
-6. [Sequence of functionality/calls through _Chirp!_](#sequence)
+1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
+2. [Domain Model](#domain-model)
+3. [Architecture - In the small](#architecture--in-the-small)
+4. [Architecture of deployed application](#architecture-of-deployed-application)
+5. [User activities](#user-activities)
+6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
 7. [Process](#process)
-8. [Build, test, release and deployment](#buildtest)
-9. [Team work](#teamwork)
-10. [How to make _Chirp!_ work locally](#localchirp)
-11. [How to run test suite locally](#localtest)
+8. [Build, test, release and deployment](#build-test-release-and-deployment)
+9. [Team work](#team-work)
+10. [How to make _Chirp!_ work locally](#how-to-make-chirp-work-locally)
+11. [How to run test suite locally](#how-to-run-test-suite-locally)
 12. [Ethics](#ethics)
 13. [License](#license)
-14. [LLMs, ChatGPT, CoPilot, and others](#chatgpt)
+14. [LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
 
 # Design and Architecture of _Chirp!_ <a name="design"></a>
 
 ## Domain model <a name="domain"></a>
 
-![Illustration of the _Chirp!_ data model as UML class diagram.](images/Chirp.Core.png)
+![Illustration of the _Chirp!_ data model as UML class diagram.](images/onion/Chirp.Core.png)
 <br>
 The Chirp application actively utilizes an onion architecture to promote a clear separation of concern.
 The onion has many layers but the core of it is Chirp.Core, where the domain model resides. 
@@ -48,7 +48,7 @@ with the rest of the Asp.Net Core ecosystem.
 
 ## Architecture — In the small <a name="architecture"></a>
 
-![Illustration of onion architechture.](images/Onion.png)
+![Illustration of onion architechture.](images/onion/Onion.png)
 <br>
 As previously mentioned the onion architecture has many layers, but so far we have only covered the core. The rest of the layers are categorized as
 Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure layer. 
@@ -65,7 +65,7 @@ To interact with both author and cheep entities in a simple manner, a chirp serv
 The service combines the two repositories by implementing identical methods that call the repository methods.
 Another purpose of the service is also make development easier by providing only a single point of access to the database, to be injected.
 
-Both repositories and the service implement respective interfaces to enable dependency injection and make the code more testable.
+Both repositories and the service implement respective interfaces to enable dependency injection, which makes it easier to test for functionality and coverage. 
 
 The last layer of the infrastructure layer is the data transfer object layer. The data transfer objects serve the purpose of only
 providing the necessary data to not expose the entire domain model to the user as there can be sensitive or unnecessary data.
@@ -119,21 +119,26 @@ scenario.
 # Process <a name="process"></a>
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
-
+![Figure 6: Build and test solution](images/workflow/build-and-test.svg)
+<br>
 ### build_and_test
 This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
 Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
 If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
 
+![Figure 7: Deploy solution](images/workflow/deploy.svg)
+<br>
 ### master_bdsagroup5chirprazor2024
 This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
 Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
 The deploy job deploys the application to the Production env with the webapp url.
 
-
+![Figure 7: Create release on GitHub](images/workflow/release.svg)
+<br>
 ### release.yml
 Triggered when adding the following tag on push:
-- "v*.*.*"
+<br>
+```- v*.*.* ```
  The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
  If that succeeds it proceeds with the workflow by publishing the following project files:
     1. src/Chirp.Core/Chirp.Core.csproj
@@ -141,6 +146,7 @@ Triggered when adding the following tag on push:
     3. src/Chirp.Web/Chirp.Web.csproj
 With the following release configurations: linux-x64, win-x64, osx-x64 and osx-arm64 with an corresponding output folder for it and zipping it.
 The release then include those zip-files and the source code
+
 
 ## Team work <a name="teamwork"></a>
 ![Figure 6: Project board](images/projectboard.png)
