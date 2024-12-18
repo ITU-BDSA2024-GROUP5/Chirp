@@ -40,64 +40,61 @@ _Chirp!_ Project Report
 
 ![Illustration of the _Chirp!_ data model as UML class diagram.](images/onion/Chirp.Core.png)
 
-The Chirp application actively utilizes an onion architecture to promote a clear separation of concern.
-The onion has many layers but the core of it is Chirp.Core, where the domain model resides. 
-The domain model is relatively simple and represents authors and cheeps.
-The author model extends an IdentityUser from Asp.Net Core Identity to make it work seamlessly 
-with the rest of the Asp.Net Core ecosystem. 
+The Chirp application purposely utilizes an onion architecture to promote a clear separation of concern.
+The "onion" consists of multiple layers with the core being Chirp.Core, where the domain model resides. 
+The domain model is relatively simple and represents 'Authors' and 'Cheeps'.
+The author model extends an IdentityUser from ASP.NET Core Identity to make it work seamlessly 
+with the rest of the ASP.NET Core ecosystem. 
 
 ## Architecture — In the small <a name="architecture"></a>
 
 ![Illustration of onion architechture.](images/onion/Onion.png)
 
-As previously mentioned the onion architecture has many layers, but so far we have only covered the core. The rest of the layers are categorized as
-Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure layer. 
+The rest of the layers are categorized as Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure. 
 
-The infrastructure layer can be further broken down in three sublayers. Starting from the inside and moving out
-there is a ApplicationDbContext that extends an IdentityDbContext to make it work seamlessly with the rest of the Asp.Net Core ecosystem.
-The purpose of the ApplicationDbContext is to provide a way to interact with the entities in the database.
+The infrastructure layer can be further broken down in three sub-layers. Starting from the core and moving out one layer,
+there is an **ApplicationDbContext** that extends an **IdentityDbContext**. This is to provide a way for the application to interact and manipulate the entities in the database.
 
-The next layer is the repository layer that interacts with the ApplicationDbContext by implementing methods to extract specific data from the database. 
-To comply with the repository pattern there are two repositories, the author repository and the cheep repository that both
+The next layer is the repository layer that interacts with the **ApplicationDbContext** by implementing methods to extract specific data from the database. 
+To comply with the "Repository Design Pattern", two repositories are implemented; the **AuthorRepository** and the **CheepRepository** that both
 interact with their respective entities in the database.
 
-To interact with both author and cheep entities in a simple manner, a chirp service is implemented that uses the two repositories.
-The service combines the two repositories by implementing identical methods that call the repository methods.
-Another purpose of the service is also make development easier by providing only a single point of access to the database, to be injected.
+To interact with both **Author** and **Cheep** entities in a simple manner, a service called **ChirpService** is implemented.
+The service combines the two repositories by implementing identical methods that call the respective repository methods.
+Another purpose of the service is to make development easier by providing only a single point of access to the database for injection.
 
 Both repositories and the service implement respective interfaces to enable dependency injection, which makes it easier to test for functionality and coverage. 
 
-The last layer of the infrastructure layer is the data transfer object layer. The data transfer objects serve the purpose of only
-providing the necessary data to not expose the entire domain model to the user as there can be sensitive or unnecessary data.
+The last layer of the infrastructure layer is the 'Data Transfer Object' layer. The DTOs serve the purpose of only
+providing the necessary data in order to not expose the entire domain model to the user, as there can be sensitive or unnecessary data.
 
-The web layer is the outermost layer and is responsible for handling the frontend portion of the chirp application 
-by providing a user interface.
+The 'Web' layer is the outermost layer and is responsible for handling the front-end portion of the *Chirp!* application i.e. the user interface of the website.
 
 
 
 ## Architecture of deployed application <a name="deployed"></a>
 ![Illustration of the architecture of the deployed application with http.](images/sysarch.svg)
-As illustrated the user send requests and gets responses to the azure server through the http-protocol. Multiple clients can connect to the azure server at a time. The azure server sends a http request to the chirp web app with a required cookie for the user session. The Chirp web app communicates with the database itself through sqlite3.
-The real deployment uses the https-protocol which ensures that the vulnerable user data found in the responses are encrypted with a tls-certificate.
+As illustrated above, the user sends requests to the Azure server and receives responses from it through the HTTP-protocol. Multiple clients can connect to the Azure server simultaneously. The Azure server sends an HTTP-request to the *Chirp!* application with a required cookie for the user session. The *Chirp!* web-application communicates with the database itself with SQLite3.
+The production deployment uses the HTTPS-protocol, which ensures vulnerable user data in the responses are encrypted with a TLS-certificate.
 ## User activities <a name="useractivities"></a>
 
-This section illustrates typical scenarios that the user may go through when using our ```Chirp!``` application.
-This goes for both unauthorised and authorised users, in which both cases have been included.
-The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
+This section illustrates typical scenarios that the user may go through when using our *Chirp!* application.
+This includes cases for both unauthorised and authorised users.
+The illustrations are shown as sequences of activities in the format of UML Activity Diagrams.
 
 #### Register Account
 ![Figure 1: User Registration](images/UserActivities/registeractivity.svg)
 
 This diagram illustrates the registration of a user.
-When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. 
-In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed
-will inform the user about said missing criteria.
+When a user registers, if all criteria are fulfilled, they will be led to the e-mail confirmation page. 
+In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, a warning will be displayed
+informing the user about the missing criteria.
 
 #### Type Cheep
 ![Figure 2: Typing a 'cheep'](images/UserActivities/typecheepactivity.svg)
 
-This diagram displays the sequence of user activity, if the user
-wishes to type a cheep.
+This diagram displays the sequence of a user
+typing a cheep.
 If the message box is empty, a warning will be displayed.
 
 #### Follow User
@@ -105,14 +102,13 @@ If the message box is empty, a warning will be displayed.
 
 This diagram shows what occurs once a user tries to follow another user.
 If user isn't logged in, they will be redirected to the login page. Otherwise,
-whether the user already follows someone else or not, either 'Follow' or 'Unfollow'
+depending on whether the user already follows someone else or not, either 'Follow' or 'Unfollow'
 will be displayed.
 
 #### Private Timeline
 ![Figure 4: User viewing their timeline](images/UserActivities/loginactivity.svg)
 
-This diagram simply views the sequence if a user wishes to view their own page. User
-must be logged in before being able to do so.
+This diagram shows the sequence of a user visiting their own page.
 
 #### Delete Account
 ![Figure 5: User deleting their data](images/UserActivities/deleteuseractivity.svg)
@@ -120,12 +116,12 @@ must be logged in before being able to do so.
 If a user wishes to delete their data, this user activity sequence would be a typical scenario.
 
 ## Sequence of functionality/calls through _Chirp!_ <a name="sequence"></a>
-When running the application, there are required flows of messages and data sent back and forth all the way from
-the requests from the user to the communication between the server and ASP.NET Core. We have chosen to create UML Sequence Diagrams,
-that show how the system works, and how each entity interacts with each other. The intention of the diagrams is to
-visualise the 'behind-the-scenes' of a user-request to the final rendered webpage shown to the user.
+When running the application, messages and data are sent back and forth from
+the requests from the user to the server and ASP.NET Core. This is illustrated by the UML Sequence Diagrams,
+that show how the system works, and how the entities interact with each other. The intention of the diagrams is to
+visualise the process from when a user-request is sent, to the final rendered webpage shown to the user.
 
-We have chosen to illustrate the following sequences:
+The diagrams illustrate the following sequences:
 
 1. when a user registers a new account, and login
 2. when a user accesses the Public Page
