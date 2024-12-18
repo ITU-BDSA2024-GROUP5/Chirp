@@ -28,9 +28,9 @@ include-before:
 ![Illustration of the _Chirp!_ data model as UML class diagram.](images/onion/Chirp.Core.png)
 
 The Chirp application purposely utilizes an onion architecture to promote a clear separation of concern.
-The "onion" consists of multiple layers with the core being Chirp.Core, where the domain model resides. 
+The "onion" consists of multiple layers with the core being **Chirp.Core**, where the domain model resides. 
 The domain model is relatively simple and represents 'Authors' and 'Cheeps'.
-The author model extends an IdentityUser from ASP.NET Core Identity to make it work seamlessly 
+The author model extends **IdentityUser** from ASP.NET Core Identity to make it work seamlessly 
 with the rest of the ASP.NET Core ecosystem. 
 
 \newpage
@@ -38,14 +38,14 @@ with the rest of the ASP.NET Core ecosystem.
 
 ![Illustration of onion architechture.](images/onion/Onion.png)
 
-The rest of the layers are categorized as Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure. 
+The rest of the layers are categorized as 'Chirp.Infrastructure' and 'Chirp.Web', with the thickest layer being the infrastructure. 
 
 ### Infrastructure Layer
 The infrastructure layer can be further broken down in three sub-layers. Starting from the core and moving out one layer,
-there is an **ApplicationDbContext** that extends an **IdentityDbContext**. This is to provide a way for the application to interact and manipulate the entities in the database.
+there is the **ApplicationDbContext** that extends **IdentityDbContext**. This is to provide a way for the application to interact and manipulate the entities in the database.
 
-The next layer is the repository layer that interacts with the **ApplicationDbContext** by implementing methods to extract specific data from the database. 
-To comply with the "Repository Design Pattern", two repositories are implemented; the **AuthorRepository** and the **CheepRepository** that both
+The next layer is the repository layer that interacts with the **ApplicationDbContext** by implementing methods that extract specific data from the database. 
+To comply with the "Repository Design Pattern", two repositories are implemented; the **AuthorRepository** and the **CheepRepository**. Both of them
 interact with their respective entities in the database.
 
 To interact with both **Author** and **Cheep** entities in a simple manner, a service called **ChirpService** is implemented.
@@ -54,8 +54,8 @@ Another purpose of the service is to make development easier by providing only a
 
 Both repositories and the service implement respective interfaces to enable dependency injection, which makes it easier to test for functionality and coverage. 
 
-The last layer of the infrastructure layer is the 'Data Transfer Object' layer. The DTOs serve the purpose of only
-providing the necessary data in order to not expose the entire domain model to the user, as there can be sensitive or unnecessary data.
+The last layer of the infrastructure layer is the 'Data Transfer Object' layer, DTO for short. The DTOs serve the purpose of only
+providing the necessary data in order to not expose the entire domain model to the user, as there can be sensitive and/or unnecessary data.
 
 ### Web Layer
 The 'Web' layer is the outermost layer and is responsible for handling the front-end portion of the *Chirp!* application i.e. the user interface of the website.
