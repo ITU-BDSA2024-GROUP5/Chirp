@@ -149,7 +149,7 @@ The release then include those zip-files and the source code
 
 
 ## Team work <a name="teamwork"></a>
-![Figure 6: Project board](images/projectboard.png)
+![Figure 6: Project board](images/projectboard.PNG)
 
 Below is a flowchart modeling of how teamwork has been conducted in group 5.
 
