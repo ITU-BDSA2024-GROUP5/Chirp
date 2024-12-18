@@ -261,35 +261,37 @@ dotnet user-secrets set "authentication:github:clientSecret" "YOURCLIENTSECRET"
 
 ## How to run test suite locally <a name="localtest"></a>
 ### Prerequisites
-playwright needs powershell to be installed locally
-**guide to download for linux **: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-linux?view=powershell-7.4
-** guide to download for MacOS **: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-macos?view=powershell-7.4
+Playwright needs powershell to be installed locally
+<br>
+**Guide to download for linux**: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-linux?view=powershell-7.4
+<br>
+**Guide to download for MacOS**: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-macos?view=powershell-7.4
 
 
 ### Windows
-there is 2 ways to run the test suite
-- the provided script
-  <p>to run the provided script simply click on in the file explorer</p>
-- manually running the commands
+There is 2 ways to run the test suite
+- The provided script
+  <p>To run the provided script simply click on in the file explorer</p>
+- Manually running the commands
   1. Run ``` dotnet run --project src/Chirp.Web ```
   2. Open powershell and run ``` .\Test\PlaywrightTests\Bin\Debug\net8.0\playwright.ps1 install```
   3. Open a new command prompt
   4. Run ``` dotnet test ```
 ### Linux 
-there is 2 ways to run the test suite
-- the provided script
-  1. run ``` cd test; ./CompileAndRunTests.sh```
-- manually running the commands
+There is 2 ways to run the test suite
+- The provided script
+  1. Run ``` cd test; ./CompileAndRunTests.sh```
+- Manually running the commands
   1. Run ``` dotnet run --project src/Chirp.Web & ``` to start it as a background process so it doesn't block the command prompt
   2. Run ``` pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install-deps```
   3. Run ```pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install```
   4. Run ``` dotnet test ```
   5. Run ``` kill -9 $(lsof -t -i tcp:5177) ``` to kill the background process running the website
 ### Mac
-there is 2 ways to run the test suite
-- the provided script
-  1. run ``` cd test; ./CompileAndRunTests.sh```
-- manually running the commands
+There is 2 ways to run the test suite
+- The provided script
+  1. Run ``` cd test; ./CompileAndRunTests.sh```
+- Manually running the commands
   1. Run ``` dotnet run --project src/Chirp.Web & ``` to start it as a background process so it doesn't block the command prompt
   2. Run ``` pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install-deps```
   3. Run ```pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install```
