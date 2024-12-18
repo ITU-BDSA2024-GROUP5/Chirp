@@ -24,6 +24,7 @@ _Chirp!_ Project Report
 \newpage
 
 # Table of Contents
+
 1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
 2. [Domain Model](#domain-model)
 3. [Architecture — In the small](#architecture-in-the-small)
@@ -38,6 +39,7 @@ _Chirp!_ Project Report
 12. [Ethics](#ethics)
 13. [License](#license)
 14. [LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
+
 
 \newpage
 # Design and Architecture of _Chirp!_ <a name="design"></a>
@@ -311,6 +313,43 @@ dotnet user-secrets set "authentication:github:clientSecret" "YOURCLIENTSECRET"
 The test suite is seperated into two folders: Chirp.Razor.Test contains unit and integration tests, and PlayWrightTests contains end-to-end tests.
 Unit tests are made for all the methods in AuthorRepository and CheepRepository. A couple of integration tests are created in the Razor Page framework.
 The end-to-end tests are run with PlayWright and tests the UI elements Chirp by simulating user input.
+<br>
+### Prerequisites
+Playwright needs powershell to be installed locally
+<br>
+**Guide to download for linux**: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-linux?view=powershell-7.4
+<br>
+**Guide to download for MacOS**: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-macos?view=powershell-7.4
+
+### Windows
+There is 2 ways to run the test suite
+- The provided script
+  <p>To run the provided script simply click on in the file explorer</p>
+- Manually running the commands
+  1. Run ``` dotnet run --project src/Chirp.Web ```
+  2. Open powershell and run ``` .\Test\PlaywrightTests\Bin\Debug\net8.0\playwright.ps1 install```
+  3. Open a new command prompt
+  4. Run ``` dotnet test ```
+### Linux 
+There is 2 ways to run the test suite
+- The provided script
+  1. Run ``` cd test; ./CompileAndRunTests.sh```
+- Manually running the commands
+  1. Run ``` dotnet run --project src/Chirp.Web & ``` to start it as a background process so it doesn't block the command prompt
+  2. Run ``` pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install-deps```
+  3. Run ```pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install```
+  4. Run ``` dotnet test ```
+  5. Run ``` kill -9 $(lsof -t -i tcp:5177) ``` to kill the background process running the website
+### Mac
+There is 2 ways to run the test suite
+- The provided script
+  1. Run ``` cd test; ./CompileAndRunTests.sh```
+- Manually running the commands
+  1. Run ``` dotnet run --project src/Chirp.Web & ``` to start it as a background process so it doesn't block the command prompt
+  2. Run ``` pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install-deps```
+  3. Run ```pwsh -ExecutionPolicy Bypass -File "./test/PlaywrightTests/Bin/Debug/net8.0/playwright.ps1" install```
+  4. Run ``` dotnet test ```
+  5. Run ``` kill -9 $(lsof -t -i tcp:5177) ``` to kill the background process running the website
 
 # Ethics <a name="ethics"></a>
 ## License <a name="license"></a>

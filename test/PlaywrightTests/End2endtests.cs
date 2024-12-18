@@ -31,7 +31,7 @@ public class Tests : PageTest
     [Test]
     public async Task AUserCanRegister()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177");
 
         await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
 
@@ -50,7 +50,7 @@ public class Tests : PageTest
     [Test]
     public async Task BUserCanLogin()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
@@ -62,7 +62,7 @@ public class Tests : PageTest
     [Test]
     public async Task CCheepBoxNotVisibleWhenNotLoggedIn()
     {
-        await Page.GotoAsync("http://localhost:5177/Public");
+        await Page.GotoAsync("http://127.0.0.1:5177/Public");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).Not.ToBeVisibleAsync();
 
     }
@@ -70,13 +70,13 @@ public class Tests : PageTest
     [Test]
     public async Task DCheepBoxVisibleWhenLoggedIn()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
-        await Page.GotoAsync("http://localhost:5177/Public");
+        await Page.GotoAsync("http://127.0.0.1:5177/Public");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).ToBeVisibleAsync();
 
     }
@@ -84,13 +84,13 @@ public class Tests : PageTest
     [Test]
     public async Task EUserCanCheep()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
 
-        await Page.GotoAsync("http://localhost:5177/Public");
+        await Page.GotoAsync("http://127.0.0.1:5177/Public");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Share" })).ToBeVisibleAsync();
 
         await Page.GetByRole(AriaRole.Textbox).FillAsync("This is a cheep");
@@ -102,7 +102,7 @@ public class Tests : PageTest
     [Test]
     public async Task FUserTimeLineHasCheeps()
     {
-        await Page.GotoAsync("http://localhost:5177/testuser@gmail.com");
+        await Page.GotoAsync("http://127.0.0.1:5177/testuser@gmail.com");
         await Expect(Page.GetByText("There are no cheeps so far.")).Not.ToBeVisibleAsync();
     }
     
@@ -110,18 +110,18 @@ public class Tests : PageTest
     [Test]
     public async Task FUserFollow()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
         
         
-        await Page.GotoAsync("http://localhost:5177/Jacqualine%20Gilcoine");
+        await Page.GotoAsync("http://127.0.0.1:5177/Jacqualine%20Gilcoine");
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Follow" })).ToBeVisibleAsync();
 
         await Page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
-        await Page.GotoAsync("http://localhost:5177/testuser");
+        await Page.GotoAsync("http://127.0.0.1:5177/testuser");
 
         await Expect(Page.GetByText(" Starbuck now is what we hear the worst. ")).ToBeVisibleAsync();
     }
@@ -130,13 +130,13 @@ public class Tests : PageTest
     [Test]
     public async Task GUserUnfollow()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
         
-        await Page.GotoAsync("http://localhost:5177/Jacqualine%20Gilcoine");
+        await Page.GotoAsync("http://127.0.0.1:5177/Jacqualine%20Gilcoine");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).ClickAsync();
         await Page.GetByRole(AriaRole.Link, new() { Name = "My Timeline" }).ClickAsync();
 
@@ -147,7 +147,7 @@ public class Tests : PageTest
     [Test]
     public async Task HUserSeeAboutMe()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
@@ -161,7 +161,7 @@ public class Tests : PageTest
     [Test]
     public async Task IShowCheepButtonsWork()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
@@ -183,7 +183,7 @@ public class Tests : PageTest
     [Test]
     public async Task JShowFollowsButtonsWork()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
@@ -205,30 +205,30 @@ public class Tests : PageTest
     [Test]
     public async Task KUserCanSearchByEmail()
     {
-        await Page.GotoAsync("http://localhost:5177/testuser@gmail.com");
+        await Page.GotoAsync("http://127.0.0.1:5177/testuser@gmail.com");
         await Expect(Page.GetByText("testuser's Timeline")).ToBeVisibleAsync();
     }
     
     [Test]
     public async Task LUserCanSearchByUsername()
     {
-        await Page.GotoAsync("http://localhost:5177/testuser");
+        await Page.GotoAsync("http://127.0.0.1:5177/testuser");
         await Expect(Page.GetByText("testuser's Timeline")).ToBeVisibleAsync();
     }
             
     [Test]
     public async Task MSearchingForYourOwnNameResultsInTheSameAsGoingToPersonalUserTimeline()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
         
-        await Page.GotoAsync("http://localhost:5177/Helge");
+        await Page.GotoAsync("http://127.0.0.1:5177/Helge");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
         
-        await Page.GotoAsync("http://localhost:5177/testuser");
+        await Page.GotoAsync("http://127.0.0.1:5177/testuser");
         await Expect(Page.GetByText("What's on your mind testuser?")).ToBeVisibleAsync();
         await Expect(Page.GetByText("Helge Hello, BDSA students!")).ToBeVisibleAsync();
     }
@@ -237,16 +237,16 @@ public class Tests : PageTest
     [Test]
     public async Task NSearchingForYourOwnEmailResultsInTheSameAsGoingToPersonalUserTimeline()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
         
-        await Page.GotoAsync("http://localhost:5177/Helge");
+        await Page.GotoAsync("http://127.0.0.1:5177/Helge");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Follow" }).ClickAsync();
         
-        await Page.GotoAsync("http://localhost:5177/testuser@gmail.com");
+        await Page.GotoAsync("http://127.0.0.1:5177/testuser@gmail.com");
         await Expect(Page.GetByText("What's on your mind testuser?")).ToBeVisibleAsync();
         await Expect(Page.GetByText("Helge Hello, BDSA students!")).ToBeVisibleAsync();
     }
@@ -254,13 +254,13 @@ public class Tests : PageTest
     [Test]
     public async Task ZUserCanDeleteAccount()
     {
-        await Page.GotoAsync("http://localhost:5177/");
+        await Page.GotoAsync("http://127.0.0.1:5177/");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync("testuser@gmail.com");
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
         
-        await Page.GotoAsync("http://localhost:5177/Identity/Account/Manage/DeletePersonalData");
+        await Page.GotoAsync("http://127.0.0.1:5177/Identity/Account/Manage/DeletePersonalData");
         await Page.GetByRole(AriaRole.Textbox, new() {Name="Password"}).FillAsync("Nicepassword123#");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Delete data and close my account" }).ClickAsync();
         await Expect(Page).ToHaveTitleAsync("Home page - Chirp");
