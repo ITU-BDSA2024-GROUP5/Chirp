@@ -150,6 +150,10 @@ The release then include those zip-files and the source code
 
 ## Team work <a name="teamwork"></a>
 Below is the project board for group 5.
+The uncompleted tasks are:
+1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
+2. As a developer i want to documents all my functions to assure future developers understand the code
+All other features have been completed.
 ![Figure 6: Project board](images/projectboard.PNG)
 
 Below is a flowchart modeling of how teamwork has been conducted in group 5.
