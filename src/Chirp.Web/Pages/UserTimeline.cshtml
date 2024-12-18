@@ -1,7 +1,9 @@
 ﻿@page "/{author}"
+@using Chirp.Core.DataModels
 @using Chirp.Infrastructure.Services.Interfaces
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model UserTimelineModel
+@inject SignInManager<Author> SignInManager
 @inject IChirpService ChirpService
 @{
     ViewData["Title"] = "Chirp!";
@@ -15,7 +17,7 @@
     if (routeName != null && routeName.Equals("Oauth.styles.css")) return;
 }
 <div>
-    @if (Model.IsSignedIn() && routeName != null)
+    @if (SignInManager.IsSignedIn(User) && routeName != null)
     {
         if (routeName.ToLower().Equals(User.Identity?.Name?.ToLower()))
         {
