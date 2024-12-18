@@ -145,7 +145,7 @@ The release then include those zip-files and the source code
 ## Team work <a name="teamwork"></a>
 
 NEED IMAGE OF TEAMWORK DIAGRAM 
- 
+
 ![Screenshot of Projectboard 18/12-2024](images/projectboard.png)
 
 The process "from issue to solution" starts after all members having attended any weeks lecture. Shortly after that lecture the group will find a room to sit and organize themselves, here a few group members start identifying and then quantifying this weeks problems by creating issue tickets. 
