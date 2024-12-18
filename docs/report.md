@@ -3,13 +3,17 @@
 title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2024 Group `5`
 author:
+
 - "Helge Pfeiffer <ropf@itu.dk>"
 - "Adrian Hoff <adho@itu.dk>"
+
 numbersections: true
+
 ---
 _Chirp!_ Project Report
 ==============
 ***ITU BDSA 2024 Group 5***
+
 - Markus Sværke Staael <msvs@itu.dk>
 - Patrick Shen <pash@itu.dk>
 - Frederik Terp <fter@itu.dk>
@@ -22,9 +26,9 @@ _Chirp!_ Project Report
 # Table of Contents
 1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
 2. [Domain Model](#domain-model)
-3. [Architecture - In the small](#architecture--in-the-small)
+3. [Architecture — In the small](#architecture-in-the-small)
 4. [Architecture of deployed application](#architecture-of-deployed-application)
-5. [User activities](#user-activities-useractivities)
+5. [User activities](#user-activities)
 6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
 7. [Process](#process)
 8. [Build, test, release and deployment](#build-test-release-and-deployment)
@@ -49,12 +53,13 @@ The author model extends an IdentityUser from ASP.NET Core Identity to make it w
 with the rest of the ASP.NET Core ecosystem. 
 
 \newpage
-## Architecture — In the small <a name="architecture"></a>
+## Architecture — In the small <a name="architecture-in-the-small"></a>
 
 ![Illustration of onion architechture.](images/onion/Onion.png)
 
 The rest of the layers are categorized as Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure. 
 
+### Infrastructure Layer
 The infrastructure layer can be further broken down in three sub-layers. Starting from the core and moving out one layer,
 there is an **ApplicationDbContext** that extends an **IdentityDbContext**. This is to provide a way for the application to interact and manipulate the entities in the database.
 
@@ -71,28 +76,32 @@ Both repositories and the service implement respective interfaces to enable depe
 The last layer of the infrastructure layer is the 'Data Transfer Object' layer. The DTOs serve the purpose of only
 providing the necessary data in order to not expose the entire domain model to the user, as there can be sensitive or unnecessary data.
 
+### Web Layer
 The 'Web' layer is the outermost layer and is responsible for handling the front-end portion of the *Chirp!* application i.e. the user interface of the website.
 
 
 
 ## Architecture of deployed application <a name="deployed"></a>
-![Illustration of the architecture of the deployed application with http.](images/sysarch.svg)
+![](images/sysarch.svg)
+\newline
 As illustrated above, the user sends requests to the Azure server and receives responses from it through the HTTP-protocol. Multiple clients can connect to the Azure server simultaneously. The Azure server sends an HTTP-request to the *Chirp!* application with a required cookie for the user session. The *Chirp!* web-application communicates with the database itself with SQLite3.
 The production deployment uses the HTTPS-protocol, which ensures vulnerable user data in the responses are encrypted with a TLS-certificate.
-## User activities <a name="useractivities"></a>
+&nbsp;
 
+## User activities <a name="useractivities"></a
 This section illustrates typical scenarios that the user may go through when using our *Chirp!* application.
 This includes cases for both unauthorised and authorised users.
 The illustrations are shown as sequences of activities in the format of UML Activity Diagrams.
 &nbsp;
 
 #### Register Account
-![Figure 1: User Registration](images/UserActivities/registeractivity.svg)
-
+![Figure 1: User Registration](images/UserActivities/registeractivity.svg){width=auto; height=60%}
+\newline
 This diagram illustrates the registration of a user.
 When a user registers, if all criteria are fulfilled, they will be led to the e-mail confirmation page. 
 In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, a warning will be displayed
 informing the user about the missing criteria.
+&nbsp;
 
 ![CAP](images/UserActivities/registeractivity.svg){width=auto; height=60%}
 \newline
@@ -105,20 +114,20 @@ This diagram illustrates the registration of a user. When a user registers, if a
 This diagram displays the sequence of a user
 typing a cheep.
 If the message box is empty, a warning will be displayed.
+&nbsp;
 
 #### Follow User
 ![CAP](images/UserActivities/followactivity.svg){width=auto; height=60%}
 \newline
-
 This diagram shows what occurs once a user tries to follow another user.
 If user isn't logged in, they will be redirected to the login page. Otherwise,
 depending on whether the user already follows someone else or not, either 'Follow' or 'Unfollow'
 will be displayed.
+&nbsp;
 
 #### Private Timeline
 ![CAP](images/UserActivities/loginactivity.svg){width=auto; height=60%}
 \newline
-
 This diagram shows the sequence of a user visiting their own page.
 &nbsp;
 
@@ -151,6 +160,7 @@ The diagrams are shown below:
 ![Figure 1: Register-Login](images/Sequence/RegisterLogin.svg)
 This diagram shows the flow of when a user starts the application and wants to register a new account. After registering,
 the user logs in to their newly registered account.
+&nbsp;
 
 ### Public Page
 ![](images/Sequence/PublicPage.svg){width=auto; height=60%} 
@@ -176,7 +186,8 @@ available when a user is logged in.
 ![](images/followdiagram.png){width=auto; height=60%}
 \newline
 This diagram illustrates how the user accesses the public page, and wants to follow or unfollow
-another user from said page. 
+another user from said page.
+&nbsp;
 
 #### Delete Account
 ![](images/Sequence/DeleteMyAccount.svg){width=auto; height=60%}
@@ -186,7 +197,6 @@ This diagram shows the interaction between the entities, when a user decides to 
 
 \newpage
 
-\newpage
 # Process <a name="process"></a>
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
@@ -194,7 +204,7 @@ This diagram shows the interaction between the entities, when a user decides to 
 
 ### build_and_test.yml
 ![Build and test solution](images/workflow/build-and-test.svg)
-
+\newline
 This workflow builds and tests the code on push- and pull-requests on the master branch. When this condition is achieved, it restores dependencies, builds with no restore because of the last step, and attempts to run it locally. 
 Before running the tests, it installs the test-framework 'PlayWright' in order to run the tests found in PlaywrightTests directory. The ones found in test/Chirp.Razor.Test are run by xUnit.  
 If any of these steps fail, the workflow fails and the push or pull-request on the master branch is cancelled. If not, it proceeds with the action.
@@ -231,8 +241,10 @@ The release then include the zip-files and the source code
 Below is the project board for Group 5.
 The uncompleted tasks are:
 
-    1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
-    2. As a developer i want to documents all my functions to assure future developers understand the code
+    1. As a Developer i want to check for possible SQL injection or XSS
+        vulnerabilities so the website is as secure as it can be
+    2. As a developer i want to documents all my functions to assure
+        future developers understand the code
 
 All other features have been completed, this solution for *Chirp!* should not be missing any features or functionality.
 \newline
@@ -278,7 +290,7 @@ Whenever a specific issue is solved, its respective branch may be merged into ma
 5. Accessing your localhost on the given port should now give you access to the local running instance of the web-app
 
 ### Running from Source code
-1. Pull the source code from github. This can be done by opening terminal/cmd and typing the following
+1. Pull the source code from GitHub. This can be done by opening terminal/cmd and typing the following
 ```
 git pull https://github.com/ITU-BDSA2024-GROUP5/Chirp.git
 ```
