@@ -1,165 +1,173 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2">
   <diagram name="Side-1" id="c1X6BkwlPVBmC4fHBFea">
-    <mxGraphModel dx="984" dy="630" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="856" dy="548" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="VSqo-3vc--7sRNww96af-107" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
+          <mxGeometry x="89" y="580" width="10" height="10" as="geometry" />
+        </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-1" target="VSqo-3vc--7sRNww96af-4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-1" value="&lt;font&gt;Event that triggers workflows (master)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="100" y="230" width="120" height="60" as="geometry" />
+        <mxCell id="VSqo-3vc--7sRNww96af-1" value="&lt;font&gt;Event that triggers workflows&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="106" y="230" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-4" target="VSqo-3vc--7sRNww96af-5">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-72" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-15">
+        <mxCell id="VSqo-3vc--7sRNww96af-72" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-15">
           <mxGeometry x="0.481" y="-1" relative="1" as="geometry">
             <mxPoint x="1" y="-5" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-4" target="VSqo-3vc--7sRNww96af-6">
+        <mxCell id="VSqo-3vc--7sRNww96af-116" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-4" target="VSqo-3vc--7sRNww96af-107">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-117" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-116">
+          <mxGeometry x="-0.843" y="-1" relative="1" as="geometry">
+            <mxPoint x="3" y="1" as="offset" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-4" value="Event of type push?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="120" y="320" width="80" height="80" as="geometry" />
+          <mxGeometry x="126" y="308" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-5">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="160" y="540" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-64" value="Do nothing" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-16">
-          <mxGeometry x="-0.1878" y="1" relative="1" as="geometry">
-            <mxPoint y="34" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-73" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-16">
-          <mxGeometry x="-0.2606" y="-1" relative="1" as="geometry">
-            <mxPoint x="1" y="-1" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-5" target="VSqo-3vc--7sRNww96af-6">
+        <mxCell id="VSqo-3vc--7sRNww96af-94" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-5" target="VSqo-3vc--7sRNww96af-93">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-74" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-19">
-          <mxGeometry x="0.6666" y="1" relative="1" as="geometry">
-            <mxPoint x="1" y="1" as="offset" />
+        <mxCell id="VSqo-3vc--7sRNww96af-99" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-94">
+          <mxGeometry x="-0.6" y="1" relative="1" as="geometry">
+            <mxPoint x="-2" y="4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-112" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-5" target="VSqo-3vc--7sRNww96af-107">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-118" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-112">
+          <mxGeometry x="-0.7626" relative="1" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-5" value="Even of type pull request?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="120" y="430" width="80" height="80" as="geometry" />
+          <mxGeometry x="126" y="418" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-6" target="VSqo-3vc--7sRNww96af-7">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-6" target="VSqo-3vc--7sRNww96af-39">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="VSqo-3vc--7sRNww96af-81" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="408" y="261.0000000000001" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="408" y="278" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-52" value="Crash" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-40">
-          <mxGeometry x="-0.7878" y="-1" relative="1" as="geometry">
-            <mxPoint x="-4" y="-1" as="offset" />
+        <mxCell id="VSqo-3vc--7sRNww96af-90" value="Fail" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-81">
+          <mxGeometry x="-0.3175" y="-2" relative="1" as="geometry">
+            <mxPoint x="1" y="-3" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-6" value="Start ubuntu environment" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="260" y="220" width="110" height="70" as="geometry" />
+          <mxGeometry x="254" y="243" width="110" height="70" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-7" target="VSqo-3vc--7sRNww96af-8">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-7" target="VSqo-3vc--7sRNww96af-39">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="VSqo-3vc--7sRNww96af-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="408" y="261.0000000000001" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-60" value="Crash" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-59">
+        <mxCell id="VSqo-3vc--7sRNww96af-60" value="Fail" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-59">
           <mxGeometry x="-0.5169" y="2" relative="1" as="geometry">
-            <mxPoint x="3" y="1" as="offset" />
+            <mxPoint x="-14" y="1" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-7" value="Checkout triggering branch" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="260" y="310" width="110" height="70" as="geometry" />
+          <mxGeometry x="254" y="333" width="110" height="70" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-8" target="VSqo-3vc--7sRNww96af-11">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-8" target="VSqo-3vc--7sRNww96af-39">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-50" value="Crash" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-44">
-          <mxGeometry x="-0.8127" y="1" relative="1" as="geometry">
-            <mxPoint x="15" as="offset" />
+        <mxCell id="VSqo-3vc--7sRNww96af-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="408" y="261.0000000000001" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-8" value="Setup .NET 8" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="260" y="400" width="110" height="70" as="geometry" />
+          <mxGeometry x="254" y="423" width="110" height="70" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-9" target="VSqo-3vc--7sRNww96af-12">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-9" target="VSqo-3vc--7sRNww96af-39">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="VSqo-3vc--7sRNww96af-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="408" y="261.0000000000001" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-51" value="Crash" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-45">
+        <mxCell id="VSqo-3vc--7sRNww96af-51" value="Fail" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-45">
           <mxGeometry x="-0.6269" relative="1" as="geometry">
-            <mxPoint x="-6" y="-1" as="offset" />
+            <mxPoint x="-25" y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-87" value="Fail" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-45">
+          <mxGeometry x="-0.8112" relative="1" as="geometry">
+            <mxPoint y="-2" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-9" value="Run solution on localhost" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="460" y="400" width="110" height="70" as="geometry" />
+          <mxGeometry x="454" y="423" width="110" height="70" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-10" target="VSqo-3vc--7sRNww96af-9">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-10" target="VSqo-3vc--7sRNww96af-39">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="VSqo-3vc--7sRNww96af-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="408" y="261.0000000000001" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-49" value="Crash" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-47">
+        <mxCell id="VSqo-3vc--7sRNww96af-49" value="Fail" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-47">
           <mxGeometry x="-0.8205" y="-2" relative="1" as="geometry">
-            <mxPoint x="-6" as="offset" />
+            <mxPoint x="9" y="1" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-10" value="Build the solution" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="460" y="490" width="110" height="70" as="geometry" />
+          <mxGeometry x="454" y="513" width="110" height="70" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-11" target="VSqo-3vc--7sRNww96af-10">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-11" target="VSqo-3vc--7sRNww96af-39">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="VSqo-3vc--7sRNww96af-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-11">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="408" y="261.0000000000001" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-48" value="Crash" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-46">
+        <mxCell id="VSqo-3vc--7sRNww96af-48" value="Fail" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-46">
           <mxGeometry x="-0.8599" y="-2" relative="1" as="geometry">
-            <mxPoint x="10" y="-4" as="offset" />
+            <mxPoint x="-3" y="-3" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-11" value="Restore dependencies" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="260" y="490" width="110" height="70" as="geometry" />
+          <mxGeometry x="254" y="513" width="110" height="70" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-12" target="VSqo-3vc--7sRNww96af-13">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-12" target="VSqo-3vc--7sRNww96af-39">
+        <mxCell id="VSqo-3vc--7sRNww96af-85" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-12" target="VSqo-3vc--7sRNww96af-82">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-61" value="Crash" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-58">
-          <mxGeometry x="-0.4585" y="-2" relative="1" as="geometry">
-            <mxPoint x="2" y="1" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-12" value="Install playwright test framework" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="460" y="310" width="110" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-13" target="VSqo-3vc--7sRNww96af-39">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-53" value="Crash/Fail" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-41">
-          <mxGeometry x="-0.7087" y="1" relative="1" as="geometry">
+        <mxCell id="VSqo-3vc--7sRNww96af-89" value="Fail" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-85">
+          <mxGeometry x="-0.696" y="-1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-54" value="Return failure" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-41">
-          <mxGeometry x="0.6272" relative="1" as="geometry">
-            <mxPoint x="3" y="50" as="offset" />
+        <mxCell id="VSqo-3vc--7sRNww96af-92" value="Return failure" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-85">
+          <mxGeometry x="0.4747" y="1" relative="1" as="geometry">
+            <mxPoint x="3" y="-58" as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-12" value="Install playwright test framework" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="454" y="333" width="110" height="70" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-13" target="VSqo-3vc--7sRNww96af-67">
           <mxGeometry relative="1" as="geometry" />
@@ -169,25 +177,63 @@
             <mxPoint x="-1" y="-30" as="offset" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-84" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-13" target="VSqo-3vc--7sRNww96af-82">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="408" y="278" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-91" value="Fail" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-84">
+          <mxGeometry x="-0.3322" relative="1" as="geometry">
+            <mxPoint x="-1" y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-13" value="Run tests" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="460" y="220" width="110" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-39" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="412" y="386" width="8" height="8" as="geometry" />
-        </mxCell>
-        <mxCell id="VSqo-3vc--7sRNww96af-65" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
-          <mxGeometry x="155" y="540" width="10" height="10" as="geometry" />
+          <mxGeometry x="454" y="243" width="110" height="70" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-67" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
-          <mxGeometry x="510" y="193" width="10" height="10" as="geometry" />
+          <mxGeometry x="504" y="216" width="10" height="10" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-77" value="" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
-          <mxGeometry x="155" y="200" width="10" height="10" as="geometry" />
+          <mxGeometry x="161" y="200" width="10" height="10" as="geometry" />
         </mxCell>
         <mxCell id="VSqo-3vc--7sRNww96af-78" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=classic;endSize=8;strokeColor=#ff0000;rounded=0;endFill=1;" edge="1" source="VSqo-3vc--7sRNww96af-77" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="160" y="230" as="targetPoint" />
+            <mxPoint x="166" y="230" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-82" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
+          <mxGeometry x="403" y="251" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-120" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-93" target="VSqo-3vc--7sRNww96af-107">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-121" value="Do nothing" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-120">
+          <mxGeometry x="0.2925" y="-4" relative="1" as="geometry">
+            <mxPoint y="41" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-122" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-120">
+          <mxGeometry x="-0.2789" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-124" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="VSqo-3vc--7sRNww96af-93" target="VSqo-3vc--7sRNww96af-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="240" y="563" />
+              <mxPoint x="240" y="278" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-125" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VSqo-3vc--7sRNww96af-124">
+          <mxGeometry x="-0.9064" y="-2" relative="1" as="geometry">
+            <mxPoint y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VSqo-3vc--7sRNww96af-93" value="Event is on master branch?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="126" y="523" width="80" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

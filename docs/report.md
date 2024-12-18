@@ -119,18 +119,22 @@ scenario.
 # Process <a name="process"></a>
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
-
+![Figure 6: Build and test solution](images/workflow/build-and-test.svg)
+<br>
 ### build_and_test
 This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
 Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
 If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
 
+![Figure 7: Deploy solution](images/workflow/deploy.svg)
+<br>
 ### master_bdsagroup5chirprazor2024
 This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
 Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
 The deploy job deploys the application to the Production env with the webapp url.
 
-
+![Figure 7: Create release on GitHub](images/workflow/release.svg)
+<br>
 ### release.yml
 Triggered when adding the following tag on push:
 <br>
