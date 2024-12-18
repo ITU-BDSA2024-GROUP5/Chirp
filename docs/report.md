@@ -1,7 +1,7 @@
 
 ---
 title: _Chirp!_ Project Report
-subtitle: ITU BDSA 2024 Group `<no>`
+subtitle: ITU BDSA 2024 Group `5`
 author:
 - "Helge Pfeiffer <ropf@itu.dk>"
 - "Adrian Hoff <adho@itu.dk>"
@@ -13,33 +13,33 @@ _Chirp!_ Project Report
 - Markus Sværke Staael <msvs@itu.dk>
 - Patrick Shen <pash@itu.dk>
 - Frederik Terp <fter@itu.dk>
-- Nicky Ye <niye@itu.dk>
-- mariuslarsen <coml@itu.dk>
-- salj <salj@itu.dk>
+- Nicky Chengde Ye <niye@itu.dk>
+- Marius Cornelius Wisniewski Larsen <coml@itu.dk>
+- Sara Ziad Al-Janabi <salj@itu.dk>
 <div style="page-break-after: always;"></div>
 
 # Table of Contents
-1. [Design and Architecture of _Chirp!_](#design)
-2. [Domain Model](#domain)
+1. [Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)
+2. [Domain Model](#domain-model)
 3. [Architecture - In the small](#architecture)
-4. [Architecture of deployed application](#deployed)
+4. [Architecture of deployed application](#architecture-of-deployed-application)
 5. [User activities](#useractivities)
-6. [Sequence of functionality/calls through _Chirp!_](#sequence)
+6. [Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
 7. [Process](#process)
-8. [Build, test, release and deployment](#buildtest)
-9. [Team work](#teamwork)
-10. [How to make _Chirp!_ work locally](#localchirp)
-11. [How to run test suite locally](#localtest)
+8. [Build, test, release and deployment](#build-test-release-and-deployment)
+9. [Team work](#team-work)
+10. [How to make _Chirp!_ work locally](#how-to-make-chirp-work-locally)
+11. [How to run test suite locally](#how-to-run-test-suite-locally)
 12. [Ethics](#ethics)
 13. [License](#license)
-14. [LLMs, ChatGPT, CoPilot, and others](#chatgpt)
+14. [LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
 
 # Design and Architecture of _Chirp!_ <a name="design"></a>
 
 ## Domain model <a name="domain"></a>
 
-![Illustration of the _Chirp!_ data model as UML class diagram.](images/Chirp.Core.png)
-<br>
+![Illustration of the _Chirp!_ data model as UML class diagram.](images/onion/Chirp.Core.png)
+
 The Chirp application actively utilizes an onion architecture to promote a clear separation of concern.
 The onion has many layers but the core of it is Chirp.Core, where the domain model resides. 
 The domain model is relatively simple and represents authors and cheeps.
@@ -48,8 +48,8 @@ with the rest of the Asp.Net Core ecosystem.
 
 ## Architecture — In the small <a name="architecture"></a>
 
-![Illustration of onion architechture.](images/Onion.png)
-<br>
+![Illustration of onion architechture.](images/onion/Onion.png)
+
 As previously mentioned the onion architecture has many layers, but so far we have only covered the core. The rest of the layers are categorized as
 Chirp.Infrastructure and Chirp.Web with the thickest layer being the infrastructure layer. 
 
@@ -65,7 +65,7 @@ To interact with both author and cheep entities in a simple manner, a chirp serv
 The service combines the two repositories by implementing identical methods that call the repository methods.
 Another purpose of the service is also make development easier by providing only a single point of access to the database, to be injected.
 
-Both repositories and the service implement respective interfaces to enable dependency injection and make the code more testable.
+Both repositories and the service implement respective interfaces to enable dependency injection, which makes it easier to test for functionality and coverage. 
 
 The last layer of the infrastructure layer is the data transfer object layer. The data transfer objects serve the purpose of only
 providing the necessary data to not expose the entire domain model to the user as there can be sensitive or unnecessary data.
@@ -76,20 +76,138 @@ by providing a user interface.
 
 
 ## Architecture of deployed application <a name="deployed"></a>
-![Illustration of onion architechture.](images/sysarch.svg)
-
+![Illustration of the architecture of the deployed application with http.](images/sysarch.svg)
+As illustrated the user send requests and gets responses to the azure server through the http-protocol. Multiple clients can connect to the azure server at a time. The azure server sends a http request to the chirp web app with a required cookie for the user session. The Chirp web app communicates with the database itself through sqlite3.
+The real deployment uses the https-protocol which ensures that the vulnerable user data found in the responses are encrypted with a tls-certificate.
 ## User activities <a name="useractivities"></a>
 
-## Sequence of functionality/calls trough _Chirp!_ <a name="sequence"></a>
+This section illustrates typical scenarios that the user may go through when using our ```Chirp!``` application.
+This goes for both unauthorised and authorised users, in which both cases have been included.
+The illustrations are shown as sequence of activities in the format of UML Activity Diagrams.
+
+#### Register Account
+![Figure 1: User Registration](images/UserActivities/registeractivity.svg)
+
+This diagram illustrates the registration of a user.
+When a user registers, if all criteria fulfilled, they will be led to the email confirmation page. 
+In the case of a missing criteria, e.g. the user has typed an invalid e-mail address, the warning displayed
+will inform the user about said missing criteria.
+
+#### Type Cheep
+![Figure 2: Typing a 'cheep'](images/UserActivities/typecheepactivity.svg)
+
+This diagram displays the sequence of user activity, if the user
+wishes to type a cheep.
+If the message box is empty, a warning will be displayed.
+
+#### Follow User
+![Figure 3: Follow another user](images/UserActivities/followactivity.svg)
+
+This diagram shows what occurs once a user tries to follow another user.
+If user isn't logged in, they will be redirected to the login page. Otherwise,
+whether the user already follows someone else or not, either 'Follow' or 'Unfollow'
+will be displayed.
+
+#### Private Timeline
+![Figure 4: User viewing their timeline](images/UserActivities/loginactivity.svg)
+
+This diagram simply views the sequence if a user wishes to view their own page. User
+must be logged in before being able to do so.
+
+#### Delete Account
+![Figure 5: User deleting their data](images/UserActivities/deleteuseractivity.svg)
+
+If a user wishes to delete their data, this user activity sequence would be a typical scenario.
+
+## Sequence of functionality/calls through _Chirp!_ <a name="sequence"></a>
+When running the application, there are required flows of messages and data sent back and forth all the way from
+the requests from the user to the communication between the server and ASP.NET Core. We have chosen to create UML Sequence Diagrams,
+that show how the system works, and how each entity interacts with each other. The intention of the diagrams is to
+visualise the 'behind-the-scenes' of a user-request to the final rendered webpage shown to the user.
+
+We have chosen to illustrate the following sequences:
+
+1. when a user registers a new account, and login
+2. when a user accesses the Public Page
+3. when a user accesses their own private timeline
+4. when a user follows someone else
+5. when a user types a cheep
+6. when a user deletes their account
+
+#### Register and Login
+![Figure 1: Register-Login](images/Sequence/RegisterLogin.svg)
+This diagram shows the flow from when a user starts the application and wants to register a new account. After registering,
+the user logs in to their newly registered account.
+
+#### View Public Page
+![Figure 2: PublicPage](images/Sequence/PublicPage.svg)
+This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.
+
+#### Private Timeline
+![Figure 3: Private-Timeline](images/Sequence/MyTimeline.svg)
+This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
+a user is logged in (as shown in the diagram).
+
+#### Type Cheep
+![Figure 4: Type-Cheep](images/Sequence/Type%20Cheep.svg)
+This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
+available when a user is logged in (as illustrated in the diagram).
+
+#### Follow User
+![Figure 5: Follow-User](images/follow%20diagram.png)
+This diagram views how the user accesses the public page, and chooses to follow and unfollow
+another user from said page. 
+
+#### Delete Account
+![Figure 6: Delete-Account](images/Sequence/DeleteMyAccount.svg)
+This diagram shows the interaction between the entities when a user decides to delete their account.
 
 # Process <a name="process"></a>
 
 ## Build, test, release, and deployment <a name="buildtest"></a>
+![Figure 6: Build and test solution](images/workflow/build-and-test.svg)
+
+### build_and_test
+This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
+Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
+If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
+
+![Figure 7: Deploy solution](images/workflow/deploy.svg)
+
+### master_bdsagroup5chirprazor2024
+This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
+Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
+The deploy job deploys the application to the Production env with the webapp url.
+
+![Figure 7: Create release on GitHub](images/workflow/release.svg)
+
+### release.yml
+Triggered when adding the following tag on push:
+
+```- v*.*.* ```
+ The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
+ If that succeeds it proceeds with the workflow by publishing the following project files:
+1. src/Chirp.Core/Chirp.Core.csproj
+2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
+3. src/Chirp.Web/Chirp.Web.csproj
+
+With the following release configurations: linux-x64, win-x64, osx-x64 and osx-arm64 with an corresponding output folder for it and zipping it.
+The release then include those zip-files and the source code
+
 
 ## Team work <a name="teamwork"></a>
+Below is the project board for group 5.
+The uncompleted tasks are:
+1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
+2. As a developer i want to documents all my functions to assure future developers understand the code
 
-NEED IMAGE 
+All other features have been completed, this solution for Chirp should not be missing any features or functionality.
 
+![Figure 6: Project board](images/projectboard.PNG)
+
+Below is a flowchart modeling of how teamwork has been conducted in group 5.
+
+![Figure 7: Flowchart diagram of teamwork](images/teamwork.png)
 
 The process "from issue to solution" starts after all members having attended any weeks lecture. Shortly after that lecture the group will find a room to sit and organize themselves, here a few group members start identifying and then quantifying this weeks problems by creating issue tickets. 
 When all problems have their respective issue tickets, the group will subdivide itself and create smaller groups where individuals work together to solve the specific issue(s). A new branch will be created where all work for the feature/fix will be deposited. Whenever a specific issue is solved, its respective branch may be merged into main and their issue will be closed. If an issue is not solved during that day, individuals will work from home to solve/close the issue, or if needed, the group will meet again before the next weeks lecture (when new issues will be added).
@@ -97,17 +215,72 @@ When all problems have their respective issue tickets, the group will subdivide 
 
 ## How to make _Chirp!_ work locally <a name="localchirp"></a>
 
+### Running from Compiled
+
+1. Access [our release page](https://github.com/ITU-BDSA2024-GROUP5/Chirp/releases "Title"). 
+
+2. Download the zip containing the compiled version of the program corresponding to the system you want it to run on. 
+
+3. Unzip the zip file into a given directory / %unzippedcontentdir% and run
+
+    <b>UNIX-based systems</b>
+
+    3.1. Open up terminal and run the following
+    
+    3.2.
+    
+        cd %unzippedcontentdir%/publish/%systemarchitecture%
+        ./Chirp.Web
+        
+
+    <b> Windows</b>
+
+    3.1. Open up CMD and run the following
+
+    3.2. 
+
+        
+        cd %unzippedcontentdir%/publish/win-x64
+        Chirp.Web.exe
+        
+
+4. The terminal/cmd should now show the following: Now listening on: http://localhost:5000
+
+5. Accessing your localhost on the given port should now give you access to the local running instance of the web-app
+
+### Running from Source code
+1. Pull the source code from github, can be done by opening terminal/cmd and typing the following
+```
+git pull https://github.com/ITU-BDSA2024-GROUP5/Chirp.git
+```
+2. Navigate to the project directory and run
+```
+cd Chirp/src/Chirp.Web
+dotnet run
+```
+3. By default the terminal should now show - Now listening on: http://localhost:5177
+
+If not follow the following steps.
+1. Run ```dotnet dev-certs https --trust```
+
+2. Set user secrets by
+```
+dotnet user-secrets init
+dotnet user-secrets set "authentication:github:clientId" "YOURCLIENTID"
+dotnet user-secrets set "authentication:github:clientSecret" "YOURCLIENTSECRET"
+```
+
+
+
+
 ## How to run test suite locally <a name="localtest"></a>
-<p>
 The test suite is seperated into two folders: Chirp.Razor.Test contains unit and integration tests, and PlayWrightTests contains end-to-end tests.
-Unit tests are made for all the methods in AuthorRepository and CheepRepository. A couple of integration tests are created in the Razor Page framework. 
+Unit tests are made for all the methods in AuthorRepository and CheepRepository. A couple of integration tests are created in the Razor Page framework.
 The end-to-end tests are run with PlayWright and tests the UI elements Chirp by simulating user input.
-</p>
 
 # Ethics <a name="ethics"></a>
-
 ## License <a name="license"></a>
-<br>
+
 The license chosen for the program is the MIT license due to its simplicity and flexibility. The license is short and transparent, making it easy to understand. It has minimal restrictions and allows for both commercial and non-commercial use. Anyone wanting to use the source code are allowed to use it for their purposes but as it is, meaning that the source code is delivered as is without any warranty and that we the developers do not hold any liability .
 
 ## LLMs, ChatGPT, CoPilot, and others <a name="chatgpt"></a>
