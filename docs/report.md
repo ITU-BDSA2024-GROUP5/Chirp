@@ -133,7 +133,8 @@ The deploy job deploys the application to the Production env with the webapp url
 
 ### release.yml
 Triggered when adding the following tag on push:
-- "v*.*.*"
+<br>
+```- v*.*.* ```
  The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
  If that succeeds it proceeds with the workflow by publishing the following project files:
     1. src/Chirp.Core/Chirp.Core.csproj
