@@ -144,8 +144,9 @@ The release then include those zip-files and the source code
 
 ## Team work <a name="teamwork"></a>
 
-NEED IMAGE 
-
+NEED IMAGE OF TEAMWORK DIAGRAM 
+ 
+![Screenshot of Projectboard 18/12-2024](images/projectboard.png)
 
 The process "from issue to solution" starts after all members having attended any weeks lecture. Shortly after that lecture the group will find a room to sit and organize themselves, here a few group members start identifying and then quantifying this weeks problems by creating issue tickets. 
 When all problems have their respective issue tickets, the group will subdivide itself and create smaller groups where individuals work together to solve the specific issue(s). A new branch will be created where all work for the feature/fix will be deposited. Whenever a specific issue is solved, its respective branch may be merged into main and their issue will be closed. If an issue is not solved during that day, individuals will work from home to solve/close the issue, or if needed, the group will meet again before the next weeks lecture (when new issues will be added).
