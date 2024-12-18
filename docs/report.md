@@ -149,39 +149,39 @@ The diagrams are shown below:
 
 #### Register and Login
 ![Figure 1: Register-Login](images/Sequence/RegisterLogin.svg)
-This diagram shows the flow from when a user starts the application and wants to register a new account. After registering,
+This diagram shows the flow of when a user starts the application and wants to register a new account. After registering,
 the user logs in to their newly registered account.
 
 ### Public Page
 ![](images/Sequence/PublicPage.svg){width=auto; height=60%} 
 \newline
-This diagram shows the flow from when a user starts the application, and then tries to access the Public Timeline-site.
+This diagram shows the flow of when a user starts the application, and then tries to access the Public Timeline-site.
 &nbsp;
 
 #### Private Timeline
 ![](images/Sequence/MyTimeline.svg){width=auto; height=60%}
 \newline
 This diagram shows the flow of a user accessing their own timeline, 'My Timeline'. This sequence is only available when
-a user is logged in (as shown in the diagram).
+a user is logged in.
 &nbsp;
 
 #### Type Cheep
 ![](images/Sequence/TypeCheep.svg){width=auto; height=60%}
 \newline
 This diagram shows the interaction between the entities when the user wants to type a cheep in the application. This function is only
-available when a user is logged in (as illustrated in the diagram).
+available when a user is logged in.
 &nbsp;
 
 #### Follow User
 ![](images/followdiagram.png){width=auto; height=60%}
 \newline
-This diagram views how the user accesses the public page, and chooses to follow and unfollow
+This diagram illustrates how the user accesses the public page, and wants to follow or unfollow
 another user from said page. 
 
 #### Delete Account
 ![](images/Sequence/DeleteMyAccount.svg){width=auto; height=60%}
 \newline
-This diagram shows the interaction between the entities when a user decides to delete their account.
+This diagram shows the interaction between the entities, when a user decides to delete their account.
 &nbsp;
 
 \newpage
@@ -192,20 +192,20 @@ This diagram shows the interaction between the entities when a user decides to d
 ## Build, test, release, and deployment <a name="buildtest"></a>
 ![Figure 6: Build and test solution](images/workflow/build-and-test.svg)
 
-### build_and_test
+### build_and_test.yml
 ![Build and test solution](images/workflow/build-and-test.svg)
-\newline
-This workflow builds and tests the code on push and pull-requests on the master branch. When this condition is achieved it restores dependencies, builds with no restore because of the last step and attempts to run it locally. 
-Then it runs all tests made, but before running the tests it installs the test-framework "playwright" that the tests found in test/PlaywrightTests depend on. The ones found in test/Chirp.Razor.Test are run by xUnit.  
-If any of these steps fails the workflow fails and the push or pull-request on master branch is cancelled. If not it proceeds with the action.
+
+This workflow builds and tests the code on push- and pull-requests on the master branch. When this condition is achieved, it restores dependencies, builds with no restore because of the last step, and attempts to run it locally. 
+Before running the tests, it installs the test-framework 'PlayWright' in order to run the tests found in PlaywrightTests directory. The ones found in test/Chirp.Razor.Test are run by xUnit.  
+If any of these steps fail, the workflow fails and the push or pull-request on the master branch is cancelled. If not, it proceeds with the action.
 &nbsp;
 
-### master_bdsagroup5chirprazor2024
+### master_bdsagroup5chirprazor2024.yml
 ![Deploy solution](images/workflow/deploy.svg)
 \newline
-This workflow is triggered on push at master branch and is responsible for deploying the code/build to azure for running the web application. When triggered it creates a build with the release configuration.
-Next it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the azure web app to deploy
-The deploy job deploys the application to the Production env with the webapp url.
+This workflow is triggered by a push on the master branch and is responsible for deploying the code/build to Azure. When triggered, it creates a build with the release configuration.
+Next, it publishes the project  to the output folder defined after -o and uploads the published folder as an artifact for the Azure web application to deploy.
+The 'Deploy to Azure'-step deploys the application to the Production environment with the webapp URL.
 &nbsp;
 
 
@@ -213,38 +213,39 @@ The deploy job deploys the application to the Production env with the webapp url
 ### release.yml
 ![Create release on GitHub](images/workflow/release.svg)
 \newline
-Triggered when adding the following tag on push:
-
+This workflow is triggered when adding the following tag on push:
 ```- v*.*.* ```
- The steps including restore, build and tests are the same and in the previously mentioned build_and_test workflow. 
- If that succeeds it proceeds with the workflow by publishing the following project files:
+
+ The steps *restore*, *build* and *tests* are the same as the previously mentioned *build_and_test* workflow. 
+ If it succeeds, it proceeds with the workflow by publishing the following project files:
  
     1. src/Chirp.Core/Chirp.Core.csproj
     2. src/Chirp.Infrastructure/Chirp.Infrastructure.csproj
     3. src/Chirp.Web/Chirp.Web.csproj
 
-With the following release configurations: linux-x64, win-x64, osx-x64 and osx-arm64 with an corresponding output folder for it and zipping it.
-The release then include those zip-files and the source code
+with the following release configurations: linux-x64, win-x64, osx-x64 and osx-arm64 with corresponding output folders and compresses them into zip-files.
+The release then include the zip-files and the source code
 &nbsp;
 
 ## Team work <a name="teamwork"></a>
-Below is the project board for group 5.
+Below is the project board for Group 5.
 The uncompleted tasks are:
 
     1. As a Developer i want to check for possible SQL injection or XSS vulnerabilities so the website is as secure as it can be
     2. As a developer i want to documents all my functions to assure future developers understand the code
 
-All other features have been completed, this solution for Chirp should not be missing any features or functionality.
+All other features have been completed, this solution for *Chirp!* should not be missing any features or functionality.
 \newline
 ![Project board](images/projectboard.PNG)
 &nbsp;
-Below is a flowchart modeling of how teamwork has been conducted in group 5.
+Below is a flowchart modeling of how teamwork has been conducted in Group 5.
 \newline
 ![Flowchart diagram of teamwork](images/teamwork.png){width=auto; height=60%}
 &nbsp;
 
-The process "from issue to solution" starts after all members having attended any weeks lecture. Shortly after that lecture the group will find a room to sit and organize themselves, here a few group members start identifying and then quantifying this weeks problems by creating issue tickets. 
-When all problems have their respective issue tickets, the group will subdivide itself and create smaller groups where individuals work together to solve the specific issue(s). A new branch will be created where all work for the feature/fix will be deposited. Whenever a specific issue is solved, its respective branch may be merged into main and their issue will be closed. If an issue is not solved during that day, individuals will work from home to solve/close the issue, or if needed, the group will meet again before the next weeks lecture (when new issues will be added).
+The process "From issue to solution" starts after all members having attended the given week's lecture. Shortly after that lecture, the group will find a room to sit and organize themselves. Here, a few group members start identifying and then quantifying that week's problems by creating issue tickets. 
+When all problems have their respective issue tickets, the group will subdivide itself into smaller groups where individuals work together or independently to solve the specific issue(s). A new branch will be created where all work for the feature/fix will be deposited. 
+Whenever a specific issue is solved, its respective branch may be merged into main and the issue will be closed. If an issue is not solved by the end of the day, individuals will work from home to solve/close the issue, or if necessary, the group will meet again before the next week's lecture (when new issues will be added).
 
 
 ## How to make _Chirp!_ work locally <a name="localchirp"></a>
@@ -259,21 +260,15 @@ When all problems have their respective issue tickets, the group will subdivide 
 
     <b>UNIX-based systems</b>
 
-    3.1. Open up terminal and run the following
-    
-    3.2.
+    3.1. Open up a terminal and run the following
     
         cd %unzippedcontentdir%/publish/%systemarchitecture%
         ./Chirp.Web
-        
 
     <b> Windows</b>
-
+    
     3.1. Open up CMD and run the following
-
-    3.2. 
-
-        
+            
         cd %unzippedcontentdir%/publish/win-x64
         Chirp.Web.exe
         
@@ -283,7 +278,7 @@ When all problems have their respective issue tickets, the group will subdivide 
 5. Accessing your localhost on the given port should now give you access to the local running instance of the web-app
 
 ### Running from Source code
-1. Pull the source code from github, can be done by opening terminal/cmd and typing the following
+1. Pull the source code from github. This can be done by opening terminal/cmd and typing the following
 ```
 git pull https://github.com/ITU-BDSA2024-GROUP5/Chirp.git
 ```
@@ -292,9 +287,9 @@ git pull https://github.com/ITU-BDSA2024-GROUP5/Chirp.git
 cd Chirp/src/Chirp.Web
 dotnet run
 ```
-3. By default the terminal should now show - Now listening on: http://localhost:5177
+3. By default, the terminal should now show - Now listening on: http://localhost:5177
 
-If not follow the following steps.
+If not, follow the following steps.
 1. Run ```dotnet dev-certs https --trust```
 
 2. Set user secrets by
@@ -320,13 +315,13 @@ The license chosen for the program is the MIT license due to its simplicity and 
 ## LLMs, ChatGPT, CoPilot, and others <a name="chatgpt"></a>
 <p>
 LLMs have been used in a limited capacity in the development of Chirp.
-CoPilot, as an integrated feature in Rider and GitHub, have mainly been used in code generation/assistance by cutting down the time spent on writing generic code. 
+CoPilot, as an integrated feature in Rider and GitHub, have mainly been used in code generation/assistance and has cut down the time spent on writing generic code. 
 Occasionally, LLMs has been used for bug fixes. This is usually done by giving ChatGPT a block of code along with the prompt "Please fix" to identify simple syntax errors, 
-which may have been hard to spot. Aside from directly in-code, LLM has been used in research as a substitute for search engines and documentation. 
+which have been hard to spot. Aside from directly in-code, LLM has been used in research as a substitute for search engines and documentation. 
 An example from development would be using ChatGPT to research how to implement "Identity Core".
 
 In terms of helpfulness, LLMs have been used in cases where advice and guidance was needed and not when looking for a direct solution.
-The benefits of using LLMs are comparable to asking a TA for help in understanding a certain topic or troubleshooting. 
+The benefits of using LLMs are similar to asking a TA for help in understanding a certain topic or troubleshooting, but more accessible and time-efficient. 
 When presented with an incorrect or false response, it is simply dismissed and heeded as bad advice.
 
 Generally, the use of LLMs have sped up the development by enabling individual work by giving benefits similar to peer-programming. 
