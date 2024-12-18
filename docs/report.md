@@ -71,7 +71,7 @@ The production deployment uses the HTTPS-protocol, which ensures vulnerable user
 
 ## User activities <a name="useractivities"></a>
 This section illustrates typical scenarios that the user may go through when using our *Chirp!* application.
-This includes cases for both unauthorised and authorised users.
+This includes cases for both unauthenticated and authenticated users.
 The illustrations are shown as sequences of activities in the format of UML Activity Diagrams.
 &nbsp;
 
@@ -267,7 +267,7 @@ Whenever a specific issue is solved, its respective branch may be merged into ma
 ### Running from Source code
 1. Pull the source code from GitHub. This can be done by opening terminal/cmd and typing the following
 ```
-    git pull https://github.com/ITU-BDSA2024-GROUP5/Chirp.git
+    git clone https://github.com/ITU-BDSA2024-GROUP5/Chirp.git
 ```
 2. Navigate to the project directory and run
 ```
@@ -277,6 +277,7 @@ Whenever a specific issue is solved, its respective branch may be merged into ma
 3. By default, the terminal should now show - Now listening on: http://localhost:5177
 
 If not, follow the following steps.
+
 1. Run ```dotnet dev-certs https --trust```
 
 2. Set user secrets by
